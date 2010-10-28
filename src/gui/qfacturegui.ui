@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Julien Pecqueur</author>
- <class>Qfacture</class>
- <widget class="QMainWindow" name="Qfacture">
+ <class>QfactureGui</class>
+ <widget class="QMainWindow" name="QfactureGui">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -464,12 +464,12 @@
               <string>Hôte</string>
              </property>
              <property name="buddy">
-              <cstring>aServer</cstring>
+              <cstring>app_server</cstring>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="aServer">
+            <widget class="QLineEdit" name="app_server">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -508,12 +508,12 @@
               <string>Port</string>
              </property>
              <property name="buddy">
-              <cstring>aPort</cstring>
+              <cstring>app_port</cstring>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="aPort">
+            <widget class="QLineEdit" name="app_port">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -549,12 +549,12 @@
               <string>Utilisateur</string>
              </property>
              <property name="buddy">
-              <cstring>aUser</cstring>
+              <cstring>app_user</cstring>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="aUser">
+            <widget class="QLineEdit" name="app_user">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -571,7 +571,7 @@
               <string notr="true"/>
              </property>
              <property name="text">
-              <string notr="true">qfacture</string>
+              <string notr="true">root</string>
              </property>
             </widget>
            </item>
@@ -593,12 +593,12 @@
               <string>Mot de passe</string>
              </property>
              <property name="buddy">
-              <cstring>aPass</cstring>
+              <cstring>app_pass</cstring>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="aPass">
+            <widget class="QLineEdit" name="app_pass">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -640,12 +640,12 @@
               <string>Base</string>
              </property>
              <property name="buddy">
-              <cstring>aDb</cstring>
+              <cstring>app_db</cstring>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="aDb">
+            <widget class="QLineEdit" name="app_db">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -662,12 +662,12 @@
               <string notr="true"/>
              </property>
              <property name="text">
-              <string notr="true">qfacture</string>
+              <string notr="true">qfacture_db</string>
              </property>
             </widget>
            </item>
            <item row="5" column="0" colspan="2">
-            <widget class="QPushButton" name="aConnect">
+            <widget class="QPushButton" name="app_connect">
              <property name="maximumSize">
               <size>
                <width>16777214</width>
@@ -1818,7 +1818,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Menu">
@@ -1849,12 +1849,12 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>aServer</tabstop>
-  <tabstop>aPort</tabstop>
-  <tabstop>aUser</tabstop>
-  <tabstop>aDb</tabstop>
-  <tabstop>aPass</tabstop>
-  <tabstop>aConnect</tabstop>
+  <tabstop>app_server</tabstop>
+  <tabstop>app_port</tabstop>
+  <tabstop>app_user</tabstop>
+  <tabstop>app_db</tabstop>
+  <tabstop>app_pass</tabstop>
+  <tabstop>app_connect</tabstop>
   <tabstop>uName</tabstop>
   <tabstop>uSiret</tabstop>
   <tabstop>uAdress</tabstop>
@@ -1886,9 +1886,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>aConnect</sender>
+   <sender>app_connect</sender>
    <signal>clicked()</signal>
-   <receiver>Qfacture</receiver>
+   <receiver>QfactureGui</receiver>
    <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1902,7 +1902,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>aConnect</sender>
+   <sender>app_connect</sender>
    <signal>clicked()</signal>
    <receiver>statusbar</receiver>
    <slot>update()</slot>
@@ -1918,7 +1918,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>aConnect</sender>
+   <sender>app_connect</sender>
    <signal>clicked()</signal>
    <receiver>aGroupBox</receiver>
    <slot>update()</slot>
