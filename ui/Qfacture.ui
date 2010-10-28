@@ -37,7 +37,8 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../art/qfacture.png</normaloff>../art/qfacture.png</iconset>
+    <normaloff>art/qfacture.png</normaloff>
+    </iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
