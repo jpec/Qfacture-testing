@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
     QfactureCore core;
     QfactureGui w(&core);
     
+    a.connect(&a, SIGNAL(lastWindowClosed()), &w, SLOT(onQuit()));
+    
     w.show();
 
     return a.exec();

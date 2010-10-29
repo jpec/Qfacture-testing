@@ -39,6 +39,12 @@ private slots:
      * données
      */
     void onDBConnectionError(const QString &error);
+    
+    /**
+     * Réalise la fermeture de l'application : coupe la connexion à la DB,
+     * enregistre les paramètres de l'utilisateur, etc.
+     */
+    void onQuit();
 
 private:
     /**
@@ -46,6 +52,18 @@ private:
      * principaux évènements.
      */
     void setupActions();
+    
+    /**
+     * Sauvegarde les paramètres de l'application (dimensions et emplacement de
+     * la fenêtre, identifiants de connexion à la DB, etc.)
+     */
+    void saveSettings();
+    
+    /**
+     * Restaure les paramètres de l'application
+     */
+    void restoreSettings();
+    
     
     /**
      * Pointeur vers la GUI "pure"

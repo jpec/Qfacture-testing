@@ -2,7 +2,9 @@
 #define QFACTURECORE_H
 
 #include <QSqlDatabase>
+#include <QSettings>
 #include <QObject>
+
 #include <string>
 
 using namespace std;
@@ -16,6 +18,17 @@ class QfactureCore : public QObject
     Q_OBJECT
     
 public:
+    /**
+     * Constructeur du core. Il s'occupe pour le moment d'initialiser les 
+     * différents managers tels que celui qui assure la gestion des paramètres.
+     */
+    QfactureCore();
+    
+    /**
+     * Destructeur
+     */
+    ~QfactureCore();
+    
     /**
      * Tente de connecter l'application à la base de données. Émet le signal
      * DBConnected() si elle y parvient, DBConnectionError() sinon.
@@ -38,7 +51,7 @@ public:
      * Déconnecte l'application de la base de données et émet le signal 
      * DBDisconnected()
      */
-    void deconnectDB();
+    void disconnectDB();
     
     /**
      * Indique si l'application est connectée à la base de données ou non
@@ -46,6 +59,26 @@ public:
      * @return true si la connexion est établie, false sinon.
      */
     bool isDBConnected() const;
+    
+    /**
+     * Enregistre un paramètre de l'application.
+     *
+     * @param group Groupe d'appartenance du paramètre. Ex : DB pour tous les
+     *              paramètres liés à la base de données.
+     * @param key Nom du paramètre
+     * @param value Valeur du paramètre
+     */
+    void setSetting(const QString &group, const QString &key, const QVariant &value);
+    
+    /**
+     * Récupère la valeur d'un paramètre de l'application.
+     *
+     * @param group Groupe d'appartenance du paramètre. Ex : DB pour tous les
+     *              paramètres liés à la base de données.
+     * @param key Nom du paramètre
+     * @param default_value Valeur retournée si le paramètre demandé n'existe pas.
+     */
+    QVariant getSetting(const QString &group, const QString &key, const QVariant &default_value = QVariant()) const;
     
 signals:
     /**
@@ -73,6 +106,11 @@ private:
      * Instance de la connexion à la base de données.
      */
     QSqlDatabase db;
+    
+    /**
+     * Instance de la classe chargée de la gestion des paramètres.
+     */
+    QSettings *settings;
 };
 
 #endif // QFACTURECORE_H

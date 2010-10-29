@@ -11,6 +11,8 @@ QfactureGui::QfactureGui(QfactureCore *core, QWidget *parent) : QMainWindow(pare
     this->core = core;
     
     this->setupActions();
+    
+    restoreSettings();
 }
 
 QfactureGui::~QfactureGui()
@@ -18,8 +20,19 @@ QfactureGui::~QfactureGui()
     delete ui;
 }
 
+void QfactureGui::onQuit()
+{
+	this->saveSettings();
+	this->core->disconnectDB();
+    
+	qApp->quit();
+}
+
 void QfactureGui::setupActions()
 {
+    // fermeture de l'application lors du clic sur le menu concerné
+    this->connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(onQuit()));
+    
     // appelle la méthode de connexion à la DB lors du clic sur le bouton
     this->connect(ui->app_connect, SIGNAL(clicked()), this, SLOT(handleDBConnection()));
     
@@ -41,12 +54,16 @@ void QfactureGui::setupActions()
 void QfactureGui::handleDBConnection()
 {
     if(core->isDBConnected())
-        core->deconnectDB();
+        core->disconnectDB();
     else
         core->connectDB(ui->app_server->text(), ui->app_port->text().toInt(), ui->app_user->text(),
                         ui->app_pass->text(), ui->app_db->text());
 }
 
+/**
+ * S'occupe de mettre à jour l'affichage du bouton et l'état d'activation des
+ * champs
+ */ 
 void QfactureGui::onDBConnectionStateChanged()
 {
     bool connexion_state = core->isDBConnected();
@@ -71,4 +88,32 @@ void QfactureGui::onDBConnectionError(const QString &error)
 {
     QMessageBox::warning(this, "Qfacture", trUtf8("Une erreur est survenue lors de la connexion : %1").arg(error),
                          QMessageBox::Ok);
+}
+
+void QfactureGui::saveSettings()
+{
+	// infos sur la fenêtre (taille et position)
+	core->setSetting("Window", "size", size());
+	core->setSetting("Window", "pos", pos());
+	
+	// infos de connexion à la DB
+	core->setSetting("DB", "host", ui->app_server->text());
+	core->setSetting("DB", "port", ui->app_port->text().toInt());
+	core->setSetting("DB", "user", ui->app_user->text());
+	core->setSetting("DB", "passwd", ui->app_pass->text());
+	core->setSetting("DB", "db_name", ui->app_db->text());
+}
+
+void QfactureGui::restoreSettings()
+{
+	// infos sur la fenêtre (taille et position)
+	resize(core->getSetting("Window", "size", QSize(400, 400)).toSize());
+	move(core->getSetting("Window", "pos", QPoint(200, 200)).toPoint());
+	
+	// infos de connexion à la DB
+	ui->app_server->setText(core->getSetting("DB", "host", "localhost").toString());
+	ui->app_port->setText(core->getSetting("DB", "port", 3306).toString());
+	ui->app_user->setText(core->getSetting("DB", "user", "qfacture").toString());
+	ui->app_pass->setText(core->getSetting("DB", "passwd", "").toString());
+	ui->app_db->setText(core->getSetting("DB", "db_name", "qfacture_db").toString());
 }

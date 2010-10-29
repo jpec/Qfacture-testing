@@ -1825,7 +1825,7 @@
     <property name="title">
      <string>&amp;Menu</string>
     </property>
-    <addaction name="action_Quitter"/>
+    <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_Aide">
     <property name="title">
@@ -1837,7 +1837,7 @@
    <addaction name="menu_Aide"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action_Quitter">
+  <action name="action_quit">
    <property name="text">
     <string>&amp;Quitter</string>
    </property>
@@ -1884,56 +1884,7 @@
   <tabstop>aDel</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>app_connect</sender>
-   <signal>clicked()</signal>
-   <receiver>QfactureGui</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>434</x>
-     <y>24</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>app_connect</sender>
-   <signal>clicked()</signal>
-   <receiver>statusbar</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>643</x>
-     <y>577</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>app_connect</sender>
-   <signal>clicked()</signal>
-   <receiver>aGroupBox</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>772</x>
-     <y>138</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>load()</slot>
  </slots>
