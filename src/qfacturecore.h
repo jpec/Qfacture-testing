@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "models/profile.h"
+
 using namespace std;
 
 
@@ -80,6 +82,15 @@ public:
      */
     QVariant getSetting(const QString &group, const QString &key, const QVariant &default_value = QVariant()) const;
     
+    /**
+     * Récupère le profile d'un utilisateur
+     *
+     * @param id L'identifiant du profile à utiliser
+     *
+     * @return Profile Le profile chargé.
+     */
+    Profile getProfile(int id);
+    
 signals:
     /**
      * Émit lorsque une connexion a été établie avec la base de données
@@ -99,7 +110,7 @@ signals:
     /**
      * Émit lorsque une erreur lors d'une requête à la DB survient
      */
-    void DBDError(const QString &error);
+    void DBError(const QString &error);
 
 private:
     /**

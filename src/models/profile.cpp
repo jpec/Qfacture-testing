@@ -1,14 +1,8 @@
 #include "profile.h"
 
+
 Profile::Profile() : siret(""), website("")
 {
-    logo = new char[1];
-    logo = 0;
-}
-
-Profile::~Profile()
-{
-    delete[] logo;
 }
 
 
@@ -36,4 +30,14 @@ void Profile::setWebsite(const string &website)
 string Profile::getWebsite() const
 {
     return this->website;
+}
+
+void Profile::setLogo(const QByteArray &data)
+{
+    this->logo = data;
+}
+
+QByteArray Profile::getLogo() const
+{
+    return this->logo;
 }

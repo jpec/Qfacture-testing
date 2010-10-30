@@ -1,6 +1,8 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
+#include <QByteArray>
+
 #include <string>
 #include "person.h"
 
@@ -11,7 +13,6 @@ class Profile : public Person
 {
 public:
     Profile();
-    ~Profile();
     
     /**
      * Définit le nouveau numéro Siret pour ce profile.
@@ -40,6 +41,20 @@ public:
      * @return string L'URL du website
      */
     string getWebsite() const;
+    
+    /**
+     * Définit le logo utilisé par le profile.
+     *
+     * @param data Les données du logo.
+     */
+    void setLogo(const QByteArray &data);
+    
+    /**
+     * Retourne le logo du profile
+     *
+     * @return QByteArray Les données du logo.
+     */
+    QByteArray getLogo() const;
 
 private:
     /**
@@ -55,7 +70,7 @@ private:
     /**
      * Contenu du logo du profile
      */
-    char * logo;
+    QByteArray logo;
 };
 
 #endif // PROFILE_H

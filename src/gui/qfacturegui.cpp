@@ -3,6 +3,7 @@
 #include "qfacturecore.h"
 
 #include <QMessageBox>
+#include <QPixmap>
 
 
 QfactureGui::QfactureGui(QfactureCore *core, QWidget *parent) : QMainWindow(parent), ui(new Ui::QfactureGui)
@@ -41,10 +42,13 @@ void QfactureGui::setupActions()
     this->connect(core, SIGNAL(DBConnected()), this, SLOT(onDBConnectionStateChanged()));
 
     // lie l'évènement "DBDisconnected" à l'action correspondante
-    this->connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBConnectionStateChanged()));    
+    this->connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBConnectionStateChanged()));
     
     // lie l'évènement "DBConnectionError" à l'action correspondante
     this->connect(core, SIGNAL(DBConnectionError(QString)), this, SLOT(onDBConnectionError(QString)));
+    
+    // lie l'évènement "DBError" à l'action correspondante
+    this->connect(core, SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
 }
 
 /**
@@ -81,12 +85,20 @@ void QfactureGui::onDBConnectionStateChanged()
 
 void QfactureGui::onDBConnected()
 {
-    QMessageBox::warning(this, "Qfacture", trUtf8("OK !"), QMessageBox::Ok);
+    //QMessageBox::warning(this, "Qfacture", trUtf8("OK !"), QMessageBox::Ok);
+    
+    this->loadLastProfile();
 }
 
 void QfactureGui::onDBConnectionError(const QString &error)
 {
     QMessageBox::warning(this, "Qfacture", trUtf8("Une erreur est survenue lors de la connexion : %1").arg(error),
+                         QMessageBox::Ok);
+}
+
+void QfactureGui::onDBError(const QString &error)
+{
+    QMessageBox::warning(this, "Qfacture", trUtf8("Une erreur SQL est survenue : %1").arg(error),
                          QMessageBox::Ok);
 }
 
@@ -102,6 +114,10 @@ void QfactureGui::saveSettings()
 	core->setSetting("DB", "user", ui->app_user->text());
 	core->setSetting("DB", "passwd", ui->app_pass->text());
 	core->setSetting("DB", "db_name", ui->app_db->text());
+    
+    // infos sur le profile actuellement géré
+    if(this->profile.getId() != 0)
+        core->setSetting("Profile", "id", this->profile.getId());
 }
 
 void QfactureGui::restoreSettings()
@@ -116,4 +132,37 @@ void QfactureGui::restoreSettings()
 	ui->app_user->setText(core->getSetting("DB", "user", "qfacture").toString());
 	ui->app_pass->setText(core->getSetting("DB", "passwd", "").toString());
 	ui->app_db->setText(core->getSetting("DB", "db_name", "qfacture_db").toString());
+}
+
+void QfactureGui::loadLastProfile()
+{
+    QPixmap pic;
+    
+    this->profile = core->getProfile(core->getSetting("Profile", "id", QVariant(1)).toInt());
+    
+    if(this->profile.getId() == 0)
+    {
+        this->alert(trUtf8("Impossible de charger le profile utilisateur."));
+        
+        return;
+    }
+    
+    /* Alimentation des widgets */
+    ui->uName->setText(QString::fromStdString(this->profile.getName()));
+    ui->uSiret->setText(QString::fromStdString(this->profile.getSiret()));
+    ui->uAdress->setText(QString::fromStdString(this->profile.getAddress()));
+    ui->uZip->setText(QString::fromStdString(this->profile.getZipCode()));
+    ui->uCity->setText(QString::fromStdString(this->profile.getCity()));
+    ui->uPhone->setText(QString::fromStdString(this->profile.getPhone()));
+    ui->uMail->setText(QString::fromStdString(this->profile.getMail()));
+    ui->uHome->setText(QString::fromStdString(this->profile.getWebsite()));
+        
+    /* Alimentation du widget logo */
+    pic.loadFromData(this->profile.getLogo());
+    ui->uLogo->setPixmap(pic);
+}
+
+void QfactureGui::alert(const QString &message)
+{
+    QMessageBox::critical(this, trUtf8("Erreur !"), message);
 }

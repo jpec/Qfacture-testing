@@ -2,7 +2,10 @@
 #define QFACTUREGUI_H
 
 #include <QMainWindow>
+
 #include "qfacturecore.h"
+#include "models/profile.h"
+
 
 namespace Ui {
     class QfactureGui;
@@ -41,11 +44,16 @@ private slots:
     void onDBConnectionError(const QString &error);
     
     /**
+     * Sera appelée si une erreur SQL survient.
+     */
+    void onDBError(const QString &error);
+    
+    /**
      * Réalise la fermeture de l'application : coupe la connexion à la DB,
      * enregistre les paramètres de l'utilisateur, etc.
      */
     void onQuit();
-
+    
 private:
     /**
      * Cette méthode, appelée par le constructeur, s'occupe de connecter les
@@ -64,6 +72,19 @@ private:
      */
     void restoreSettings();
     
+    /**
+     * Charge le dernier profile d'utilisateur géré
+     */
+    void loadLastProfile();
+    
+    /**
+     * Affiche une boite de dialogue de type "critical". Utilisée pour informer
+     * l'utilisateur d'une erreur
+     *
+     * @param message Message d'erreur à afficher
+     */
+    void alert(const QString &message);
+    
     
     /**
      * Pointeur vers la GUI "pure"
@@ -74,6 +95,11 @@ private:
      * Pointeur vers le coeur logique de l'application.
      */
     QfactureCore *core;
+    
+    /**
+     * Profile de l'auto-entrepreneur actuellement chargé.
+     */
+    Profile profile;
 };
 
 #endif // QFACTUREGUI_H
