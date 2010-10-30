@@ -1,13 +1,16 @@
-#include <QApplication>
-#include "qfactureimpl.h"
+#include <QtGui/QApplication>
+#include "gui/qfacturegui.h"
+#include "qfacturecore.h"
 
-int main(int argc, char ** argv)
+int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	QfactureImpl win;
-	
-	win.show(); 
-	app.connect(&app, SIGNAL(lastWindowClosed()), &win, SLOT(doQuit()));
-	
-	return app.exec();
+    QApplication a(argc, argv);
+    QfactureCore core;
+    QfactureGui w(&core);
+    
+    a.connect(&a, SIGNAL(lastWindowClosed()), &w, SLOT(onQuit()));
+    
+    w.show();
+
+    return a.exec();
 }

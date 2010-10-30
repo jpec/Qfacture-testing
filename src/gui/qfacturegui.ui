@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Julien Pecqueur</author>
- <class>Qfacture</class>
- <widget class="QMainWindow" name="Qfacture">
+ <class>QfactureGui</class>
+ <widget class="QMainWindow" name="QfactureGui">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -173,32 +173,6 @@
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Complément</string>
-             </property>
-             <property name="buddy">
-              <cstring>uAdress2</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="uAdress2">
-             <property name="minimumSize">
-              <size>
-               <width>300</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
             <widget class="QLabel" name="label_5">
              <property name="text">
               <string>Code postal</string>
@@ -208,7 +182,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QLineEdit" name="uZip">
              <property name="minimumSize">
               <size>
@@ -224,7 +198,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
               <string>Ville</string>
@@ -234,7 +208,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="4" column="1">
             <widget class="QLineEdit" name="uCity">
              <property name="minimumSize">
               <size>
@@ -250,7 +224,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="5" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
               <string>Téléphone</string>
@@ -260,7 +234,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="5" column="1">
             <widget class="QLineEdit" name="uPhone">
              <property name="minimumSize">
               <size>
@@ -276,7 +250,7 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="0">
+           <item row="6" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
               <string>Email</string>
@@ -286,7 +260,7 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="1">
+           <item row="6" column="1">
             <widget class="QLineEdit" name="uMail">
              <property name="minimumSize">
               <size>
@@ -302,7 +276,7 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>Site internet</string>
@@ -312,7 +286,7 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="7" column="1">
             <widget class="QLineEdit" name="uHome">
              <property name="minimumSize">
               <size>
@@ -328,7 +302,14 @@
              </property>
             </widget>
            </item>
-           <item row="10" column="1">
+           <item row="8" column="1">
+            <widget class="QPushButton" name="uChangeLogo">
+             <property name="text">
+              <string>Changer le logo</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
             <widget class="QPushButton" name="uSave">
              <property name="enabled">
               <bool>false</bool>
@@ -356,14 +337,7 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="1">
-            <widget class="QPushButton" name="uChangeLogo">
-             <property name="text">
-              <string>Changer le logo</string>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="1">
+           <item row="10" column="1">
             <widget class="QLabel" name="uLogo">
              <property name="minimumSize">
               <size>
@@ -390,22 +364,6 @@
            </item>
           </layout>
          </widget>
-        </item>
-        <item row="0" column="4" rowspan="2">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="1" column="0">
          <spacer name="verticalSpacer">
@@ -465,12 +423,12 @@
               <string>Hôte</string>
              </property>
              <property name="buddy">
-              <cstring>aServer</cstring>
+              <cstring>app_server</cstring>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="aServer">
+            <widget class="QLineEdit" name="app_server">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -509,12 +467,12 @@
               <string>Port</string>
              </property>
              <property name="buddy">
-              <cstring>aPort</cstring>
+              <cstring>app_port</cstring>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="aPort">
+            <widget class="QLineEdit" name="app_port">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -550,12 +508,12 @@
               <string>Utilisateur</string>
              </property>
              <property name="buddy">
-              <cstring>aUser</cstring>
+              <cstring>app_user</cstring>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="aUser">
+            <widget class="QLineEdit" name="app_user">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -572,7 +530,7 @@
               <string notr="true"/>
              </property>
              <property name="text">
-              <string notr="true">qfacture</string>
+              <string notr="true">root</string>
              </property>
             </widget>
            </item>
@@ -594,12 +552,12 @@
               <string>Mot de passe</string>
              </property>
              <property name="buddy">
-              <cstring>aPass</cstring>
+              <cstring>app_pass</cstring>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="aPass">
+            <widget class="QLineEdit" name="app_pass">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -641,12 +599,12 @@
               <string>Base</string>
              </property>
              <property name="buddy">
-              <cstring>aDb</cstring>
+              <cstring>app_db</cstring>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="aDb">
+            <widget class="QLineEdit" name="app_db">
              <property name="minimumSize">
               <size>
                <width>200</width>
@@ -663,12 +621,12 @@
               <string notr="true"/>
              </property>
              <property name="text">
-              <string notr="true">qfacture</string>
+              <string notr="true">qfacture_db</string>
              </property>
             </widget>
            </item>
            <item row="5" column="0" colspan="2">
-            <widget class="QPushButton" name="aConnect">
+            <widget class="QPushButton" name="app_connect">
              <property name="maximumSize">
               <size>
                <width>16777214</width>
@@ -1819,14 +1777,14 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Menu">
     <property name="title">
      <string>&amp;Menu</string>
     </property>
-    <addaction name="action_Quitter"/>
+    <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_Aide">
     <property name="title">
@@ -1838,7 +1796,7 @@
    <addaction name="menu_Aide"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action_Quitter">
+  <action name="action_quit">
    <property name="text">
     <string>&amp;Quitter</string>
    </property>
@@ -1850,16 +1808,15 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>aServer</tabstop>
-  <tabstop>aPort</tabstop>
-  <tabstop>aUser</tabstop>
-  <tabstop>aDb</tabstop>
-  <tabstop>aPass</tabstop>
-  <tabstop>aConnect</tabstop>
+  <tabstop>app_server</tabstop>
+  <tabstop>app_port</tabstop>
+  <tabstop>app_user</tabstop>
+  <tabstop>app_db</tabstop>
+  <tabstop>app_pass</tabstop>
+  <tabstop>app_connect</tabstop>
   <tabstop>uName</tabstop>
   <tabstop>uSiret</tabstop>
   <tabstop>uAdress</tabstop>
-  <tabstop>uAdress2</tabstop>
   <tabstop>uZip</tabstop>
   <tabstop>uCity</tabstop>
   <tabstop>uPhone</tabstop>
@@ -1885,56 +1842,7 @@
   <tabstop>aDel</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>aConnect</sender>
-   <signal>clicked()</signal>
-   <receiver>Qfacture</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>434</x>
-     <y>24</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>aConnect</sender>
-   <signal>clicked()</signal>
-   <receiver>statusbar</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>643</x>
-     <y>577</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>aConnect</sender>
-   <signal>clicked()</signal>
-   <receiver>aGroupBox</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>772</x>
-     <y>138</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>load()</slot>
  </slots>
