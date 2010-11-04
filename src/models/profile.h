@@ -2,11 +2,9 @@
 #define PROFILE_H
 
 #include <QByteArray>
+#include <QString>
 
-#include <string>
 #include "person.h"
-
-using namespace std;
 
 
 class Profile : public Person
@@ -19,28 +17,28 @@ public:
      *
      * @param name Le nouveau numéro siret
      */
-    void setSiret(const string &siret);
+    void setSiret(const QString &siret);
     
     /**
      * Retourne le numéro Siret pour ce profile
      *
-     * @return string Le numéro Siret non formaté.
+     * @return QString Le numéro Siret non formaté.
      */
-    string getSiret() const;
+    QString getSiret() const;
     
     /**
      * Définit l'adresse du site web pour ce profile.
      *
      * @param name Le nouveau site web
      */
-    void setWebsite(const string &website);
+    void setWebsite(const QString &website);
     
     /**
      * Retourne l'URL du website pour ce profile
      *
-     * @return string L'URL du website
+     * @return QString L'URL du website
      */
-    string getWebsite() const;
+    QString getWebsite() const;
     
     /**
      * Définit le logo utilisé par le profile.
@@ -60,12 +58,12 @@ private:
     /**
      * Numéro Siret correspondant au profile
      */
-    string siret;
+    QString siret;
     
     /**
      * Adresse du site web
      */
-    string website;
+    QString website;
     
     /**
      * Contenu du logo du profile

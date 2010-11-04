@@ -1,12 +1,8 @@
 #include "profilemanager.h"
 
-#include "QSqlQuery"
 #include "QVariant"
+#include "QSqlError"
 
-
-ProfileManager::ProfileManager(QSqlDatabase &db) : Manager(db)
-{
-}
 
 Profile ProfileManager::get(int id)
 {
@@ -14,11 +10,11 @@ Profile ProfileManager::get(int id)
     Profile profile;
     
     query.prepare(
-            "SELECT Name, Siret, Adress, Adress2, Zip, City, Phone, Mail, Home, Logo "
-            "FROM user WHERE id = :profile_id LIMIT 1;"
+            "SELECT id, Name, Siret, Adress, Zip, City, Phone, Mail, Home, Logo "
+            "FROM user WHERE id = :profile_id"
         );
     
-    query.bindValue(QString(":profile_id"), QVariant(id));
+    query.bindValue(":profile_id", QVariant(id));
     
     if(!query.exec() || !query.next())
     {
@@ -29,16 +25,71 @@ Profile ProfileManager::get(int id)
         return profile;
     }
     
-    profile.setId(id);
-    profile.setName(query.value(0).toString().toStdString());
-    profile.setSiret(query.value(1).toString().toStdString());
-    profile.setAddress(query.value(2).toString().toStdString());
-    profile.setZipCode(query.value(3).toString().toStdString());
-    profile.setCity(query.value(4).toString().toStdString());
-    profile.setPhone(query.value(5).toString().toStdString());
-    profile.setMail(query.value(6).toString().toStdString());
-    profile.setWebsite(query.value(7).toString().toStdString());
+    return makeProfile(query);
+}
+
+void ProfileManager::save(Profile &profile)
+{
+    if(profile.getId() == 0)
+        insert(profile);
+    else
+        update(profile);
+}
+
+void ProfileManager::insert(Profile &profile)
+{
+    // \todo implémenter !
+}
+
+void ProfileManager::update(const Profile &profile)
+{
+    QSqlQuery query;
+
+    query.prepare(
+            "UPDATE user "
+            "SET Name = :name, Siret = :siret, Adress = :address, "
+                " Zip = :zip, City = :city, Phone = :phone, "
+                " Mail = :mail, Home = :home "
+        "WHERE id = :p_id"
+    );
+
+    bindProfile(profile, query);
+
+    std::cout << profile.getName().toStdString() << std::endl;
+
+    if(!query.exec()){
+        // \todo Lever une exception
+        return;
+    }
+}
+
+void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
+{
+    query.bindValue(":p_id", profile.getId());
+    query.bindValue(":name", profile.getName());
+    query.bindValue(":siret", profile.getSiret());
+    query.bindValue(":address", profile.getAddress());
+    query.bindValue(":zip", profile.getZipCode());
+    query.bindValue(":city", profile.getCity());
+    query.bindValue(":phone", profile.getPhone());
+    query.bindValue(":mail", profile.getMail());
+    query.bindValue(":home", profile.getWebsite());
+}
+
+Profile ProfileManager::makeProfile(QSqlQuery &query)
+{
+    Profile profile;
+
+    profile.setId(query.value(0).toInt());
+    profile.setName(query.value(1).toString());
+    profile.setSiret(query.value(2).toString());
+    profile.setAddress(query.value(3).toString());
+    profile.setZipCode(query.value(4).toString());
+    profile.setCity(query.value(5).toString());
+    profile.setPhone(query.value(6).toString());
+    profile.setMail(query.value(7).toString());
+    profile.setWebsite(query.value(8).toString());
     profile.setLogo(query.value(9).toByteArray());
-    
+
     return profile;
 }

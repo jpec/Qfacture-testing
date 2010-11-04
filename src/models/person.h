@@ -1,9 +1,7 @@
 #ifndef PERSON_H
 #define PERSON_H
 
-#include <string>
-
-using namespace std;
+#include <QString>
 
 
 /**
@@ -40,71 +38,71 @@ public:
      *
      * @param name Le nouveau nom (et prénom)
      */
-    void setName(const string &name);
+    void setName(const QString &name);
 
     /**
      * Retourne le nom de cette personne.
      *
-     * @return string Le nom et le prénom de cette personne.
+     * @return QString Le nom et le prénom de cette personne.
      */
-    string getName() const;
+    QString getName() const;
 
     /**
      * Définit l'adresse postale de cette personne.
      *
      * @param name La nouvelle adresse postale
      */
-    void setAddress(const string &address);
+    void setAddress(const QString &address);
 
     /**
      * Retourne l'adresse postale de cette personne.
      *
-     * @return string L'adresse postale de cette personne.
+     * @return QString L'adresse postale de cette personne.
      */
-    string getAddress() const;
+    QString getAddress() const;
 
     /**
      * Définit le nouveau code postal de cette personne.
      *
      * @param name Le nouveau code postal
      */
-    void setZipCode(const string &zip);
+    void setZipCode(const QString &zip);
 
     /**
      * Retourne le code postal de cette personne.
      *
-     * @return string Le code postal de cette personne.
+     * @return QString Le code postal de cette personne.
      */
-    string getZipCode() const;
+    QString getZipCode() const;
 
     /**
      * Définit la nouvelle ville de cette personne.
      *
      * @param name La nouvelle ville
      */
-    void setCity(const string &city);
+    void setCity(const QString &city);
 
     /**
      * Retourne la ville où réside cette personne (qui correspond normalement au
      * code postal).
      *
-     * @return string La ville de cette personne.
+     * @return QString La ville de cette personne.
      */
-    string getCity() const;
+    QString getCity() const;
 
     /**
      * Définit la nouvelle adresse mail de cette personne.
      *
      * @param name La nouvelle adresse mail
      */
-    void setMail(const string &mail);
+    void setMail(const QString &mail);
 
     /**
      * Retourne l'adresse mail cette personne.
      *
-     * @return string L'adresse mail de cette personne.
+     * @return QString L'adresse mail de cette personne.
      */
-    string getMail() const;
+    QString getMail() const;
 
     /**
      * Définit le nouveau numéro de téléphone de cette personne.
@@ -112,14 +110,14 @@ public:
      * @param name Le nouveau numéro. Doit être une série de 10 chiffres ou être
      *             vide
      */
-    void setPhone(const string &phone);
+    void setPhone(const QString &phone);
 
     /**
      * Retourne le numéro de téléphone cette personne.
      *
-     * @return string Le numéro de téléphone (non formaté) de cette personne.
+     * @return QString Le numéro de téléphone (non formaté) de cette personne.
      */
-    string getPhone() const;
+    QString getPhone() const;
 
 private:
     /**
@@ -130,32 +128,32 @@ private:
     /**
      * Nom (et prénom)
      */
-    string name;
+    QString name;
 
     /**
      * Adresse postale
      */
-    string address;
+    QString address;
 
     /**
      * Code postal (sans espaces. ex : 63000)
      */
-    string zip_code;
+    QString zip_code;
 
     /**
      * Ville
      */
-    string city;
+    QString city;
 
     /**
      * Adresse mail
      */
-    string mail;
+    QString mail;
 
     /**
      * Numéro de téléphone (sans espaces. ex : 0483272514)
      */
-    string phone;
+    QString phone;
 };
 
 #endif // PERSON_H

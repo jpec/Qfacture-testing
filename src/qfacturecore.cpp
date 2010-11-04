@@ -7,12 +7,10 @@
 QfactureCore::QfactureCore()
 {
     this->settings = new QSettings("Qfacture", "Qfacture", this);
-    this->profile_manager = new ProfileManager(this->db);
 }
 
 QfactureCore::~QfactureCore()
 {
-    delete profile_manager;
     delete settings;
 }
 
@@ -75,10 +73,10 @@ QVariant QfactureCore::getSetting(const QString &group, const QString &key, cons
 
 Profile QfactureCore::getProfile(int id)
 {
-    return profile_manager->get(id);
+    return profile_manager.get(id);
 }
 
 void QfactureCore::saveProfile(Profile &p)
 {
-    
+    profile_manager.save(p);
 }

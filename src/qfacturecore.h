@@ -136,7 +136,7 @@ private:
     /**
      * Instance du gestionnaire de profiles
      */
-    ProfileManager *profile_manager;
+    ProfileManager profile_manager;
 };
 
 #endif // QFACTURECORE_H

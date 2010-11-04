@@ -151,14 +151,14 @@ void QfactureGui::loadLastProfile()
     }
     
     /* Alimentation des widgets */
-    ui->uName->setText(QString::fromStdString(this->profile.getName()));
-    ui->uSiret->setText(QString::fromStdString(this->profile.getSiret()));
-    ui->uAdress->setText(QString::fromStdString(this->profile.getAddress()));
-    ui->uZip->setText(QString::fromStdString(this->profile.getZipCode()));
-    ui->uCity->setText(QString::fromStdString(this->profile.getCity()));
-    ui->uPhone->setText(QString::fromStdString(this->profile.getPhone()));
-    ui->uMail->setText(QString::fromStdString(this->profile.getMail()));
-    ui->uHome->setText(QString::fromStdString(this->profile.getWebsite()));
+    ui->uName->setText(this->profile.getName());
+    ui->uSiret->setText(this->profile.getSiret());
+    ui->uAdress->setText(this->profile.getAddress());
+    ui->uZip->setText(this->profile.getZipCode());
+    ui->uCity->setText(this->profile.getCity());
+    ui->uPhone->setText(this->profile.getPhone());
+    ui->uMail->setText(this->profile.getMail());
+    ui->uHome->setText(this->profile.getWebsite());
         
     /* Alimentation du widget logo */
     pic.loadFromData(this->profile.getLogo());
@@ -168,12 +168,21 @@ void QfactureGui::loadLastProfile()
 /**
  * On ne fait que de la mise à jour de profile, donc si l'ID du profile courant
  * vaut 0 on ne sauvegarde pas.
- */ 
+ */
 void QfactureGui::saveLoadedProfile()
 {
     if(this->profile.getId() == 0)
         return;
-    
+
+    this->profile.setName(ui->uName->text());
+    this->profile.setSiret(ui->uSiret->text());
+    this->profile.setAddress(ui->uAdress->text());
+    this->profile.setZipCode(ui->uZip->text());
+    this->profile.setCity(ui->uCity->text());
+    this->profile.setPhone(ui->uPhone->text());
+    this->profile.setMail(ui->uMail->text());
+    this->profile.setWebsite(ui->uHome->text());
+
     this->core->saveProfile(this->profile);
 }
 

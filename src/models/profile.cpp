@@ -9,12 +9,12 @@ Profile::Profile() : siret(""), website("")
 /**
  * \todo Faire des vérifs sur le numéro siret
  */
-void Profile::setSiret(const string &siret)
+void Profile::setSiret(const QString &siret)
 {
     this->siret = siret;
 }
 
-string Profile::getSiret() const
+QString Profile::getSiret() const
 {
     return this->siret;
 }
@@ -22,12 +22,12 @@ string Profile::getSiret() const
 /**
  * \todo Faire des vérifs
  */
-void Profile::setWebsite(const string &website)
+void Profile::setWebsite(const QString &website)
 {
     this->website = website;
 }
 
-string Profile::getWebsite() const
+QString Profile::getWebsite() const
 {
     return this->website;
 }
