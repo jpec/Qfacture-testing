@@ -7,10 +7,12 @@
 QfactureCore::QfactureCore()
 {
     this->settings = new QSettings("Qfacture", "Qfacture", this);
+    this->profile_manager = new ProfileManager(this->db);
 }
 
 QfactureCore::~QfactureCore()
 {
+    delete profile_manager;
     delete settings;
 }
 
@@ -71,37 +73,12 @@ QVariant QfactureCore::getSetting(const QString &group, const QString &key, cons
     return val;
 }
 
-// \todo Chargement du logo
 Profile QfactureCore::getProfile(int id)
 {
-    QSqlQuery query;
-    //QPixmap pic;
-    Profile profile;
-    
-    query.prepare(
-            "SELECT Name, Siret, Adress, Adress2, Zip, City, Phone, Mail, Home, Logo "
-            "FROM user WHERE id = :profile_id LIMIT 1;"
-        );
-    
-    query.bindValue(":profile_id", id);
-    
-    if(!query.exec() || !query.next())
-    {
-        emit DBError(query.lastError().databaseText());
+    return profile_manager->get(id);
+}
 
-        return profile;
-    }
+void QfactureCore::saveProfile(Profile &p)
+{
     
-    profile.setId(id);
-    profile.setName(query.value(0).toString().toStdString());
-    profile.setSiret(query.value(1).toString().toStdString());
-    profile.setAddress(query.value(2).toString().toStdString());
-    profile.setZipCode(query.value(3).toString().toStdString());
-    profile.setCity(query.value(4).toString().toStdString());
-    profile.setPhone(query.value(5).toString().toStdString());
-    profile.setMail(query.value(6).toString().toStdString());
-    profile.setWebsite(query.value(7).toString().toStdString());
-    profile.setLogo(query.value(9).toByteArray());
-    
-    return profile;
 }

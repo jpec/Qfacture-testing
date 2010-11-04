@@ -49,6 +49,9 @@ void QfactureGui::setupActions()
     
     // lie l'évènement "DBError" à l'action correspondante
     this->connect(core, SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
+    
+    // enregistre le profile actuellement chargé à la demande de l'utilisateur
+    this->connect(ui->uSave, SIGNAL(clicked()), this, SLOT(saveLoadedProfile()));
 }
 
 /**
@@ -160,6 +163,18 @@ void QfactureGui::loadLastProfile()
     /* Alimentation du widget logo */
     pic.loadFromData(this->profile.getLogo());
     ui->uLogo->setPixmap(pic);
+}
+
+/**
+ * On ne fait que de la mise à jour de profile, donc si l'ID du profile courant
+ * vaut 0 on ne sauvegarde pas.
+ */ 
+void QfactureGui::saveLoadedProfile()
+{
+    if(this->profile.getId() == 0)
+        return;
+    
+    this->core->saveProfile(this->profile);
 }
 
 void QfactureGui::alert(const QString &message)
