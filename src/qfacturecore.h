@@ -8,6 +8,7 @@
 #include <string>
 
 #include "models/profile.h"
+#include "managers/profilemanager.h"
 
 using namespace std;
 
@@ -91,6 +92,15 @@ public:
      */
     Profile getProfile(int id);
     
+    /**
+     * Enregistre ou met à jour le profile d'un utilisateur.
+     *
+     * \note En cas d'un nouveau profile, l'id est renseigné lors de l'enregistrement
+     *
+     * @param p Le profile à enregistrer
+     */
+    void saveProfile(Profile &p);
+    
 signals:
     /**
      * Émit lorsque une connexion a été établie avec la base de données
@@ -122,6 +132,11 @@ private:
      * Instance de la classe chargée de la gestion des paramètres.
      */
     QSettings *settings;
+    
+    /**
+     * Instance du gestionnaire de profiles
+     */
+    ProfileManager *profile_manager;
 };
 
 #endif // QFACTURECORE_H

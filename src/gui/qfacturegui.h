@@ -54,6 +54,12 @@ private slots:
      */
     void onQuit();
     
+    /**
+     * Réalise l'enregistrement du profile avec les informations contenues dans
+     * les champs.
+     */
+    void saveLoadedProfile();
+    
 private:
     /**
      * Cette méthode, appelée par le constructeur, s'occupe de connecter les
