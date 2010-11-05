@@ -76,7 +76,27 @@ Profile QfactureCore::getProfile(int id)
     return profile_manager.get(id);
 }
 
-void QfactureCore::saveProfile(Profile &p)
+bool QfactureCore::saveProfile(Profile &p)
 {
-    profile_manager.save(p);
+    return profile_manager.save(p);
+}
+
+/**
+ * Charge le dernier profile d'utilisateur géré
+ */
+bool QfactureCore::loadLastProfile()
+{
+    this->profile = getProfile(getSetting("Profile", "id", QVariant(1)).toInt());
+
+    if(this->profile.getId() == 0)
+        return false;
+
+    emit lastProfileLoaded();
+
+    return true;
+}
+
+Profile& QfactureCore::getCurrentProfile()
+{
+    return profile;
 }

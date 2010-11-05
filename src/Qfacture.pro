@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     models/template.cpp \
     models/product.cpp \
     qfacturecore.cpp \
-    managers/profilemanager.cpp
+    managers/profilemanager.cpp \
+    managers/managerbase.cpp
 
 HEADERS  += gui/qfacturegui.h \
     models/person.h \
@@ -28,6 +29,7 @@ HEADERS  += gui/qfacturegui.h \
     models/product.h \
     qfacturecore.h \
     managers/profilemanager.h \
-    managers/dbmanager.h
+    managers/dbmanager.h \
+    managers/managerbase.h
 
 FORMS    += gui/qfacturegui.ui

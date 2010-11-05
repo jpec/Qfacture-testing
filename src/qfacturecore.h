@@ -99,8 +99,22 @@ public:
      *
      * @param p Le profile à enregistrer
      */
-    void saveProfile(Profile &p);
-    
+    bool saveProfile(Profile &p);
+
+    /**
+     * Charge le dernier profile d'utilisateur géré
+     *
+     * @return bool Succès du chargement
+     */
+    bool loadLastProfile();
+
+    /**
+     * Retourne une référence vers le profile actuellement chargé.
+     *
+     * @return Profile& Référence vers le profile.
+     */
+    Profile& getCurrentProfile();
+
 signals:
     /**
      * Émit lorsque une connexion a été établie avec la base de données
@@ -122,6 +136,12 @@ signals:
      */
     void DBError(const QString &error);
 
+    /**
+     * Émit après la connexion à la DB, lorsque le profil de
+     * l'utilisateur a été chargé.
+     */
+    void lastProfileLoaded();
+
 private:
     /**
      * Instance de la connexion à la base de données.
@@ -137,6 +157,11 @@ private:
      * Instance du gestionnaire de profiles
      */
     ProfileManager profile_manager;
+
+    /**
+     * Profil de l'auto-entrepreneur actuellement chargé.
+     */
+    Profile profile;
 };
 
 #endif // QFACTURECORE_H

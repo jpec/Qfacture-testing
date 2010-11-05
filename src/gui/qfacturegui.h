@@ -31,12 +31,7 @@ private slots:
      * changera.
      */
     void onDBConnectionStateChanged();
-    
-    /**
-     * Sera appelée lorsque la connexion avec la base de données sera établie
-     */
-    void onDBConnected();
-    
+
     /**
      * Sera appelée si une erreur survient lors de la connexion avec la base de
      * données
@@ -55,10 +50,25 @@ private slots:
     void onQuit();
     
     /**
-     * Réalise l'enregistrement du profile avec les informations contenues dans
+     * Réalise l'enregistrement du profil avec les informations contenues dans
      * les champs.
      */
     void saveLoadedProfile();
+
+    /**
+     * Réalise le changement du logo du profil courant.
+     */
+    void changeProfileLogo();
+
+    /**
+     * Charge le dernier profile d'utilisateur géré
+     */
+    void loadLastProfile();
+
+    /**
+     * Affiche dans le formulaire le profile actuellement chargé.
+     */
+    void displayCurrentProfile();
     
 private:
     /**
@@ -79,11 +89,6 @@ private:
     void restoreSettings();
     
     /**
-     * Charge le dernier profile d'utilisateur géré
-     */
-    void loadLastProfile();
-    
-    /**
      * Affiche une boite de dialogue de type "critical". Utilisée pour informer
      * l'utilisateur d'une erreur
      *
@@ -101,11 +106,6 @@ private:
      * Pointeur vers le coeur logique de l'application.
      */
     QfactureCore *core;
-    
-    /**
-     * Profile de l'auto-entrepreneur actuellement chargé.
-     */
-    Profile profile;
 };
 
 #endif // QFACTUREGUI_H

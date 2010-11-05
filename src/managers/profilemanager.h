@@ -17,6 +17,8 @@ public:
      *
      * @param id L'identifiant du profile à utiliser
      *
+     * @throws DBErrorException Si la requête à la DB échoue
+     *
      * @return Profile Le profile chargé.
      */
     Profile get(int id);
@@ -27,8 +29,10 @@ public:
      * \note En cas d'un nouveau profile, l'id est renseigné lors de l'enregistrement
      *
      * @param p Le profile à enregistrer
+     *
+     * @return bool Succès de l'enregistrement
      */
-    void save(Profile &profile);
+    bool save(Profile &profile);
 
 private:
     /**
@@ -49,15 +53,19 @@ private:
      * \note l'id est renseigné ici.
      *
      * @param profile Le profile à enregistrer
+     *
+     * @return bool Succès de l'insertion
      */
-    void insert(Profile &profile);
+    bool insert(Profile &profile);
 
     /**
      * Réalise la mise à jour d'un profile
      *
      * @param profile Le profile à mettre à jour
+     *
+     * @return bool Succès de la mise à jour
      */
-    void update(const Profile &profile);
+    bool update(const Profile &profile);
 
     /**
      * Effectue un bindValue() sur la query avec les champs du

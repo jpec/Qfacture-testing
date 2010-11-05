@@ -7,7 +7,6 @@
 Profile ProfileManager::get(int id)
 {
     QSqlQuery query;
-    Profile profile;
     
     query.prepare(
             "SELECT id, Name, Siret, Adress, Zip, City, Phone, Mail, Home, Logo "
@@ -17,50 +16,37 @@ Profile ProfileManager::get(int id)
     query.bindValue(":profile_id", QVariant(id));
     
     if(!query.exec() || !query.next())
-    {
-        // dans les managers : lever des exceptions
-        // dans le core : emettre un event.
-        //emit DBError(query.lastError().databaseText());
+        return Profile();
 
-        return profile;
-    }
-    
     return makeProfile(query);
 }
 
-void ProfileManager::save(Profile &profile)
+bool ProfileManager::save(Profile &profile)
 {
-    if(profile.getId() == 0)
-        insert(profile);
-    else
-        update(profile);
+    return (profile.getId() == 0) ? insert(profile) : update(profile);
 }
 
-void ProfileManager::insert(Profile &profile)
+bool ProfileManager::insert(Profile &profile)
 {
     // \todo implémenter !
+    return false;
 }
 
-void ProfileManager::update(const Profile &profile)
+bool ProfileManager::update(const Profile &profile)
 {
     QSqlQuery query;
 
     query.prepare(
             "UPDATE user "
             "SET Name = :name, Siret = :siret, Adress = :address, "
-                " Zip = :zip, City = :city, Phone = :phone, "
-                " Mail = :mail, Home = :home "
+                " Zips = :zip, City = :city, Phone = :phone, "
+                " Mail = :mail, Home = :home, Logo = :logo "
         "WHERE id = :p_id"
     );
 
     bindProfile(profile, query);
 
-    std::cout << profile.getName().toStdString() << std::endl;
-
-    if(!query.exec()){
-        // \todo Lever une exception
-        return;
-    }
+    return query.exec();
 }
 
 void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
@@ -74,6 +60,7 @@ void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
     query.bindValue(":phone", profile.getPhone());
     query.bindValue(":mail", profile.getMail());
     query.bindValue(":home", profile.getWebsite());
+    query.bindValue(":logo", profile.getLogo());
 }
 
 Profile ProfileManager::makeProfile(QSqlQuery &query)
