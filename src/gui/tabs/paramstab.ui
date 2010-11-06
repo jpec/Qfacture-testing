@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ParamsTab</class>
+ <widget class="QWidget" name="ParamsTab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>804</width>
+    <height>502</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>804</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QGroupBox" name="uGroupBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Utilisateur</string>
+     </property>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>30</y>
+        <width>77</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Raison sociale</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_name</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_name">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>30</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>22</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>52</x>
+        <y>57</y>
+        <width>32</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SIRET</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_siret</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_siret">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>57</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>39</x>
+        <y>84</y>
+        <width>45</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Adresse</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_address</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_address">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>84</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>18</x>
+        <y>111</y>
+        <width>66</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Code postal</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_zip</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_zip">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>111</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>59</x>
+        <y>138</y>
+        <width>25</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Ville</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_city</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_city">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>138</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>25</x>
+        <y>165</y>
+        <width>59</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Téléphone</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_phone</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_phone">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>165</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>53</x>
+        <y>192</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Email</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_mail</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_mail">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>192</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>219</y>
+        <width>71</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Site internet</string>
+      </property>
+      <property name="buddy">
+       <cstring>p_website</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="p_website">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>219</y>
+        <width>300</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="p_change_logo">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>246</y>
+        <width>113</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Changer le logo</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="p_save">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>274</y>
+        <width>90</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Enregistrer</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="p_logo">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>302</y>
+        <width>300</width>
+        <height>150</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Sélectionnez une image de 300x150 pixels.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="indent">
+       <number>-5</number>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="aGroupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>800</width>
+       <height>800</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Application</string>
+     </property>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>52</x>
+        <y>30</y>
+        <width>29</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1555</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Hôte</string>
+      </property>
+      <property name="buddy">
+       <cstring>app_server</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="app_server">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>30</y>
+        <width>200</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string notr="true">localhost</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_15">
+      <property name="geometry">
+       <rect>
+        <x>56</x>
+        <y>57</y>
+        <width>25</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1555</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Port</string>
+      </property>
+      <property name="buddy">
+       <cstring>app_port</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="app_port">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>57</y>
+        <width>200</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string notr="true">3306</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>23</x>
+        <y>84</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1555</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Utilisateur</string>
+      </property>
+      <property name="buddy">
+       <cstring>app_user</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="app_user">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>84</y>
+        <width>200</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string notr="true">root</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>111</y>
+        <width>74</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1555</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Mot de passe</string>
+      </property>
+      <property name="buddy">
+       <cstring>app_pass</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="app_pass">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>111</y>
+        <width>200</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string notr="true"/>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>54</x>
+        <y>138</y>
+        <width>27</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1555</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Base</string>
+      </property>
+      <property name="buddy">
+       <cstring>app_db</cstring>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="app_db">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>138</y>
+        <width>200</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string notr="true">qfacture_db</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="app_connect">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>165</y>
+        <width>85</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777214</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Connexion</string>
+      </property>
+     </widget>
+     <zorder>label_14</zorder>
+     <zorder>app_server</zorder>
+     <zorder>label_15</zorder>
+     <zorder>app_port</zorder>
+     <zorder>label_16</zorder>
+     <zorder>app_user</zorder>
+     <zorder>label_17</zorder>
+     <zorder>app_pass</zorder>
+     <zorder>label_18</zorder>
+     <zorder>app_db</zorder>
+     <zorder>app_connect</zorder>
+     <zorder>uGroupBox</zorder>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -114,6 +114,11 @@ public:
      * @return Profile& Référence vers le profile.
      */
     Profile& getCurrentProfile();
+    
+    /**
+     * Retourne le numéro de version du logiciel.
+     */
+    QString version() const { return "1.0 alpha"; }
 
 signals:
     /**
@@ -143,6 +148,7 @@ signals:
     void lastProfileLoaded();
 
 private:
+    
     /**
      * Instance de la connexion à la base de données.
      */
