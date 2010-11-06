@@ -15,7 +15,15 @@ Profile ProfileManager::get(int id)
     
     query.bindValue(":profile_id", QVariant(id));
     
-    if(!query.exec() || !query.next())
+    if(!query.exec()) {
+        setError(query.lastError().databaseText(), query.lastQuery());
+
+        return Profile();
+    }
+
+    // pas de profil avec l'ID demandé, on ne remonte pas d'erreur
+    // mais juste un profil vide
+    if(!query.next())
         return Profile();
 
     return makeProfile(query);
@@ -46,7 +54,14 @@ bool ProfileManager::update(const Profile &profile)
 
     bindProfile(profile, query);
 
-    return query.exec();
+    if(query.exec())
+        return true;
+    else
+    {
+        setError(query.lastError().databaseText(), query.lastQuery());
+
+        return false;
+    }
 }
 
 void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)

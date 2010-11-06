@@ -130,7 +130,7 @@ signals:
      * Émit lorsque la connexion avec la base de donnée a échoué
      */
     void DBConnectionError(const QString &error);
-    
+
     /**
      * Émit lorsque une erreur lors d'une requête à la DB survient
      */

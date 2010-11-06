@@ -2,6 +2,7 @@
 #define PROFILEMANAGER_H
 
 #include "models/profile.h"
+#include "managers/basemanager.h"
 
 #include <QSqlQuery>
 
@@ -9,7 +10,7 @@
 /**
  * Classe permettant la gestion des profiles d'utilisateurs
  */
-class ProfileManager
+class ProfileManager : public BaseManager
 {
 public:
     /**

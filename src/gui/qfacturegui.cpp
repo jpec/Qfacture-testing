@@ -141,7 +141,7 @@ void QfactureGui::loadLastProfile()
     if(this->core->loadLastProfile())
         return;
 
-    this->alert(trUtf8("Impossible de charger le profile utilisateur."));
+    this->alert(trUtf8("Impossible de charger le profil utilisateur."));
 }
 
 void QfactureGui::displayCurrentProfile()

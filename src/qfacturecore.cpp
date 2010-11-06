@@ -73,12 +73,22 @@ QVariant QfactureCore::getSetting(const QString &group, const QString &key, cons
 
 Profile QfactureCore::getProfile(int id)
 {
-    return profile_manager.get(id);
+    Profile p = profile_manager.get(id);
+
+    if(profile_manager.hasError())
+        emit DBError(profile_manager.getLastErrorMessage());
+
+    return p;
 }
 
 bool QfactureCore::saveProfile(Profile &p)
 {
-    return profile_manager.save(p);
+    bool success = profile_manager.save(p);
+
+    if(profile_manager.hasError())
+        emit DBError(profile_manager.getLastErrorMessage());
+
+    return success;
 }
 
 /**
