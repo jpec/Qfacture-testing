@@ -85,7 +85,7 @@ void DBWidget::handleDBConnection()
         db_ctrl->disconnectDB();
     else
         db_ctrl->connectDB(db_host->text(), db_port->text().toInt(), db_login->text(),
-                           db_pass->text(), db_base->text());
+                           db_pass->text(), db_base->text(), db_type->currentText());
 }
 
 void DBWidget::setEnabled(bool enabled)
