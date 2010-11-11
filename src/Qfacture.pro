@@ -11,7 +11,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    gui/qfacturegui.cpp \
     models/person.cpp \
     models/customer.cpp \
     models/profile.cpp \
@@ -23,10 +22,11 @@ SOURCES += main.cpp\
     gui/mainwindow.cpp \
     gui/widgets/profilewidget.cpp \
     gui/tabs/paramstab.cpp \
-    gui/widgets/dbwidget.cpp
+    gui/widgets/dbwidget.cpp \
+    controllers/dbcontroller.cpp \
+    controllers/controller.cpp
 
-HEADERS  += gui/qfacturegui.h \
-    models/person.h \
+HEADERS  += models/person.h \
     models/customer.h \
     models/profile.h \
     models/template.h \
@@ -38,7 +38,8 @@ HEADERS  += gui/qfacturegui.h \
     gui/mainwindow.h \
     gui/widgets/profilewidget.h \
     gui/tabs/paramstab.h \
-    gui/widgets/dbwidget.h
+    gui/widgets/dbwidget.h \
+    controllers/dbcontroller.h \
+    controllers/controller.h
 
-FORMS    += gui/qfacturegui.ui \
-    gui/mainwindow.ui \
+FORMS    += gui/mainwindow.ui \

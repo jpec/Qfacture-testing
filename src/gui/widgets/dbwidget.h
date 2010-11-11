@@ -1,6 +1,8 @@
 #ifndef DBWIDGET_H
 #define DBWIDGET_H
 
+#include "controllers/dbcontroller.h"
+
 #include <QWidget>
 #include <QSpinBox>
 #include <QLineEdit>
@@ -14,16 +16,21 @@ class DBWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DBWidget(QWidget *parent = 0);
+    explicit DBWidget(DBController *db_ctrl, QWidget *parent = 0);
     ~DBWidget();
 
     /**
-     * Permet de définir les types de base de données
-     * autorisés
-     *
-     * @param types Liste des types autorisés
+     * Permet de désactiver le formulaire tout en gérant le bouton
+     * de (dé)connexion
      */
-    void setDBAllowedTypes(const QStringList &types);
+    void setEnabled(bool enabled);
+
+private slots:
+    /**
+     * Déclenche la (dé)connexion à la DB en fonction des informations
+     * contenues dans les champs.
+     */
+    void handleDBConnection();
 
 private:
     /**
@@ -31,6 +38,26 @@ private:
      */
     void buildLayout();
 
+    /**
+     * Initialise les connexion aux évènements
+     */
+    void createActions();
+
+    /**
+     * Sauvegarde les paramètres de connexion à la DB
+     */
+    void saveSettings();
+
+    /**
+     * Restaure les paramètres de connexion à la DB
+     */
+    void restoreSettings();
+
+
+    /**
+     * Pointeur vers le contrôleur de la base de données
+     */
+    DBController *db_ctrl;
 
     /**
      * Layout permettant de créer facilement des formulaires

@@ -9,11 +9,12 @@
 MainWindow::MainWindow(QfactureCore *core, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     this->core = core;
-    
+
     this->setupTabs();
-    this->setupActions();
-    
+    this->createActions();
+
     this->restoreSettings();
 }
 
@@ -23,44 +24,81 @@ MainWindow::~MainWindow()
 }
 
 
+void MainWindow::createActions()
+{
+    // fermeture de l'application lors du clic sur le menu concerné
+    this->connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(onQuit()));
+
+    // affiche la boite de dialogue "à propos" lors du clic sur le menu concerné
+    this->connect(ui->action_propos, SIGNAL(triggered()), this, SLOT(about()));
+
+    // lie l'évènement "DBConnectionError" à l'action correspondante
+    this->connect(core->getDBController(), SIGNAL(DBConnectionError(QString)), this, SLOT(onDBConnectionError(QString)));
+
+    // affiche un message dans la statusbar à la connexion à la DB
+    this->connect(core->getDBController(), SIGNAL(DBConnected()), this, SLOT(onDBConnected()));
+
+    // affiche un message dans la statusbar à la déconnexion à la DB
+    this->connect(core->getDBController(), SIGNAL(DBDisconnected()), this, SLOT(onDBDisconnected()));
+
+    // lie l'évènement "DBError" à l'action correspondante
+    //this->connect(core->getController("db"), SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
+}
+
 void MainWindow::setupTabs()
 {
     // paramètres
-    ui->tabWidget->addTab(new ParamsTab(this), trUtf8("Paramètres"));
-    
+    ui->tabWidget->addTab(new ParamsTab(core, this), trUtf8("Paramètres"));
+
     // clients
     ui->tabWidget->addTab(new QTableWidget(ui->tabWidget), trUtf8("Clients"));
 }
 
-void MainWindow::setupActions()
-{
-    // fermeture de l'application lors du clic sur le menu concerné
-    this->connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(onQuit()));
-    
-    // affiche la boite de dialogue "à propos" lors du clic sur le menu concerné
-    this->connect(ui->action_propos, SIGNAL(triggered()), this, SLOT(about()));
-}
-
 void MainWindow::onQuit()
 {
-	this->saveSettings();
-	this->core->disconnectDB();
-    
-	qApp->quit();
+    this->saveSettings();
+    core->getDBController()->disconnectDB();
+
+    qApp->quit();
+}
+
+void MainWindow::onDBConnectionError(const QString &error)
+{
+    alert(trUtf8("Une erreur est survenue lors de la connexion : %1").arg(error));
+}
+
+void MainWindow::onDBError(const QString &error)
+{
+    alert(trUtf8("Une erreur SQL est survenue : %1").arg(error));
+}
+
+void MainWindow::onDBConnected()
+{
+    ui->statusbar->showMessage(trUtf8("Base de données connectée."), 3000);
+}
+
+void MainWindow::onDBDisconnected()
+{
+    ui->statusbar->showMessage(trUtf8("Base de données déconnectée."), 3000);
 }
 
 void MainWindow::saveSettings()
 {
-	// infos sur la fenêtre (taille et position)
-	core->setSetting("Window", "size", size());
-	core->setSetting("Window", "pos", pos());
+    // infos sur la fenêtre (taille et position)
+    core->setSetting("Window", "size", size());
+    core->setSetting("Window", "pos", pos());
 }
 
 void MainWindow::restoreSettings()
 {
-	// infos sur la fenêtre (taille et position)
-	resize(core->getSetting("Window", "size", QSize(400, 400)).toSize());
-	move(core->getSetting("Window", "pos", QPoint(200, 200)).toPoint());
+    // infos sur la fenêtre (taille et position)
+    resize(core->getSetting("Window", "size", QSize(400, 400)).toSize());
+    move(core->getSetting("Window", "pos", QPoint(200, 200)).toPoint());
+}
+
+void MainWindow::alert(const QString &message)
+{
+    QMessageBox::critical(this, trUtf8("Erreur !"), message);
 }
 
 void MainWindow::about()

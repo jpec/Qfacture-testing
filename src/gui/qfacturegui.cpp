@@ -65,7 +65,7 @@ void QfactureGui::setupActions()
 /**
  * Si on est déjà connecté à la DB, on lance la déconnexion, sinon on lance la
  * connexion
- */ 
+ */
 void QfactureGui::handleDBConnection()
 {
     if(core->isDBConnected())
@@ -78,7 +78,7 @@ void QfactureGui::handleDBConnection()
 /**
  * S'occupe de mettre à jour l'affichage du bouton et l'état d'activation des
  * champs
- */ 
+ */
 void QfactureGui::onDBConnectionStateChanged()
 {
     bool connexion_state = core->isDBConnected();
