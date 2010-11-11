@@ -3,8 +3,6 @@
 #include "gui/tabs/paramstab.h"
 
 #include <QMessageBox>
-
-
 #include <QTableWidget>
 
 
@@ -28,7 +26,7 @@ MainWindow::~MainWindow()
 void MainWindow::setupTabs()
 {
     // paramètres
-    ui->tabWidget->addTab(new ParamsTab(core, this), trUtf8("Paramètres"));
+    ui->tabWidget->addTab(new ParamsTab(this), trUtf8("Paramètres"));
     
     // clients
     ui->tabWidget->addTab(new QTableWidget(ui->tabWidget), trUtf8("Clients"));
