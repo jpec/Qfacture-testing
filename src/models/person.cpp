@@ -45,6 +45,16 @@ QString Person::getAddress() const
     return this->address;
 }
 
+void Person::setAddressComplement(const QString &complement)
+{
+    this->complement = complement;
+}
+
+QString Person::getAddressComplement() const
+{
+    return this->complement;
+}
+
 void Person::setZipCode(const QString &zip)
 {
     this->zip_code = zip;

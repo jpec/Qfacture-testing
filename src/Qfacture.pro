@@ -28,7 +28,10 @@ SOURCES += main.cpp\
     controllers/profilecontroller.cpp \
     managers/settingsmanager.cpp \
     gui/tabs/customerstab.cpp \
-    gui/widgets/sqltable.cpp
+    gui/widgets/sqltable.cpp \
+    gui/widgets/customerwidget.cpp \
+    controllers/customercontroller.cpp \
+    managers/customermanager.cpp
 
 HEADERS  += models/person.h \
     models/customer.h \
@@ -48,6 +51,9 @@ HEADERS  += models/person.h \
     controllers/profilecontroller.h \
     managers/settingsmanager.h \
     gui/tabs/customerstab.h \
-    gui/widgets/sqltable.h
+    gui/widgets/sqltable.h \
+    gui/widgets/customerwidget.h \
+    controllers/customercontroller.h \
+    managers/customermanager.h
 
 FORMS    += gui/mainwindow.ui \

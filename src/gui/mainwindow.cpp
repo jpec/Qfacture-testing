@@ -49,6 +49,10 @@ void MainWindow::createActions()
     // lie l'évènement "DBError" à l'action correspondante
     this->connect(core->getProfileController(), SIGNAL(DBError(QString)), this,
                   SLOT(onDBError(QString)));
+
+    // lie l'évènement "DBError" à l'action correspondante
+    this->connect(core->getCustomerController(), SIGNAL(DBError(QString)), this,
+                  SLOT(onDBError(QString)));
 }
 
 void MainWindow::setupTabs()

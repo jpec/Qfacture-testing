@@ -62,6 +62,20 @@ public:
     QString getAddress() const;
 
     /**
+     * Définit le complément d'adresse postale de cette personne.
+     *
+     * @param name La nouvelle adresse postale
+     */
+    void setAddressComplement(const QString &complement);
+
+    /**
+     * Retourne le complément l'adresse postale de cette personne.
+     *
+     * @return QString Le complément d'adresse postale de cette personne.
+     */
+    QString getAddressComplement() const;
+
+    /**
      * Définit le nouveau code postal de cette personne.
      *
      * @param name Le nouveau code postal
@@ -134,6 +148,11 @@ private:
      * Adresse postale
      */
     QString address;
+
+    /**
+     * Complement d'adresse postale
+     */
+    QString complement;
 
     /**
      * Code postal (sans espaces. ex : 63000)

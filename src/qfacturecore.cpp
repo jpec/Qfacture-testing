@@ -14,6 +14,7 @@ void QfactureCore::createControllers()
 {
     controllers["db"] = new DBController();
     controllers["profiles"] = new ProfileController();
+    controllers["customers"] = new CustomerController();
 }
 
 Controller* QfactureCore::getController(const QString &name) const
@@ -29,4 +30,9 @@ DBController* QfactureCore::getDBController()
 ProfileController* QfactureCore::getProfileController()
 {
     return (ProfileController *) getController("profiles");
+}
+
+CustomerController* QfactureCore::getCustomerController()
+{
+    return (CustomerController *) getController("customers");
 }

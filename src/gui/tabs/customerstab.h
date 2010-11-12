@@ -1,13 +1,15 @@
 #ifndef CUSTOMERSTAB_H
 #define CUSTOMERSTAB_H
 
-#include <qfacturecore.h>
+#include "qfacturecore.h"
 #include "gui/widgets/sqltable.h"
+#include "gui/widgets/customerwidget.h"
 
 #include <QWidget>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QTableWidget>
 
 
@@ -30,6 +32,19 @@ public slots:
      * DB
      */
     void loadCustomers();
+
+private slots:
+    /**
+     * (Dés)active les boutons qui vont bien lors du clic sur le bouton "nouveau
+     * client"
+     */
+    void onNewClicked();
+
+    /**
+     * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
+     * client"
+     */
+    void onDelClicked();
 
 private:
     /**
@@ -66,6 +81,16 @@ private:
     QGroupBox *gbox_customers;
 
     /**
+     * Layout contenant le formulaire d'édition d'un client
+     */
+    QHBoxLayout *form_layout;
+
+    /**
+     * Layout contenant les boutons nouveau, sauvegarder et supprimer
+     */
+    QVBoxLayout *actions_layout;
+
+    /**
      * Groupbox servant de conteneur pour le formulaire de création
      * d'un client
      */
@@ -77,9 +102,29 @@ private:
     QGroupBox *gbox_actions;
 
     /**
+     * Bouton "Nouveau client"
+     */
+    QPushButton *btn_new;
+
+    /**
+     * Bouton "enregistrer client"
+     */
+    QPushButton *btn_save;
+
+    /**
+     * Bouton "supprimer client"
+     */
+    QPushButton *btn_del;
+
+    /**
      * Tableau des clients
      */
     SQLTable *customers_table;
+
+    /**
+     * Formulaire permettant l'édition d'un client
+     */
+    CustomerWidget *w_customer_edit;
 
     /**
      * Pointeur vers le contrôleur principal

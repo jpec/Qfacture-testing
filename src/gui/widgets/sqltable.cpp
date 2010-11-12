@@ -30,6 +30,7 @@ void SQLTable::buildTable()
 {
     table->clear();
 
+    table->setSortingEnabled(true);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
 
     table->setColumnCount(columns.count());

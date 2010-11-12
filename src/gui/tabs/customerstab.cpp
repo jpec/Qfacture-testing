@@ -18,10 +18,17 @@ CustomersTab::CustomersTab(QfactureCore *core, QWidget *parent) :
 
 CustomersTab::~CustomersTab()
 {
+    delete btn_new;
+    delete btn_save;
+    delete btn_del;
+
     delete customers_table;
+    delete w_customer_edit;
 
     delete customers_layout;
     delete edit_customer_layout;
+    delete actions_layout;
+    delete form_layout;
     delete layout;
 
     delete gbox_actions;
@@ -47,11 +54,22 @@ void CustomersTab::buildLayout()
     layout = new QVBoxLayout(this);
     edit_customer_layout = new QHBoxLayout();
     customers_layout = new QHBoxLayout();
+    form_layout = new QHBoxLayout();
+    actions_layout = new QVBoxLayout();
 
     // création des widgets
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_customers = new QGroupBox(trUtf8("Liste des clients"), this);
     gbox_customers_form = new QGroupBox(trUtf8("Client"));
+    w_customer_edit = new CustomerWidget(core->getCustomerController());
+    btn_new = new QPushButton(trUtf8("Nouveau"));
+    btn_save = new QPushButton(trUtf8("Enregistrer"));
+    btn_del = new QPushButton(trUtf8("Supprimer"));
+
+    // désactivation des boutons et widgets inutiles (pour le moment)
+    w_customer_edit->setEnabled(false);
+    btn_save->setEnabled(false);
+    btn_del->setEnabled(false);
 
     // création du tableau de clients
     customers_table = new SQLTable("client");
@@ -62,9 +80,16 @@ void CustomersTab::buildLayout()
     customers_layout->addWidget(customers_table->getWidget());
     gbox_customers->setLayout(customers_layout);
 
+    actions_layout->addWidget(btn_new);
+    actions_layout->addWidget(btn_save);
+    actions_layout->addWidget(btn_del);
+    gbox_actions->setLayout(actions_layout);
+
     edit_customer_layout->addWidget(gbox_customers_form);
-    edit_customer_layout->addStretch();
     edit_customer_layout->addWidget(gbox_actions);
+
+    form_layout->addWidget(w_customer_edit);
+    gbox_customers_form->setLayout(form_layout);
 
     layout->addWidget(gbox_customers);
     layout->addLayout(edit_customer_layout);
@@ -87,6 +112,44 @@ void CustomersTab::createActions()
     // si SQLTable remonte une erreur SQL, on l'envoie à notre père
     this->connect(customers_table, SIGNAL(DBError(QString)), parent(),
                   SLOT(onDBError(QString)));
+
+    // vide le formulaire de saisie d'un client lors du clic sur le bouton new
+    this->connect(btn_new, SIGNAL(clicked()), w_customer_edit,
+                  SLOT(clearContent()));
+
+    // lors du clic sur le bouton de création d'un new client
+    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewClicked()));
+
+    // lors du clic sur le bouton de sauvegarde d'un new client
+    this->connect(btn_save, SIGNAL(clicked()), w_customer_edit, SLOT(save()));
+
+    // supprime le client chargé, ou annule la création d'un nouveau client
+    this->connect(btn_del, SIGNAL(clicked()), w_customer_edit, SLOT(erase()));
+    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+
+    // rafraichit les données du tableau à l'enregistrement ou à la suppression d'un client
+    this->connect(w_customer_edit, SIGNAL(customerSaved()), customers_table,
+                  SLOT(feedTable()));
+    this->connect(w_customer_edit, SIGNAL(customerDeleted(int)), customers_table,
+                  SLOT(feedTable()));
+}
+
+void CustomersTab::onNewClicked()
+{
+    w_customer_edit->setEnabled(true);
+
+    btn_new->setEnabled(false);
+    btn_save->setEnabled(true);
+    btn_del->setEnabled(true);
+}
+
+void CustomersTab::onDelClicked()
+{
+    w_customer_edit->setEnabled(false);
+
+    btn_new->setEnabled(true);
+    btn_save->setEnabled(false);
+    btn_del->setEnabled(false);
 }
 
 void CustomersTab::loadCustomers()

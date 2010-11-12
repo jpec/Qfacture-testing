@@ -5,8 +5,6 @@
 #include "models/profile.h"
 #include "managers/profilemanager.h"
 
-class QfactureCore;
-
 
 /**
  * Contrôleur permettant de gérer les profils
