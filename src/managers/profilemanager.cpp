@@ -7,14 +7,14 @@
 Profile ProfileManager::get(int id)
 {
     QSqlQuery query;
-    
+
     query.prepare(
             "SELECT id, Name, Siret, Adress, Zip, City, Phone, Mail, Home, Logo "
             "FROM user WHERE id = :profile_id"
         );
-    
+
     query.bindValue(":profile_id", QVariant(id));
-    
+
     if(!query.exec()) {
         setError(query.lastError().databaseText(), query.lastQuery());
 
@@ -39,7 +39,7 @@ bool ProfileManager::insert(Profile &profile)
     // \todo implémenter !
     return false;
 }
-
+#include <iostream>
 bool ProfileManager::update(const Profile &profile)
 {
     QSqlQuery query;
@@ -47,13 +47,13 @@ bool ProfileManager::update(const Profile &profile)
     query.prepare(
             "UPDATE user "
             "SET Name = :name, Siret = :siret, Adress = :address, "
-                " Zips = :zip, City = :city, Phone = :phone, "
-                " Mail = :mail, Home = :home, Logo = :logo "
-        "WHERE id = :p_id"
+                "Zip = :zip, City = :city, Phone = :phone, "
+                "Mail = :mail, Home = :home, Logo = :logo "
+            "WHERE id = :p_id"
     );
 
     bindProfile(profile, query);
-
+    std::cout << profile.getName().toStdString() << std::endl;
     if(query.exec())
         return true;
     else

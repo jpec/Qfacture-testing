@@ -12,11 +12,11 @@ ProfileController::~ProfileController()
 {
     SettingsManager &settings = SettingsManager::getInstance();
 
-    if(this->profile.getId() != 0)
-        settings.set("Profile", "id", this->profile.getId());
+    if(this->getCurrent().getId() != 0)
+        settings.set("Profile", "id", this->getCurrent().getId());
 }
 
-Profile ProfileController::getProfile(int id)
+Profile ProfileController::get(int id)
 {
     Profile p = profile_manager.get(id);
 
@@ -26,7 +26,7 @@ Profile ProfileController::getProfile(int id)
     return p;
 }
 
-bool ProfileController::saveProfile(Profile &p)
+bool ProfileController::save(Profile &p)
 {
     bool success = profile_manager.save(p);
 
@@ -36,13 +36,21 @@ bool ProfileController::saveProfile(Profile &p)
     return success;
 }
 
+bool ProfileController::saveCurrent()
+{
+    if(this->getCurrent().getId() == 0)
+        return false;
+
+    return this->save(this->getCurrent());
+}
+
 bool ProfileController::loadLastProfile()
 {
     SettingsManager &settings = SettingsManager::getInstance();
 
-    this->profile = getProfile(settings.get("Profile", "id", QVariant(1)).toInt());
+    this->profile = this->get(settings.get("Profile", "id", QVariant(1)).toInt());
 
-    if(this->profile.getId() == 0)
+    if(this->getCurrent().getId() == 0)
         return false;
 
     emit lastProfileLoaded();
@@ -50,7 +58,7 @@ bool ProfileController::loadLastProfile()
     return true;
 }
 
-Profile& ProfileController::getCurrentProfile()
+Profile& ProfileController::getCurrent()
 {
-    return profile;
+    return this->profile;
 }

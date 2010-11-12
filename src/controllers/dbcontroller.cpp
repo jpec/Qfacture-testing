@@ -42,6 +42,8 @@ void DBController::disconnectDB()
     if(!this->isDBConnected())
         return;
 
+    this->db.commit();
+
     this->db.close();
 
     emit DBDisconnected();

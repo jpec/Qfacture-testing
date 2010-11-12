@@ -29,7 +29,7 @@ public:
      *
      * @return Profile& Le profil.
      */
-    Profile& getCurrentProfile();
+    Profile& getCurrent();
 
     /**
      * Enregistre ou met à jour le profile d'un utilisateur.
@@ -38,7 +38,7 @@ public:
      *
      * @param p Le profile à enregistrer
      */
-    bool saveProfile(Profile &p);
+    bool save(Profile &p);
 
     /**
      * Récupère le profile d'un utilisateur
@@ -47,7 +47,15 @@ public:
      *
      * @return Profile Le profile chargé.
      */
-    Profile getProfile(int id);
+    Profile get(int id);
+
+public slots:
+    /**
+     * Enregistre le profil actuellement chargé (s'il y en a un)
+     *
+     * @see save
+     */
+    bool saveCurrent();
 
 signals:
     /**

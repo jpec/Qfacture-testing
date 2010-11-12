@@ -77,10 +77,13 @@ QString Person::getMail() const
 
 void Person::setPhone(const QString &phone)
 {
-    if(!phone.isEmpty() && strspn(phone.toStdString().c_str(), "0123456789") != phone.toStdString().size())
+    QString p = phone;
+    p.replace(' ', "");
+
+    if(!p.isEmpty() && strspn(p.toStdString().c_str(), "0123456789") != p.toStdString().size())
         return;
-    
-    this->phone = phone;
+
+    this->phone = p;
 }
 
 QString Person::getPhone() const

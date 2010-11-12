@@ -43,7 +43,7 @@ void MainWindow::createActions()
     this->connect(core->getDBController(), SIGNAL(DBDisconnected()), this, SLOT(onDBDisconnected()));
 
     // lie l'évènement "DBError" à l'action correspondante
-    //this->connect(core->getController("db"), SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
+    this->connect(core->getProfileController(), SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
 }
 
 void MainWindow::setupTabs()

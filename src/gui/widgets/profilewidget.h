@@ -37,6 +37,11 @@ private slots:
      */
     void displayCurrentProfile();
 
+    /**
+     * Sauvegarde le profil actuellement chargé.
+     */
+    void save();
+
 private:
     /**
      * Construit le layout du formulaire

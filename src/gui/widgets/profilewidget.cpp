@@ -76,6 +76,9 @@ void ProfileWidget::createActions()
 {
     // affiche le profil dès qu'il est chargé
     this->connect(ctrl_profile, SIGNAL(lastProfileLoaded()), this, SLOT(displayCurrentProfile()));
+
+    // sauvegarde le profil chargé lors du clic sur le bouton enregistrer
+    this->connect(btn_ok, SIGNAL(clicked()), this, SLOT(save()));
 }
 
 void ProfileWidget::clearContent()
@@ -103,16 +106,33 @@ void ProfileWidget::displayCurrentProfile()
     QPixmap pic;
 
     /* Alimentation des widgets */
-    p_name->setText(this->ctrl_profile->getCurrentProfile().getName());
-    p_siret->setText(this->ctrl_profile->getCurrentProfile().getSiret());
-    p_address->setText(this->ctrl_profile->getCurrentProfile().getAddress());
-    p_zip->setText(this->ctrl_profile->getCurrentProfile().getZipCode());
-    p_city->setText(this->ctrl_profile->getCurrentProfile().getCity());
-    p_phone->setText(this->ctrl_profile->getCurrentProfile().getPhone());
-    p_mail->setText(this->ctrl_profile->getCurrentProfile().getMail());
-    p_website->setText(this->ctrl_profile->getCurrentProfile().getWebsite());
+    p_name->setText(this->ctrl_profile->getCurrent().getName());
+    p_siret->setText(this->ctrl_profile->getCurrent().getSiret());
+    p_address->setText(this->ctrl_profile->getCurrent().getAddress());
+    p_zip->setText(this->ctrl_profile->getCurrent().getZipCode());
+    p_city->setText(this->ctrl_profile->getCurrent().getCity());
+    p_phone->setText(this->ctrl_profile->getCurrent().getPhone());
+    p_mail->setText(this->ctrl_profile->getCurrent().getMail());
+    p_website->setText(this->ctrl_profile->getCurrent().getWebsite());
 
     /* Alimentation du widget logo */
-    pic.loadFromData(this->ctrl_profile->getCurrentProfile().getLogo());
+    pic.loadFromData(this->ctrl_profile->getCurrent().getLogo());
     //p_logo->setPixmap(pic);
+}
+
+void ProfileWidget::save()
+{
+    this->ctrl_profile->getCurrent().setName(p_name->text());
+    this->ctrl_profile->getCurrent().setSiret(p_siret->text());
+    this->ctrl_profile->getCurrent().setAddress(p_address->text());
+    this->ctrl_profile->getCurrent().setZipCode(p_zip->text());
+    this->ctrl_profile->getCurrent().setCity(p_city->text());
+    this->ctrl_profile->getCurrent().setPhone(p_phone->text());
+    this->ctrl_profile->getCurrent().setMail(p_mail->text());
+    this->ctrl_profile->getCurrent().setWebsite(p_website->text());
+
+    if(ctrl_profile->saveCurrent())
+        QMessageBox::information(this, trUtf8("Profil enregistré"), trUtf8("Le profil a été enregistré."));
+    else
+        QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible d'enregistrer le profil utilisateur."));
 }
