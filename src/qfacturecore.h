@@ -1,8 +1,10 @@
 #ifndef QFACTURECORE_H
 #define QFACTURECORE_H
 
+
 #include "controllers/controller.h"
 #include "controllers/dbcontroller.h"
+#include "controllers/profilecontroller.h"
 
 #include <QHash>
 #include <QObject>
@@ -23,31 +25,6 @@ public:
      */
     QfactureCore();
 
-    /**
-     * Destructeur
-     */
-    ~QfactureCore();
-
-
-    /**
-     * Enregistre un paramètre de l'application.
-     *
-     * @param group Groupe d'appartenance du paramètre. Ex : DB pour tous les
-     *              paramètres liés à la base de données.
-     * @param key Nom du paramètre
-     * @param value Valeur du paramètre
-     */
-    void setSetting(const QString &group, const QString &key, const QVariant &value);
-
-    /**
-     * Récupère la valeur d'un paramètre de l'application.
-     *
-     * @param group Groupe d'appartenance du paramètre. Ex : DB pour tous les
-     *              paramètres liés à la base de données.
-     * @param key Nom du paramètre
-     * @param default_value Valeur retournée si le paramètre demandé n'existe pas.
-     */
-    QVariant getSetting(const QString &group, const QString &key, const QVariant &default_value = QVariant()) const;
 
     /**
      * Retourne un pointeur vers le contrôleur demandé
@@ -66,6 +43,13 @@ public:
     DBController* getDBController();
 
     /**
+     * Retourne un pointeur vers le contrôleur des profils
+     *
+     * @return ProfileController* Le pointeur vers le contrôleur
+     */
+    ProfileController* getProfileController();
+
+    /**
      * Retourne le numéro de version du logiciel.
      *
      * \todo Déplacer la définition du n° ailleurs (fichier dédié ?).
@@ -78,10 +62,6 @@ private:
      */
     void createControllers();
 
-    /**
-     * Instance de la classe chargée de la gestion des paramètres.
-     */
-    QSettings *settings;
 
     /**
      * Contiendra les différents "sous-contrôleurs"

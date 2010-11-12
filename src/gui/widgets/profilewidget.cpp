@@ -1,8 +1,15 @@
 #include "profilewidget.h"
 
-ProfileWidget::ProfileWidget(QWidget *parent) : QWidget(parent)
+#include <QPixmap>
+#include <QMessageBox>
+
+
+ProfileWidget::ProfileWidget(ProfileController *ctrl, QWidget *parent) : QWidget(parent)
 {
+    this->ctrl_profile = ctrl;
+
     this->buildLayout();
+    this->createActions();
 }
 
 ProfileWidget::~ProfileWidget()
@@ -43,6 +50,7 @@ void ProfileWidget::buildLayout()
 
     // définition des particularités de certains champs
     p_siret->setInputMask("999 999 999 99999");
+    p_phone->setInputMask("99 99 99 99 99");
 
     // construction du formulaire
     form_layout->addRow(trUtf8("Raison sociale"), p_name);
@@ -62,4 +70,49 @@ void ProfileWidget::buildLayout()
     layout->addStretch(); // pour forcer le bouton à être collé au formulaire
 
     setLayout(layout);
+}
+
+void ProfileWidget::createActions()
+{
+    // affiche le profil dès qu'il est chargé
+    this->connect(ctrl_profile, SIGNAL(lastProfileLoaded()), this, SLOT(displayCurrentProfile()));
+}
+
+void ProfileWidget::clearContent()
+{
+    p_name->clear();
+    p_siret->clear();
+    p_address->clear();
+    p_zip->clear();
+    p_city->clear();
+    p_phone->clear();
+    p_mail->clear();
+    p_website->clear();
+}
+
+void ProfileWidget::loadLastProfile()
+{
+    if(this->ctrl_profile->loadLastProfile())
+        return;
+
+    QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible de charger le profil utilisateur."));
+}
+
+void ProfileWidget::displayCurrentProfile()
+{
+    QPixmap pic;
+
+    /* Alimentation des widgets */
+    p_name->setText(this->ctrl_profile->getCurrentProfile().getName());
+    p_siret->setText(this->ctrl_profile->getCurrentProfile().getSiret());
+    p_address->setText(this->ctrl_profile->getCurrentProfile().getAddress());
+    p_zip->setText(this->ctrl_profile->getCurrentProfile().getZipCode());
+    p_city->setText(this->ctrl_profile->getCurrentProfile().getCity());
+    p_phone->setText(this->ctrl_profile->getCurrentProfile().getPhone());
+    p_mail->setText(this->ctrl_profile->getCurrentProfile().getMail());
+    p_website->setText(this->ctrl_profile->getCurrentProfile().getWebsite());
+
+    /* Alimentation du widget logo */
+    pic.loadFromData(this->ctrl_profile->getCurrentProfile().getLogo());
+    //p_logo->setPixmap(pic);
 }

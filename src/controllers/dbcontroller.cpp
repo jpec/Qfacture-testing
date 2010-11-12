@@ -4,16 +4,10 @@
 #include <QStringList>
 
 
-DBController::DBController(QfactureCore *core)
+DBController::DBController() : Controller()
 {
-    this->core = core;
 }
 
-
-QfactureCore* DBController::getCore() const
-{
-    return core;
-}
 
 QStringList DBController::getAvailableDrivers() const
 {

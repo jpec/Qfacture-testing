@@ -5,8 +5,6 @@
 
 #include <QSqlDatabase>
 
-class QfactureCore;
-
 
 /**
  * Contrôleur pour la base de données
@@ -16,12 +14,7 @@ class DBController : public Controller
     Q_OBJECT
 
 public:
-    DBController(QfactureCore *core);
-
-    /**
-     * Retourne un pointeur vers le contrôleur principal de l'appli
-     */
-    QfactureCore * getCore() const;
+    explicit DBController();
 
     /**
      * Retourne la liste des drivers supportés.
@@ -82,11 +75,6 @@ private:
      * Instance de la connexion à la base de données.
      */
     QSqlDatabase db;
-
-    /**
-     * Pointeur vers le core de l'application
-     */
-    QfactureCore *core;
 };
 
 #endif // DBCONTROLLER_H

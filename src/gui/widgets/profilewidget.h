@@ -1,6 +1,8 @@
 #ifndef PROFILEWIDGET_H
 #define PROFILEWIDGET_H
 
+#include "controllers/profilecontroller.h"
+
 #include <QWidget>
 #include <QLineEdit>
 #include <QFormLayout>
@@ -15,14 +17,42 @@ class ProfileWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ProfileWidget(QWidget *parent = 0);
+    explicit ProfileWidget(ProfileController *ctrl, QWidget *parent = 0);
     ~ProfileWidget();
+
+public slots:
+    /**
+     * Vide le contenu du formulaire.
+     */
+    void clearContent();
+
+    /**
+     * Charge le dernier profil utilisateur
+     */
+    void loadLastProfile();
+
+private slots:
+    /**
+     * Affiche dans le formulaire le profil actuellement chargé.
+     */
+    void displayCurrentProfile();
 
 private:
     /**
      * Construit le layout du formulaire
      */
     void buildLayout();
+
+    /**
+     * Lie les actions aux évènements correspondants
+     */
+    void createActions();
+
+
+    /**
+     * Pointeur vers le contrôleur des profils.
+     */
+    ProfileController *ctrl_profile;
 
     /**
      * Layout permettant de créer facilement des formulaires

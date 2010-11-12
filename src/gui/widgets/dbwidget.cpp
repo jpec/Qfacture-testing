@@ -1,5 +1,5 @@
 #include "dbwidget.h"
-#include "qfacturecore.h"
+#include "managers/settingsmanager.h"
 
 #include <QMessageBox>
 
@@ -116,23 +116,27 @@ void DBWidget::setEnabled(bool enabled)
 
 void DBWidget::saveSettings()
 {
-    db_ctrl->getCore()->setSetting("DB", "host", db_host->text());
-    db_ctrl->getCore()->setSetting("DB", "port", db_port->text().toInt());
-    db_ctrl->getCore()->setSetting("DB", "login", db_login->text());
-    db_ctrl->getCore()->setSetting("DB", "pass", db_pass->text());
-    db_ctrl->getCore()->setSetting("DB", "base", db_base->text());
-    db_ctrl->getCore()->setSetting("DB", "type", db_type->currentIndex());
+    SettingsManager &settings = SettingsManager::getInstance();
+
+    settings.set("DB", "host", db_host->text());
+    settings.set("DB", "port", db_port->text().toInt());
+    settings.set("DB", "login", db_login->text());
+    settings.set("DB", "pass", db_pass->text());
+    settings.set("DB", "base", db_base->text());
+    settings.set("DB", "type", db_type->currentIndex());
 }
 
 void DBWidget::restoreSettings()
 {
-    db_host->setText(db_ctrl->getCore()->getSetting("DB", "host", "localhost").toString());
-    db_port->setValue(db_ctrl->getCore()->getSetting("DB", "port", 3306).toInt());
-    db_login->setText(db_ctrl->getCore()->getSetting("DB", "login", "qfacture").toString());
-    db_pass->setText(db_ctrl->getCore()->getSetting("DB", "pass", "").toString());
-    db_base->setText(db_ctrl->getCore()->getSetting("DB", "base", "qfacture_db").toString());
+    SettingsManager &settings = SettingsManager::getInstance();
 
-    db_type->setCurrentIndex(db_ctrl->getCore()->getSetting("DB", "type", 0).toInt());
+    db_host->setText(settings.get("DB", "host", "localhost").toString());
+    db_port->setValue(settings.get("DB", "port", 3306).toInt());
+    db_login->setText(settings.get("DB", "login", "qfacture").toString());
+    db_pass->setText(settings.get("DB", "pass", "").toString());
+    db_base->setText(settings.get("DB", "base", "qfacture_db").toString());
+
+    db_type->setCurrentIndex(settings.get("DB", "type", 0).toInt());
 
     // alors que normalement la ligne précédente devrait déclencher ça automatiquement ...
     onCurrentDBTypeChanged(db_type->currentText());

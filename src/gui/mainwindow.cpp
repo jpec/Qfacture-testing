@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gui/tabs/paramstab.h"
+#include "managers/settingsmanager.h"
 
 #include <QMessageBox>
 #include <QTableWidget>
@@ -57,6 +58,7 @@ void MainWindow::setupTabs()
 void MainWindow::onQuit()
 {
     this->saveSettings();
+
     core->getDBController()->disconnectDB();
 
     qApp->quit();
@@ -84,16 +86,20 @@ void MainWindow::onDBDisconnected()
 
 void MainWindow::saveSettings()
 {
+    SettingsManager &settings = SettingsManager::getInstance();
+
     // infos sur la fenêtre (taille et position)
-    core->setSetting("Window", "size", size());
-    core->setSetting("Window", "pos", pos());
+    settings.set("Window", "size", size());
+    settings.set("Window", "pos", pos());
 }
 
 void MainWindow::restoreSettings()
 {
+    SettingsManager &settings = SettingsManager::getInstance();
+
     // infos sur la fenêtre (taille et position)
-    resize(core->getSetting("Window", "size", QSize(400, 400)).toSize());
-    move(core->getSetting("Window", "pos", QPoint(200, 200)).toPoint());
+    resize(settings.get("Window", "size", QSize(400, 400)).toSize());
+    move(settings.get("Window", "pos", QPoint(200, 200)).toPoint());
 }
 
 void MainWindow::alert(const QString &message)
