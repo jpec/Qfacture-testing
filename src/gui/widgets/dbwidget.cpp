@@ -8,7 +8,9 @@ DBWidget::DBWidget(DBController *db_ctrl, QWidget *parent) : QWidget(parent)
 {
     this->db_ctrl = db_ctrl;
 
+    this->buildWidgets();
     this->buildLayout();
+
     this->createActions();
 
     this->restoreSettings();
@@ -32,27 +34,31 @@ DBWidget::~DBWidget()
 }
 
 
-void DBWidget::buildLayout()
+void DBWidget::buildWidgets()
 {
     // création des widgets
-    btn_ok = new QPushButton(trUtf8("Connexion"), this);
-    db_host = new QLineEdit(this);
-    db_port = new QSpinBox(this);
-    db_login = new QLineEdit(this);
-    db_pass = new QLineEdit(this);
-    db_base = new QLineEdit(this);
-    db_type = new QComboBox(this);
+    btn_ok = new QPushButton(trUtf8("Connexion"));
+    db_host = new QLineEdit();
+    db_port = new QSpinBox();
+    db_login = new QLineEdit();
+    db_pass = new QLineEdit();
+    db_base = new QLineEdit();
+    db_type = new QComboBox();
 
     // config des widgets
     db_port->setMaximum(65535);
     db_type->addItems(db_ctrl->getAvailableDrivers());
+}
 
+void DBWidget::buildLayout()
+{
     // création des layouts
     layout = new QVBoxLayout(this);
     form_layout = new QFormLayout();
 
     // construction du formulaire
     form_layout->addRow(trUtf8("Type"), db_type);
+
     form_layout->addRow(trUtf8("Hôte"), db_host);
     form_layout->addRow(trUtf8("Port"), db_port);
     form_layout->addRow(trUtf8("Utilisateur"), db_login);
@@ -65,14 +71,24 @@ void DBWidget::buildLayout()
     layout->addLayout(form_layout);
     layout->addWidget(btn_ok);
     layout->addStretch(); // pour forcer le bouton à être collé au formulaire
-
-    setLayout(layout);
 }
 
 void DBWidget::createActions()
 {
     // appelle la méthode de connexion à la DB lors du clic sur le bouton
     this->connect(btn_ok, SIGNAL(clicked()), this, SLOT(handleDBConnection()));
+
+    this->connect(db_type, SIGNAL(currentIndexChanged(QString)), this, SLOT(onCurrentDBTypeChanged(QString)));
+}
+
+void DBWidget::onCurrentDBTypeChanged(const QString &type)
+{
+    bool sqlite = "QSQLITE" == type;
+
+    db_host->setEnabled(!sqlite);
+    db_port->setEnabled(!sqlite);
+    db_login->setEnabled(!sqlite);
+    db_pass->setEnabled(!sqlite);
 }
 
 /**
@@ -117,4 +133,7 @@ void DBWidget::restoreSettings()
     db_base->setText(db_ctrl->getCore()->getSetting("DB", "base", "qfacture_db").toString());
 
     db_type->setCurrentIndex(db_ctrl->getCore()->getSetting("DB", "type", 0).toInt());
+
+    // alors que normalement la ligne précédente devrait déclencher ça automatiquement ...
+    onCurrentDBTypeChanged(db_type->currentText());
 }

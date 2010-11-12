@@ -32,11 +32,22 @@ private slots:
      */
     void handleDBConnection();
 
+    /**
+     * Appelée lorsque le type de DB est changé. Permet de cacher
+     * certains champs lorsque SQLite est choisi.
+     */
+    void onCurrentDBTypeChanged(const QString &type);
+
 private:
     /**
      * Construit le layout du formulaire
      */
     void buildLayout();
+
+    /**
+     * Crée les widgets du formulaire
+     */
+    void buildWidgets();
 
     /**
      * Initialise les connexion aux évènements
