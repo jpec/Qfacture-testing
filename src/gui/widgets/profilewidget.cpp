@@ -1,6 +1,8 @@
 #include "profilewidget.h"
 
+#include <QFile>
 #include <QPixmap>
+#include <QFileDialog>
 #include <QMessageBox>
 
 
@@ -25,7 +27,9 @@ ProfileWidget::~ProfileWidget()
     delete p_phone;
     delete p_mail;
     delete p_website;
+    delete p_logo;
 
+    delete btn_logo;
     delete btn_ok;
 }
 
@@ -41,7 +45,9 @@ void ProfileWidget::buildLayout()
     p_phone = new QLineEdit(this);
     p_mail = new QLineEdit(this);
     p_website = new QLineEdit(this);
+    p_logo = new QLabel(trUtf8("Aucun logo sélectionné."), this);
 
+    btn_logo = new QPushButton(trUtf8("Changer de logo"), this);
     btn_ok = new QPushButton(trUtf8("Enregistrer"), this);
 
     // création des layouts
@@ -66,8 +72,14 @@ void ProfileWidget::buildLayout()
     form_layout->setLabelAlignment(Qt::AlignLeft);
 
     layout->addLayout(form_layout);
+    layout->addWidget(btn_logo);
     layout->addWidget(btn_ok);
-    layout->addStretch(); // pour forcer le bouton à être collé au formulaire
+
+    layout->addStretch();
+
+    layout->addWidget(p_logo);
+
+    layout->addStretch();
 
     setLayout(layout);
 }
@@ -76,6 +88,9 @@ void ProfileWidget::createActions()
 {
     // affiche le profil dès qu'il est chargé
     this->connect(ctrl_profile, SIGNAL(lastProfileLoaded()), this, SLOT(displayCurrentProfile()));
+
+    // propose de choisir un logo lors du cloc sur le bouton
+    this->connect(btn_logo, SIGNAL(clicked()), this, SLOT(changeLogo()));
 
     // sauvegarde le profil chargé lors du clic sur le bouton enregistrer
     this->connect(btn_ok, SIGNAL(clicked()), this, SLOT(save()));
@@ -91,6 +106,7 @@ void ProfileWidget::clearContent()
     p_phone->clear();
     p_mail->clear();
     p_website->clear();
+    p_logo->clear();
 }
 
 void ProfileWidget::loadLastProfile()
@@ -117,7 +133,41 @@ void ProfileWidget::displayCurrentProfile()
 
     /* Alimentation du widget logo */
     pic.loadFromData(this->ctrl_profile->getCurrent().getLogo());
-    //p_logo->setPixmap(pic);
+    p_logo->setPixmap(pic);
+}
+
+void ProfileWidget::changeLogo()
+{
+    QString image;
+    QPixmap img_pixmap;
+    QFile img_file;
+
+    /* Sélection du logo */
+    image = QFileDialog::getOpenFileName(this, trUtf8("Qfacture - Importer un logo..."),
+                                             "", trUtf8("Image Files (*.png *.jpg *.bmp)"));
+
+    // pas d'image sélectionnée
+    if(image.isNull())
+        return;
+
+    p_logo->clear();
+
+    /* Chargement de l'image */
+    img_file.setFileName(image);
+    if(!img_file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible d'ouvrir le fichier contenant le logo !"));
+        return;
+    }
+
+    /* Mise à jour du profil */
+    this->ctrl_profile->getCurrent().setLogo(img_file.readAll());
+
+    /* Affichage de l'image */
+    img_pixmap.load(image);
+    p_logo->setPixmap(img_pixmap);
+
+    /* Fermeture du fichier */
+    img_file.close();
 }
 
 void ProfileWidget::save()

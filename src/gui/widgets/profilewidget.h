@@ -3,6 +3,7 @@
 
 #include "controllers/profilecontroller.h"
 
+#include <QLabel>
 #include <QWidget>
 #include <QLineEdit>
 #include <QFormLayout>
@@ -36,6 +37,13 @@ private slots:
      * Affiche dans le formulaire le profil actuellement chargé.
      */
     void displayCurrentProfile();
+
+    /**
+     * Réalise le changement du logo du profil courant.
+     * Ouvre une boite de dialogue permettant de choisir le logo,
+     * met à jour le profil et affiche le logo choisi.
+     */
+    void changeLogo();
 
     /**
      * Sauvegarde le profil actuellement chargé.
@@ -109,6 +117,16 @@ private:
      * Champ texte pour le site web
      */
     QLineEdit *p_website;
+
+    /**
+     * Conteneur permettant d'afficher le logo
+     */
+    QLabel *p_logo;
+
+    /**
+     * Bouton de validation du formulaire
+     */
+    QPushButton *btn_logo;
 
     /**
      * Bouton de validation du formulaire

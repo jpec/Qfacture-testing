@@ -39,7 +39,7 @@ bool ProfileManager::insert(Profile &profile)
     // \todo implémenter !
     return false;
 }
-#include <iostream>
+
 bool ProfileManager::update(const Profile &profile)
 {
     QSqlQuery query;
@@ -53,7 +53,7 @@ bool ProfileManager::update(const Profile &profile)
     );
 
     bindProfile(profile, query);
-    std::cout << profile.getName().toStdString() << std::endl;
+
     if(query.exec())
         return true;
     else
