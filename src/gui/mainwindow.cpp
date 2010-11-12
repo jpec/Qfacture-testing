@@ -1,13 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gui/tabs/paramstab.h"
+#include "gui/tabs/customerstab.h"
 #include "managers/settingsmanager.h"
 
 #include <QMessageBox>
-#include <QTableWidget>
 
 
-MainWindow::MainWindow(QfactureCore *core, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QfactureCore *core, QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -34,16 +35,20 @@ void MainWindow::createActions()
     this->connect(ui->action_propos, SIGNAL(triggered()), this, SLOT(about()));
 
     // lie l'évènement "DBConnectionError" à l'action correspondante
-    this->connect(core->getDBController(), SIGNAL(DBConnectionError(QString)), this, SLOT(onDBConnectionError(QString)));
+    this->connect(core->getDBController(), SIGNAL(DBConnectionError(QString)),
+                  this, SLOT(onDBConnectionError(QString)));
 
     // affiche un message dans la statusbar à la connexion à la DB
-    this->connect(core->getDBController(), SIGNAL(DBConnected()), this, SLOT(onDBConnected()));
+    this->connect(core->getDBController(), SIGNAL(DBConnected()), this,
+                  SLOT(onDBConnected()));
 
     // affiche un message dans la statusbar à la déconnexion à la DB
-    this->connect(core->getDBController(), SIGNAL(DBDisconnected()), this, SLOT(onDBDisconnected()));
+    this->connect(core->getDBController(), SIGNAL(DBDisconnected()), this,
+                  SLOT(onDBDisconnected()));
 
     // lie l'évènement "DBError" à l'action correspondante
-    this->connect(core->getProfileController(), SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
+    this->connect(core->getProfileController(), SIGNAL(DBError(QString)), this,
+                  SLOT(onDBError(QString)));
 }
 
 void MainWindow::setupTabs()
@@ -52,7 +57,7 @@ void MainWindow::setupTabs()
     ui->tabWidget->addTab(new ParamsTab(core, this), trUtf8("Paramètres"));
 
     // clients
-    ui->tabWidget->addTab(new QTableWidget(ui->tabWidget), trUtf8("Clients"));
+    ui->tabWidget->addTab(new CustomersTab(core, this), trUtf8("Clients"));
 }
 
 void MainWindow::onQuit()
@@ -111,12 +116,13 @@ void MainWindow::about()
 {
     QMessageBox::about(this, trUtf8("Qfacture v%1")
                        .arg(core->version()),
-                       trUtf8("Le logiciel libre de facturation pour les Auto-Entrepreneurs!\n"
+                       trUtf8("Le logiciel libre de facturation pour les "
+                              "Auto-Entrepreneurs!\n"
                               "--\n"
                               "Copyright 2010 : Julien PECQUEUR\n"
                               "Licence : GPL\n"
-                              "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>\n"
-                              "--\n"
+                              "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>"
+                              "\n--\n"
                               "Contributeur(s) :\n"
                               " * Kévin Gomez <contact@kevingomez.fr>\n"
                               "\n")
