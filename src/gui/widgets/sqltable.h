@@ -40,9 +40,9 @@ signals:
     void DBError(const QString &error);
 
     /**
-     * Émit lorsque l'utilisateur clique sur un élément du tableau
+     * Émit lorsque l'utilisateur clique ou se déplace sur un élément du tableau
      */
-    void itemClicked(QTableWidgetItem *item);
+    void itemSelected(QTableWidgetItem *item);
 
 public slots:
     /**
@@ -55,6 +55,11 @@ private slots:
      * Construit la structure du tableau.
      */
     void buildTable();
+
+    /**
+     * Lorsque la selection change
+     */
+    void selectionChanged();
 
 private:
     /**

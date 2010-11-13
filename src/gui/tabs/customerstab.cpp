@@ -144,7 +144,7 @@ void CustomersTab::createActions()
                   SLOT(clearContent()));
 
     // charge le profil d'un client lors du clic sur ce dernier dans le tableau
-    this->connect(customers_table, SIGNAL(itemClicked(QTableWidgetItem*)), this,
+    this->connect(customers_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
                   SLOT(loadCustomer(QTableWidgetItem*)));
 }
 

@@ -2,6 +2,7 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
+#include <assert.h>
 
 
 SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
@@ -10,8 +11,7 @@ SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
     this->table_name = table_name;
 
     connect(this, SIGNAL(tableModified()), this, SLOT(buildTable()));
-    connect(table, SIGNAL(itemClicked(QTableWidgetItem*)), this,
-            SIGNAL(itemClicked(QTableWidgetItem*)));
+    connect(table, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 }
 
 SQLTable::~SQLTable()
@@ -19,6 +19,13 @@ SQLTable::~SQLTable()
     delete table;
 }
 
+
+void SQLTable::selectionChanged()
+{
+    assert(table->selectedItems().count() == 1);
+
+    emit itemSelected(table->selectedItems()[0]);
+}
 
 void SQLTable::setColumns(const QHash<QString, QString> &columns)
 {
