@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "gui/tabs/paramstab.h"
 #include "gui/tabs/customerstab.h"
+#include "gui/tabs/productstab.h"
 #include "managers/settingsmanager.h"
 
 #include <QMessageBox>
@@ -62,6 +63,9 @@ void MainWindow::setupTabs()
 
     // clients
     ui->tabWidget->addTab(new CustomersTab(core, this), trUtf8("Clients"));
+
+    // prestations
+    ui->tabWidget->addTab(new ProductsTab(core, this), trUtf8("Prestations"));
 }
 
 void MainWindow::onQuit()

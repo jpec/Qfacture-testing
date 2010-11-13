@@ -20,15 +20,15 @@ int Product::getId() const
     return this->id;
 }
 
-void Product::setName(const string &name)
+void Product::setName(const QString &name)
 {
-    if(name.empty())
+    if(name.isEmpty())
         return;
 
     this->name = name;
 }
 
-string Product::getName() const
+QString Product::getName() const
 {
     return this->name;
 }
@@ -43,12 +43,12 @@ float Product::getPrice() const
     return this->price;
 }
 
-void Product::setDescription(const string &description)
+void Product::setDescription(const QString &description)
 {
     this->description = description;
 }
 
-string Product::getDescription() const
+QString Product::getDescription() const
 {
     return this->description;
 }

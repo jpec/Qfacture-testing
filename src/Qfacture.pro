@@ -31,7 +31,11 @@ SOURCES += main.cpp\
     gui/widgets/sqltable.cpp \
     gui/widgets/customerwidget.cpp \
     controllers/customercontroller.cpp \
-    managers/customermanager.cpp
+    managers/customermanager.cpp \
+    managers/productmanager.cpp \
+    controllers/productcontroller.cpp \
+    gui/tabs/productstab.cpp \
+    gui/widgets/productwidget.cpp
 
 HEADERS  += models/person.h \
     models/customer.h \
@@ -54,6 +58,10 @@ HEADERS  += models/person.h \
     gui/widgets/sqltable.h \
     gui/widgets/customerwidget.h \
     controllers/customercontroller.h \
-    managers/customermanager.h
+    managers/customermanager.h \
+    managers/productmanager.h \
+    controllers/productcontroller.h \
+    gui/tabs/productstab.h \
+    gui/widgets/productwidget.h
 
 FORMS    += gui/mainwindow.ui \

@@ -1,9 +1,7 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <string>
-
-using namespace std;
+#include <QString>
 
 
 /**
@@ -13,7 +11,7 @@ class Product
 {
 public:
     Product();
-    
+
     /**
      * Définit l'identifiant de ce produit.
      *
@@ -29,21 +27,21 @@ public:
      * @return int L'identifiant, ou 0 s'il n'est pas définit.
      */
     int getId() const;
-    
+
     /**
      * Définit le nom de ce produit.
      *
      * @param name Le nouveau nom (ne doit pas être vide).
      */
-    void setName(const string &name);
+    void setName(const QString &name);
 
     /**
      * Retourne le nom de ce produit.
      *
-     * @return string Le nom.
+     * @return QString Le nom.
      */
-    string getName() const;
-    
+    QString getName() const;
+
     /**
      * Définit le prix HT de ce produit.
      *
@@ -57,41 +55,41 @@ public:
      * @return float Le prix.
      */
     float getPrice() const;
-    
+
     /**
      * Définit la description de ce produit.
      *
      * @param name La nouvelle description.
      */
-    void setDescription(const string &description);
+    void setDescription(const QString &description);
 
     /**
      * Retourne la description de ce produit.
      *
-     * @return string La description.
+     * @return QString La description.
      */
-    string getDescription() const;
-    
+    QString getDescription() const;
+
 private:
     /**
      * Identifiant du produit.
      */
-	int id;
-    
+    int id;
+
     /**
      * Nom du produit.
      */
-	string name;
-	
+    QString name;
+
     /**
      * Prix du produit (HT, logique)
      */
     float price;
-	
+
     /**
      * Brève description du produit
      */
-    string description;
+    QString description;
 };
 
 #endif // PRODUCT_H

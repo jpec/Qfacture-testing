@@ -6,6 +6,7 @@
 #include "controllers/dbcontroller.h"
 #include "controllers/profilecontroller.h"
 #include "controllers/customercontroller.h"
+#include "controllers/productcontroller.h"
 
 #include <QHash>
 #include <QObject>
@@ -56,6 +57,13 @@ public:
      * @return CustomerController* Le pointeur vers le contrôleur
      */
     CustomerController* getCustomerController();
+
+    /**
+     * Retourne un pointeur vers le contrôleur des produits
+     *
+     * @return ProductController* Le pointeur vers le contrôleur
+     */
+    ProductController* getProductController();
 
     /**
      * Retourne le numéro de version du logiciel.
