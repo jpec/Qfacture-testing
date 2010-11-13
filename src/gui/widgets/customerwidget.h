@@ -26,6 +26,11 @@ signals:
     void customerSaved();
 
     /**
+     * Émit lorsqu'un client a été chargé.
+     */
+    void customerLoaded();
+
+    /**
      * Émit lorsqu'un client a été enregistré
      */
     void customerDeleted(int id);
@@ -45,6 +50,13 @@ public slots:
      * supprime le profil actuellement chargé.
      */
     void erase();
+
+    /**
+     * Charge le profil d'un client.
+     *
+     * @param id Identifiant du client
+     */
+    void loadCustomer(int id);
 
 private:
     /**

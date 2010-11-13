@@ -10,6 +10,8 @@ SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
     this->table_name = table_name;
 
     connect(this, SIGNAL(tableModified()), this, SLOT(buildTable()));
+    connect(table, SIGNAL(itemClicked(QTableWidgetItem*)), this,
+            SIGNAL(itemClicked(QTableWidgetItem*)));
 }
 
 SQLTable::~SQLTable()
@@ -67,10 +69,12 @@ void SQLTable::feedTable()
 
     i = 0;
     while(query.next()) {
-        for(j=0; j < nb_cols; ++j)
+        for(j=0; j < nb_cols; ++j) {
             table->setItem(i, j, new QTableWidgetItem(query.value(j+1).toString()));
 
-        table->item(i, 0)->setData(Qt::UserRole, query.value(0).toInt());
+            table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
+        }
+
 
         i++;
     }

@@ -57,6 +57,28 @@ void CustomerWidget::buildLayout()
     setLayout(layout);
 }
 
+void CustomerWidget::loadCustomer(int id)
+{
+    this->customer = ctrl_customer->get(id);
+
+    if(customer.getId() == 0) {
+        QMessageBox::critical(this, trUtf8("Erreur !"),
+                              trUtf8("Impossible de charger le client."));
+
+        return;
+    }
+
+    c_name->setText(customer.getName());
+    c_address->setText(customer.getAddress());
+    c_complement->setText(customer.getAddressComplement());
+    c_zip->setText(customer.getZipCode());
+    c_city->setText(customer.getCity());
+    c_phone->setText(customer.getPhone());
+    c_mail->setText(customer.getMail());
+
+    emit customerLoaded();
+}
+
 void CustomerWidget::clearContent()
 {
     customer = Customer();

@@ -82,10 +82,10 @@ bool CustomerManager::update(const Customer &customer)
     QSqlQuery query;
 
     query.prepare(
-            "UPDATE user "
-            "SET Name = :name, Adress = :address, Adress2 = :address2, "
+            "UPDATE client "
+            "SET Name = :name, Adress = :address, Adress2 = :complement, "
                 "Zip = :zip, City = :city, Phone = :phone, "
-                "Mail = :mail, "
+                "Mail = :mail "
             "WHERE id = :c_id"
     );
 
@@ -104,7 +104,7 @@ void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query)
     query.bindValue(":c_id", customer.getId());
     query.bindValue(":name", customer.getName());
     query.bindValue(":address", customer.getAddress());
-    query.bindValue(":address2", customer.getAddress());
+    query.bindValue(":complement", customer.getAddressComplement());
     query.bindValue(":zip", customer.getZipCode());
     query.bindValue(":city", customer.getCity());
     query.bindValue(":phone", customer.getPhone());

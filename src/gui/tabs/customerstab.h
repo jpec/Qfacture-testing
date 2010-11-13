@@ -46,6 +46,14 @@ private slots:
      */
     void onDelClicked();
 
+    /**
+     * Appelé lorsque l'utilisateur clique sur le tableau. S'occupe de charger
+     * les données du client dans le formulaire d'édition
+     *
+     * @param item La ligne du tableau représentant le client
+     */
+    void loadCustomer(QTableWidgetItem *item);
+
 private:
     /**
      * Construit la GUI de l'onglet

@@ -39,6 +39,11 @@ signals:
      */
     void DBError(const QString &error);
 
+    /**
+     * Émit lorsque l'utilisateur clique sur un élément du tableau
+     */
+    void itemClicked(QTableWidgetItem *item);
+
 public slots:
     /**
      * Interroge la base de données pour remplir le tableau

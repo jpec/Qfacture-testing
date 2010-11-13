@@ -119,6 +119,9 @@ void CustomersTab::createActions()
 
     // lors du clic sur le bouton de création d'un new client
     this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewClicked()));
+    // ou lors du chargement d'un client
+    this->connect(w_customer_edit, SIGNAL(customerLoaded()), this,
+                  SLOT(onNewClicked()));
 
     // lors du clic sur le bouton de sauvegarde d'un new client
     this->connect(btn_save, SIGNAL(clicked()), w_customer_edit, SLOT(save()));
@@ -132,6 +135,17 @@ void CustomersTab::createActions()
                   SLOT(feedTable()));
     this->connect(w_customer_edit, SIGNAL(customerDeleted(int)), customers_table,
                   SLOT(feedTable()));
+
+    // on réactive les boutons qu'il faut à la sauvegarde d'un client
+    this->connect(w_customer_edit, SIGNAL(customerSaved()), this,
+                  SLOT(onDelClicked()));
+    // et on vide le formulaire
+    this->connect(w_customer_edit, SIGNAL(customerSaved()), w_customer_edit,
+                  SLOT(clearContent()));
+
+    // charge le profil d'un client lors du clic sur ce dernier dans le tableau
+    this->connect(customers_table, SIGNAL(itemClicked(QTableWidgetItem*)), this,
+                  SLOT(loadCustomer(QTableWidgetItem*)));
 }
 
 void CustomersTab::onNewClicked()
@@ -150,6 +164,11 @@ void CustomersTab::onDelClicked()
     btn_new->setEnabled(true);
     btn_save->setEnabled(false);
     btn_del->setEnabled(false);
+}
+
+void CustomersTab::loadCustomer(QTableWidgetItem *item)
+{
+    w_customer_edit->loadCustomer(item->data(Qt::UserRole).toInt());
 }
 
 void CustomersTab::loadCustomers()
