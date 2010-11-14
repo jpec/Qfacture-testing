@@ -115,6 +115,17 @@ void CustomerWidget::save()
 
 void CustomerWidget::erase()
 {
+    QMessageBox msgBox;
+
+    msgBox.setText(trUtf8("Voulez-vous vraiment supprimer ce client ?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    int ret = msgBox.exec();
+
+    if(ret == QMessageBox::No)
+        return;
+
     if(customer.getId() != 0) {
         if(ctrl_customer->erase(customer.getId())) {
             emit customerDeleted(customer.getId());

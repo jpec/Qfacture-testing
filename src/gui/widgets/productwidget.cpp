@@ -91,6 +91,17 @@ void ProductWidget::save()
 
 void ProductWidget::erase()
 {
+    QMessageBox msgBox;
+
+    msgBox.setText(trUtf8("Voulez-vous vraiment supprimer ce produit ?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    int ret = msgBox.exec();
+
+    if(ret == QMessageBox::No)
+        return;
+
     if(product.getId() != 0) {
         if(ctrl_product->erase(product.getId())) {
             emit productDeleted(product.getId());
