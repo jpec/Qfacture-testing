@@ -22,7 +22,8 @@ SQLTable::~SQLTable()
 
 void SQLTable::selectionChanged()
 {
-    assert(table->selectedItems().count() == 1);
+    if(table->selectedItems().count() <= 0)
+        return;
 
     emit itemSelected(table->selectedItems()[0]);
 }

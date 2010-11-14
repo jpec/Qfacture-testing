@@ -21,6 +21,7 @@ CustomersTab::~CustomersTab()
     delete btn_new;
     delete btn_save;
     delete btn_del;
+    delete btn_cancel;
 
     delete customers_table;
     delete w_customer_edit;
@@ -65,11 +66,13 @@ void CustomersTab::buildLayout()
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
+    btn_cancel = new QPushButton(trUtf8("Annuler"));
 
     // désactivation des boutons et widgets inutiles (pour le moment)
     w_customer_edit->setEnabled(false);
     btn_save->setEnabled(false);
     btn_del->setEnabled(false);
+    btn_cancel->setEnabled(false);
 
     // création du tableau de clients
     customers_table = new SQLTable("client");
@@ -83,6 +86,7 @@ void CustomersTab::buildLayout()
     actions_layout->addWidget(btn_new);
     actions_layout->addWidget(btn_save);
     actions_layout->addWidget(btn_del);
+    actions_layout->addWidget(btn_cancel);
     gbox_actions->setLayout(actions_layout);
 
     edit_customer_layout->addWidget(gbox_customers_form);
@@ -146,6 +150,10 @@ void CustomersTab::createActions()
     // charge le profil d'un client lors du clic sur ce dernier dans le tableau
     this->connect(customers_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
                   SLOT(loadCustomer(QTableWidgetItem*)));
+
+    // annule une saisie
+    this->connect(btn_cancel, SIGNAL(clicked()), w_customer_edit, SLOT(clearContent()));
+    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
 }
 
 void CustomersTab::onNewClicked()
@@ -155,6 +163,7 @@ void CustomersTab::onNewClicked()
     btn_new->setEnabled(false);
     btn_save->setEnabled(true);
     btn_del->setEnabled(true);
+    btn_cancel->setEnabled(true);
 }
 
 void CustomersTab::onDelClicked()
@@ -164,6 +173,7 @@ void CustomersTab::onDelClicked()
     btn_new->setEnabled(true);
     btn_save->setEnabled(false);
     btn_del->setEnabled(false);
+    btn_cancel->setEnabled(false);
 }
 
 void CustomersTab::loadCustomer(QTableWidgetItem *item)

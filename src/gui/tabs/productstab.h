@@ -125,6 +125,11 @@ private:
     QPushButton *btn_del;
 
     /**
+     * Bouton "annuler"
+     */
+    QPushButton *btn_cancel;
+
+    /**
      * Tableau des produits
      */
     SQLTable *products_table;

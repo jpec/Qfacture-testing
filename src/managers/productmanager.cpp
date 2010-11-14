@@ -82,7 +82,7 @@ bool ProductManager::update(const Product &product)
 
     query.prepare(
             "UPDATE article "
-            "SET Name = :name, Price = :price, Comment = :comment, "
+            "SET Name = :name, Price = :price, Comment = :comment "
             "WHERE id = :a_id"
     );
 

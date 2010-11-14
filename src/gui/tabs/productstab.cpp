@@ -21,6 +21,7 @@ ProductsTab::~ProductsTab()
     delete btn_new;
     delete btn_save;
     delete btn_del;
+    delete btn_cancel;
 
     delete products_table;
     delete w_product_edit;
@@ -60,11 +61,13 @@ void ProductsTab::buildLayout()
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
+    btn_cancel = new QPushButton(trUtf8("Annuler"));
 
     // désactivation des boutons et widgets inutiles (pour le moment)
     w_product_edit->setEnabled(false);
     btn_save->setEnabled(false);
     btn_del->setEnabled(false);
+    btn_cancel->setEnabled(false);
 
     // création du tableau de produits
     products_table = new SQLTable("article");
@@ -78,6 +81,7 @@ void ProductsTab::buildLayout()
     actions_layout->addWidget(btn_new);
     actions_layout->addWidget(btn_save);
     actions_layout->addWidget(btn_del);
+    actions_layout->addWidget(btn_cancel);
     gbox_actions->setLayout(actions_layout);
 
     edit_product_layout->addWidget(gbox_products_form);
@@ -141,6 +145,10 @@ void ProductsTab::createActions()
     // charge le profil d'un produit lors du clic sur ce dernier dans le tableau
     this->connect(products_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
                   SLOT(loadProduct(QTableWidgetItem*)));
+
+    // annule une saisie
+    this->connect(btn_cancel, SIGNAL(clicked()), w_product_edit, SLOT(clearContent()));
+    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
 }
 
 void ProductsTab::onNewClicked()
@@ -150,6 +158,7 @@ void ProductsTab::onNewClicked()
     btn_new->setEnabled(false);
     btn_save->setEnabled(true);
     btn_del->setEnabled(true);
+    btn_cancel->setEnabled(true);
 }
 
 void ProductsTab::onDelClicked()
@@ -159,6 +168,7 @@ void ProductsTab::onDelClicked()
     btn_new->setEnabled(true);
     btn_save->setEnabled(false);
     btn_del->setEnabled(false);
+    btn_cancel->setEnabled(false);
 }
 
 void ProductsTab::loadProduct(QTableWidgetItem *item)
