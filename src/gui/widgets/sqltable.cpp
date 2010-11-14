@@ -40,6 +40,7 @@ void SQLTable::buildTable()
 {
     table->clear();
 
+    table->setAlternatingRowColors(true);
     table->setSortingEnabled(true);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
 
