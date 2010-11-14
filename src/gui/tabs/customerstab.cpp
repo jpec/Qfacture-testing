@@ -1,7 +1,5 @@
 #include "customerstab.h"
 
-#include <QList>
-
 
 CustomersTab::CustomersTab(QfactureCore *core, QWidget *parent) :
     QWidget(parent)
@@ -22,10 +20,13 @@ CustomersTab::~CustomersTab()
     delete btn_save;
     delete btn_del;
     delete btn_cancel;
+    delete search;
+    delete search_filters;
 
     delete customers_table;
     delete w_customer_edit;
 
+    delete search_form_layout;
     delete customers_layout;
     delete edit_customer_layout;
     delete actions_layout;
@@ -40,9 +41,6 @@ CustomersTab::~CustomersTab()
 
 void CustomersTab::buildLayout()
 {
-    QList<QString> columns;
-    QList<QString> labels;
-
     // définition des colonnes du tableau
     columns.append("Name");
     labels.append(trUtf8("Nom"));
@@ -62,9 +60,10 @@ void CustomersTab::buildLayout()
     // construction des layouts
     layout = new QVBoxLayout(this);
     edit_customer_layout = new QHBoxLayout();
-    customers_layout = new QHBoxLayout();
+    customers_layout = new QVBoxLayout();
     form_layout = new QHBoxLayout();
     actions_layout = new QVBoxLayout();
+    search_form_layout = new QHBoxLayout();
 
     // création des widgets
     gbox_actions = new QGroupBox(trUtf8("Actions"));
@@ -75,6 +74,11 @@ void CustomersTab::buildLayout()
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
     btn_cancel = new QPushButton(trUtf8("Annuler"));
+    search = new QLineEdit();
+    search_filters = new QComboBox();
+
+    // définition des filtres de recherche disponibles
+    search_filters->addItems(QStringList(labels));
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence(QKeySequence::New));
@@ -94,6 +98,10 @@ void CustomersTab::buildLayout()
     customers_table->setColumns(columns, labels);
 
     // liaisons des layouts avec les widgets
+    search_form_layout->addWidget(search_filters);
+    search_form_layout->addWidget(search);
+
+    customers_layout->addLayout(search_form_layout);
     customers_layout->addWidget(customers_table->getWidget());
     gbox_customers->setLayout(customers_layout);
 
@@ -148,7 +156,8 @@ void CustomersTab::createActions()
     this->connect(btn_del, SIGNAL(clicked()), w_customer_edit, SLOT(erase()));
     this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
 
-    // rafraichit les données du tableau à l'enregistrement ou à la suppression d'un client
+    // rafraichit les données du tableau à l'enregistrement ou à la suppression
+    // d'un client
     this->connect(w_customer_edit, SIGNAL(customerSaved()), customers_table,
                   SLOT(feedTable()));
     this->connect(w_customer_edit, SIGNAL(customerDeleted(int)), customers_table,
@@ -166,8 +175,21 @@ void CustomersTab::createActions()
                   SLOT(loadCustomer(QTableWidgetItem*)));
 
     // annule une saisie
-    this->connect(btn_cancel, SIGNAL(clicked()), w_customer_edit, SLOT(clearContent()));
+    this->connect(btn_cancel, SIGNAL(clicked()), w_customer_edit,
+                  SLOT(clearContent()));
     this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+
+    // mise à jour des critères de recherche
+    this->connect(search, SIGNAL(textChanged(QString)), this,
+                  SLOT(onSearchFiltersChanged()));
+    this->connect(search_filters, SIGNAL(currentIndexChanged(int)), this,
+                  SLOT(onSearchFiltersChanged()));
+}
+
+void CustomersTab::onSearchFiltersChanged()
+{
+    customers_table->setLikeFilter(columns[search_filters->currentIndex()],
+                                   QVariant(search->text()));
 }
 
 void CustomersTab::onNewClicked()

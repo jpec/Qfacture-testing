@@ -5,8 +5,11 @@
 #include "gui/widgets/sqltable.h"
 #include "gui/widgets/customerwidget.h"
 
+#include <QList>
 #include <QWidget>
 #include <QGroupBox>
+#include <QLineEdit>
+#include <QComboBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -54,6 +57,11 @@ private slots:
      */
     void loadCustomer(QTableWidgetItem *item);
 
+    /**
+     * Appelé lorsque les critères de recherche ont changé
+     */
+    void onSearchFiltersChanged();
+
 private:
     /**
      * Construit la GUI de l'onglet
@@ -81,7 +89,7 @@ private:
     /**
      * Layout contenant le tableau des clients
      */
-    QHBoxLayout *customers_layout;
+    QVBoxLayout *customers_layout;
 
     /**
      * Groupbox servant de conteneur pour la liste des clients
@@ -92,6 +100,11 @@ private:
      * Layout contenant le formulaire d'édition d'un client
      */
     QHBoxLayout *form_layout;
+
+    /**
+     * Layout contenant le formulaire de recherche
+     */
+    QHBoxLayout *search_form_layout;
 
     /**
      * Layout contenant les boutons nouveau, sauvegarder et supprimer
@@ -128,6 +141,28 @@ private:
      * Bouton "annuler"
      */
     QPushButton *btn_cancel;
+
+    /**
+     * Barre de recherche
+     */
+    QLineEdit *search;
+
+    /**
+     * Liste des filtres de recherches reconnus
+     */
+    QComboBox *search_filters;
+
+    /**
+     * Liste des colonnes de la table client
+     *
+     * \todo n'a rien à faire ici
+     */
+    QList<QString> columns;
+
+    /**
+     * Liste des libellés des colonnes
+     */
+    QList<QString> labels;
 
     /**
      * Tableau des clients

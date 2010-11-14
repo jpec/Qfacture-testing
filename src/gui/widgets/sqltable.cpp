@@ -20,6 +20,17 @@ SQLTable::~SQLTable()
 }
 
 
+void SQLTable::setLikeFilter(const QString &like_filter_field, const QVariant &like_filter)
+{
+    if(!columns.contains(like_filter_field))
+        return;
+
+    this->like_filter_field = like_filter_field;
+    this->like_filter = like_filter.toString().isEmpty() ? like_filter : "%"+like_filter.value<QString>()+"%";
+
+    feedTable();
+}
+
 void SQLTable::selectionChanged()
 {
     if(table->selectedItems().count() <= 0)
@@ -54,8 +65,10 @@ void SQLTable::buildTable()
     feedTable();
 }
 
+
 void SQLTable::feedTable()
 {
+    QString where;
     QSqlQuery query;
     QString fields = QStringList(columns).join(",");
     int i, j, nb_cols = columns.count();
@@ -65,11 +78,18 @@ void SQLTable::feedTable()
 
     table->clearContents();
 
+    if(!like_filter.toString().isEmpty())
+        where = "WHERE "+like_filter_field+" LIKE :like_filter ";
+
     query.prepare(
         "SELECT id, "+fields+" "
         "FROM "+table_name+" "
+        +where+
         "ORDER BY id ASC"
     );
+
+    if(!like_filter.toString().isEmpty())
+        query.bindValue(":like_filter", like_filter);
 
     if(!query.exec())
     {

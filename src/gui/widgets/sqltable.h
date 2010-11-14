@@ -51,6 +51,14 @@ public slots:
      */
     void feedTable();
 
+    /**
+     * Définit une condition LIKE %like_filter% dans la clause Where de la requête
+     *
+     * @param like_filter_field Nom du champ
+     * @param like_filter Valeur à tester
+     */
+    void setLikeFilter(const QString &like_filter_field, const QVariant &like_filter);
+
 private slots:
     /**
      * Construit la structure du tableau.
@@ -77,6 +85,16 @@ private:
      * Tableau
      */
     QTableWidget *table;
+
+    /**
+     * Clause à ajouter dans la clause WHERE sous forme de LIKE %like_filter%
+     */
+    QVariant like_filter;
+
+    /**
+     * Champ sur lequel appliquer le filtre LIKE
+     */
+    QString like_filter_field;
 
     /**
      * Nom de la table en DB à interroger
