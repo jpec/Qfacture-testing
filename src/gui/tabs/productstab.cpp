@@ -1,6 +1,6 @@
 #include "productstab.h"
 
-#include <QHash>
+#include <QList>
 
 
 ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
@@ -39,12 +39,16 @@ ProductsTab::~ProductsTab()
 
 void ProductsTab::buildLayout()
 {
-    QHash<QString, QString> columns;
+    QList<QString> columns;
+    QList<QString> labels;
 
     // définition des colonnes du tableau
-    columns["Name"] = trUtf8("Nom");
-    columns["Price"] = trUtf8("Prix");
-    columns["Comment"] = trUtf8("Description");
+    columns.append("Name");
+    labels.append(trUtf8("Nom"));
+    columns.append("Price");
+    labels.append(trUtf8("Prix"));
+    columns.append("Comment");
+    labels.append(trUtf8("Description"));
 
     // construction des layouts
     layout = new QVBoxLayout(this);
@@ -78,7 +82,7 @@ void ProductsTab::buildLayout()
     // création du tableau de produits
     products_table = new SQLTable("article");
 
-    products_table->setColumns(columns);
+    products_table->setColumns(columns, labels);
 
     // liaisons des layouts avec les widgets
     products_layout->addWidget(products_table->getWidget());

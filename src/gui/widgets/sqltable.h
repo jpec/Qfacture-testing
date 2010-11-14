@@ -14,9 +14,10 @@ public:
     /**
      * Définit les colonnes à afficher dans le tableau.
      *
-     * @param columns HashMap des correspondances clé en DB <-> Nom de la colonne
+     * @param columns Liste des colonnes du tableau
+     * @param labels Libellés des colonnes
      */
-    void setColumns(const QHash<QString, QString> &columns);
+    void setColumns(const QList<QString> &columns, const QList<QString> &labels);
 
     /**
      * Retourne le widget correspondant au tableau
@@ -65,7 +66,12 @@ private:
     /**
      * Colonnes du tableau
      */
-    QHash<QString, QString> columns;
+    QList<QString> columns;
+
+    /**
+     * Libellés des colonnes
+     */
+    QList<QString> labels;
 
     /**
      * Tableau

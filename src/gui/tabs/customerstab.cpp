@@ -1,6 +1,6 @@
 #include "customerstab.h"
 
-#include <QHash>
+#include <QList>
 
 
 CustomersTab::CustomersTab(QfactureCore *core, QWidget *parent) :
@@ -40,16 +40,24 @@ CustomersTab::~CustomersTab()
 
 void CustomersTab::buildLayout()
 {
-    QHash<QString, QString> columns;
+    QList<QString> columns;
+    QList<QString> labels;
 
     // définition des colonnes du tableau
-    columns["Name"] = trUtf8("Nom");
-    columns["Adress"] = trUtf8("Adresse");
-    columns["Adress2"] = trUtf8("Complément");
-    columns["Zip"] = trUtf8("Code postal");
-    columns["City"] = trUtf8("Ville");
-    columns["Phone"] = trUtf8("Téléphone");
-    columns["Mail"] = trUtf8("Mail");
+    columns.append("Name");
+    labels.append(trUtf8("Nom"));
+    columns.append("Adress");
+    labels.append(trUtf8("Adresse"));
+    columns.append("Adress2");
+    labels.append(trUtf8("Complément"));
+    columns.append("Zip");
+    labels.append(trUtf8("Code postal"));
+    columns.append("City");
+    labels.append(trUtf8("Ville"));
+    columns.append("Phone");
+    labels.append(trUtf8("Téléphone"));
+    columns.append("Mail");
+    labels.append(trUtf8("Mail"));
 
     // construction des layouts
     layout = new QVBoxLayout(this);
@@ -83,7 +91,7 @@ void CustomersTab::buildLayout()
     // création du tableau de clients
     customers_table = new SQLTable("client");
 
-    customers_table->setColumns(columns);
+    customers_table->setColumns(columns, labels);
 
     // liaisons des layouts avec les widgets
     customers_layout->addWidget(customers_table->getWidget());

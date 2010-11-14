@@ -28,9 +28,13 @@ void SQLTable::selectionChanged()
     emit itemSelected(table->selectedItems()[0]);
 }
 
-void SQLTable::setColumns(const QHash<QString, QString> &columns)
+void SQLTable::setColumns(const QList<QString> &columns, const QList<QString> &labels)
 {
+    if(columns.count() != labels.count())
+        return;
+
     this->columns = columns;
+    this->labels =labels;
 
     emit tableModified();
 }
@@ -45,7 +49,7 @@ void SQLTable::buildTable()
     table->setSelectionMode(QAbstractItemView::SingleSelection);
 
     table->setColumnCount(columns.count());
-    table->setHorizontalHeaderLabels(QStringList(columns.values()));
+    table->setHorizontalHeaderLabels(QStringList(labels));
 
     feedTable();
 }
@@ -53,7 +57,7 @@ void SQLTable::buildTable()
 void SQLTable::feedTable()
 {
     QSqlQuery query;
-    QString fields = QStringList(columns.keys()).join(",");
+    QString fields = QStringList(columns).join(",");
     int i, j, nb_cols = columns.count();
 
     if(columns.count() == 0)
