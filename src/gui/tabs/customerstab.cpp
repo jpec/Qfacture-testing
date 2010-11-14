@@ -173,6 +173,7 @@ void CustomersTab::createActions()
 void CustomersTab::onNewClicked()
 {
     w_customer_edit->setEnabled(true);
+    w_customer_edit->setFocus();
 
     btn_new->setEnabled(false);
     btn_save->setEnabled(true);

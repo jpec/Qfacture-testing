@@ -72,6 +72,11 @@ void ProductWidget::clearContent()
     p_description->clear();
 }
 
+void ProductWidget::setFocus()
+{
+    p_name->setFocus();
+}
+
 void ProductWidget::save()
 {
     product.setName(p_name->text());

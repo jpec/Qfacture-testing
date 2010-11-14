@@ -42,6 +42,11 @@ public slots:
     void clearContent();
 
     /**
+     * Met le focus dans le premier champ du formulaire
+     */
+    void setFocus();
+
+    /**
      * Sauvegarde le profil actuellement chargé.
      */
     void save();

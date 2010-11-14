@@ -92,6 +92,11 @@ void CustomerWidget::clearContent()
     c_mail->clear();
 }
 
+void CustomerWidget::setFocus()
+{
+    c_name->setFocus();
+}
+
 void CustomerWidget::save()
 {
     customer.setName(c_name->text());

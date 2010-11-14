@@ -164,6 +164,7 @@ void ProductsTab::createActions()
 void ProductsTab::onNewClicked()
 {
     w_product_edit->setEnabled(true);
+    w_product_edit->setFocus();
 
     btn_new->setEnabled(false);
     btn_save->setEnabled(true);
