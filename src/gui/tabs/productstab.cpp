@@ -1,7 +1,5 @@
 #include "productstab.h"
 
-#include <QList>
-
 
 ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
     QWidget(parent)
@@ -22,10 +20,13 @@ ProductsTab::~ProductsTab()
     delete btn_save;
     delete btn_del;
     delete btn_cancel;
+    delete search;
+    delete search_filters;
 
     delete products_table;
     delete w_product_edit;
 
+    delete search_form_layout;
     delete products_layout;
     delete edit_product_layout;
     delete actions_layout;
@@ -39,9 +40,6 @@ ProductsTab::~ProductsTab()
 
 void ProductsTab::buildLayout()
 {
-    QList<QString> columns;
-    QList<QString> labels;
-
     // définition des colonnes du tableau
     columns.append("Name");
     labels.append(trUtf8("Nom"));
@@ -53,9 +51,10 @@ void ProductsTab::buildLayout()
     // construction des layouts
     layout = new QVBoxLayout(this);
     edit_product_layout = new QHBoxLayout();
-    products_layout = new QHBoxLayout();
+    products_layout = new QVBoxLayout();
     form_layout = new QHBoxLayout();
     actions_layout = new QVBoxLayout();
+    search_form_layout = new QHBoxLayout();
 
     // création des widgets
     gbox_actions = new QGroupBox(trUtf8("Actions"));
@@ -66,6 +65,11 @@ void ProductsTab::buildLayout()
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
     btn_cancel = new QPushButton(trUtf8("Annuler"));
+    search = new QLineEdit();
+    search_filters = new QComboBox();
+
+    // définition des filtres de recherche disponibles
+    search_filters->addItems(QStringList(labels));
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence(QKeySequence::New));
@@ -85,6 +89,10 @@ void ProductsTab::buildLayout()
     products_table->setColumns(columns, labels);
 
     // liaisons des layouts avec les widgets
+    search_form_layout->addWidget(search_filters);
+    search_form_layout->addWidget(search);
+
+    products_layout->addLayout(search_form_layout);
     products_layout->addWidget(products_table->getWidget());
     gbox_products->setLayout(products_layout);
 
@@ -159,6 +167,18 @@ void ProductsTab::createActions()
     // annule une saisie
     this->connect(btn_cancel, SIGNAL(clicked()), w_product_edit, SLOT(clearContent()));
     this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+
+    // mise à jour des critères de recherche
+    this->connect(search, SIGNAL(textChanged(QString)), this,
+                  SLOT(onSearchFiltersChanged()));
+    this->connect(search_filters, SIGNAL(currentIndexChanged(int)), this,
+                  SLOT(onSearchFiltersChanged()));
+}
+
+void ProductsTab::onSearchFiltersChanged()
+{
+    products_table->setLikeFilter(columns[search_filters->currentIndex()],
+                                  QVariant(search->text()));
 }
 
 void ProductsTab::onNewClicked()
