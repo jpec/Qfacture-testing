@@ -44,7 +44,6 @@ HEADERS  += models/person.h \
     models/product.h \
     qfacturecore.h \
     managers/profilemanager.h \
-    managers/dbmanager.h \
     managers/basemanager.h \
     gui/mainwindow.h \
     gui/widgets/profilewidget.h \
