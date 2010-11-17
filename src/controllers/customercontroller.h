@@ -1,19 +1,25 @@
 #ifndef CUSTOMERCONTROLLER_H
 #define CUSTOMERCONTROLLER_H
 
-#include "controller.h"
 #include "managers/customermanager.h"
+
+#include <QObject>
 
 
 /**
  * Contrôleur permettant de gérer les clients
  */
-class CustomerController : public Controller
+class CustomerController : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit CustomerController(QObject *parent = 0);
+    /**
+     * Retourne une instance unique du contrôleur
+     *
+     * @return CustomerController* L'instance du contrôleur
+     */
+    static CustomerController* getInstance();
 
     /**
      * Enregistre ou met à jour un client.
@@ -49,6 +55,10 @@ signals:
     void DBError(const QString &error);
 
 private:
+    CustomerController();
+    CustomerController(const CustomerController&);
+    CustomerController& operator =(const CustomerController&);
+
     /**
      * Instance du gestionnaire de clients
      */

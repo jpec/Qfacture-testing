@@ -1,19 +1,25 @@
 #ifndef PRODUCTCONTROLLER_H
 #define PRODUCTCONTROLLER_H
 
-#include "controller.h"
 #include "managers/productmanager.h"
+
+#include <QObject>
 
 
 /**
  * Contrôleur permettant de gérer les produits
  */
-class ProductController : public Controller
+class ProductController : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ProductController(QObject *parent = 0);
+    /**
+     * Retourne une instance unique du contrôleur
+     *
+     * @return ProductController* L'instance du contrôleur
+     */
+    static ProductController* getInstance();
 
     /**
      * Enregistre ou met à jour un produit.
@@ -49,6 +55,10 @@ signals:
     void DBError(const QString &error);
 
 private:
+    ProductController();
+    ProductController(const ProductController&);
+    ProductController& operator =(const ProductController&);
+
     /**
      * Instance du gestionnaire de produits
      */

@@ -1,4 +1,5 @@
 #include "productstab.h"
+#include "controllers/dbcontroller.h"
 
 
 ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
@@ -60,7 +61,7 @@ void ProductsTab::buildLayout()
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_products = new QGroupBox(trUtf8("Liste des produits"), this);
     gbox_products_form = new QGroupBox(trUtf8("Client"));
-    w_product_edit = new ProductWidget(core->getProductController());
+    w_product_edit = new ProductWidget(ProductController::getInstance());
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
@@ -117,13 +118,13 @@ void ProductsTab::buildLayout()
 void ProductsTab::createActions()
 {
     // pour (dés)activer l'onglet en fonction de l'état de la connexion à la DB
-    this->connect(this->core->getDBController(), SIGNAL(DBConnected()), this,
+    this->connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
                   SLOT(onDBConnectionStateChanged()));
-    this->connect(this->core->getDBController(), SIGNAL(DBDisconnected()), this,
+    this->connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
                   SLOT(onDBConnectionStateChanged()));
 
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(this->core->getDBController(), SIGNAL(DBConnected()),
+    this->connect(DBController::getInstance(), SIGNAL(DBConnected()),
                   products_table, SLOT(feedTable()));
 
     // si SQLTable remonte une erreur SQL, on l'envoie à notre père
@@ -209,13 +210,13 @@ void ProductsTab::loadProduct(QTableWidgetItem *item)
 
 void ProductsTab::loadProducts()
 {
-    if(!this->core->getDBController()->isDBConnected())
+    if(!DBController::getInstance()->isDBConnected())
         return;
 }
 
 void ProductsTab::onDBConnectionStateChanged()
 {
-    bool connected = this->core->getDBController()->isDBConnected();
+    bool connected = DBController::getInstance()->isDBConnected();
 
     gbox_actions->setEnabled(connected);
     gbox_products->setEnabled(connected);

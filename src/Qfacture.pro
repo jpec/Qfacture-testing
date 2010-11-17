@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     gui/tabs/paramstab.cpp \
     gui/widgets/dbwidget.cpp \
     controllers/dbcontroller.cpp \
-    controllers/controller.cpp \
     controllers/profilecontroller.cpp \
     managers/settingsmanager.cpp \
     gui/tabs/customerstab.cpp \
@@ -51,7 +50,6 @@ HEADERS  += models/person.h \
     gui/tabs/paramstab.h \
     gui/widgets/dbwidget.h \
     controllers/dbcontroller.h \
-    controllers/controller.h \
     controllers/profilecontroller.h \
     managers/settingsmanager.h \
     gui/tabs/customerstab.h \

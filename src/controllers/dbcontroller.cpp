@@ -4,8 +4,13 @@
 #include <QStringList>
 
 
-DBController::DBController() : Controller()
+DBController::DBController() {}
+
+DBController* DBController::getInstance()
 {
+    static DBController instance;
+
+    return &instance;
 }
 
 

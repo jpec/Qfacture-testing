@@ -36,23 +36,23 @@ void MainWindow::createActions()
     this->connect(ui->action_propos, SIGNAL(triggered()), this, SLOT(about()));
 
     // lie l'évènement "DBConnectionError" à l'action correspondante
-    this->connect(core->getDBController(), SIGNAL(DBConnectionError(QString)),
+    this->connect(DBController::getInstance(), SIGNAL(DBConnectionError(QString)),
                   this, SLOT(onDBConnectionError(QString)));
 
     // affiche un message dans la statusbar à la connexion à la DB
-    this->connect(core->getDBController(), SIGNAL(DBConnected()), this,
+    this->connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
                   SLOT(onDBConnected()));
 
     // affiche un message dans la statusbar à la déconnexion à la DB
-    this->connect(core->getDBController(), SIGNAL(DBDisconnected()), this,
+    this->connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
                   SLOT(onDBDisconnected()));
 
     // lie l'évènement "DBError" à l'action correspondante
-    this->connect(core->getProfileController(), SIGNAL(DBError(QString)), this,
+    this->connect(ProductController::getInstance(), SIGNAL(DBError(QString)), this,
                   SLOT(onDBError(QString)));
 
     // lie l'évènement "DBError" à l'action correspondante
-    this->connect(core->getCustomerController(), SIGNAL(DBError(QString)), this,
+    this->connect(CustomerController::getInstance(), SIGNAL(DBError(QString)), this,
                   SLOT(onDBError(QString)));
 }
 
@@ -72,7 +72,7 @@ void MainWindow::onQuit()
 {
     this->saveSettings();
 
-    core->getDBController()->disconnectDB();
+    DBController::getInstance()->disconnectDB();
 
     qApp->quit();
 }

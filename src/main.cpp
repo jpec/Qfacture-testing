@@ -1,9 +1,9 @@
-#include <QtGui/QApplication>
 #include "qfacturecore.h"
-
-
 #include "gui/mainwindow.h"
 
+#include <QtGui/QApplication>
+
+#include "controllers/dbcontroller.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,10 +1,14 @@
 #include "productcontroller.h"
 
-ProductController::ProductController(QObject *parent) :
-    Controller(parent)
-{
-}
 
+ProductController::ProductController() {}
+
+ProductController* ProductController::getInstance()
+{
+    static ProductController instance;
+
+    return &instance;
+}
 
 Product ProductController::get(int id)
 {

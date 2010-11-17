@@ -1,20 +1,27 @@
 #ifndef PROFILECONTROLLER_H
 #define PROFILECONTROLLER_H
 
-#include "controller.h"
 #include "models/profile.h"
 #include "managers/profilemanager.h"
+
+#include <QObject>
 
 
 /**
  * Contrôleur permettant de gérer les profils
  */
-class ProfileController : public Controller
+class ProfileController : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ProfileController(QObject *parent = 0);
+    /**
+     * Retourne une instance unique du contrôleur
+     *
+     * @return ProfileController* L'instance du contrôleur
+     */
+    static ProfileController* getInstance();
+
     ~ProfileController();
 
     /**
@@ -70,6 +77,9 @@ signals:
     void lastProfileLoaded();
 
 private:
+    ProfileController();
+    ProfileController(const ProfileController&);
+    ProfileController& operator =(const ProfileController&);
 
     /**
      * Instance du gestionnaire de profiles

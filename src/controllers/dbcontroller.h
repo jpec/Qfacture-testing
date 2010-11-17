@@ -1,20 +1,24 @@
 #ifndef DBCONTROLLER_H
 #define DBCONTROLLER_H
 
-#include "controller.h"
-
+#include <QObject>
 #include <QSqlDatabase>
 
 
 /**
  * Contrôleur pour la base de données
  */
-class DBController : public Controller
+class DBController : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit DBController();
+    /**
+     * Retourne une instance unique du contrôleur
+     *
+     * @return DBController* L'instance du contrôleur
+     */
+    static DBController* getInstance();
 
     /**
      * Retourne la liste des drivers supportés.
@@ -71,6 +75,10 @@ signals:
     void DBConnectionError(const QString &error);
 
 private:
+    DBController();
+    DBController(const DBController&);
+    DBController& operator =(const DBController&);
+
     /**
      * Instance de la connexion à la base de données.
      */

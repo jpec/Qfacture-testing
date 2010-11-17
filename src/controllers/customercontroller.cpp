@@ -1,8 +1,13 @@
 #include "customercontroller.h"
 
-CustomerController::CustomerController(QObject *parent) :
-    Controller(parent)
+
+CustomerController::CustomerController() {}
+
+CustomerController* CustomerController::getInstance()
 {
+    static CustomerController instance;
+
+    return &instance;
 }
 
 

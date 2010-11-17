@@ -4,8 +4,13 @@
 #include <QVariant>
 
 
-ProfileController::ProfileController(QObject *parent) : Controller(parent)
+ProfileController::ProfileController() {}
+
+ProfileController* ProfileController::getInstance()
 {
+    static ProfileController instance;
+
+    return &instance;
 }
 
 ProfileController::~ProfileController()
