@@ -1,10 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QHash>
+#include <QMainWindow>
 
 #include "qfacturecore.h"
+#include "gui/tabs/paramstab.h"
+#include "gui/tabs/productstab.h"
+#include "gui/tabs/customerstab.h"
 
 
 namespace Ui {
@@ -88,6 +91,21 @@ private:
      * Pointeur vers la GUI "pure"
      */
     Ui::MainWindow *ui;
+
+    /**
+     * Widget de l'onglet paramètres
+     */
+    ParamsTab *params_tab;
+
+    /**
+     * Widget de l'onglet clients
+     */
+    CustomersTab *customers_tab;
+
+    /**
+     * Widget de l'onglet prestations
+     */
+    ProductsTab *products_tab;
 
     /**
      * Pointeur vers le coeur logique de l'application.

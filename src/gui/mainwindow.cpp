@@ -23,6 +23,10 @@ MainWindow::MainWindow(QfactureCore *core, QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete params_tab;
+    delete customers_tab;
+    delete products_tab;
+
     delete ui;
 }
 
@@ -59,13 +63,16 @@ void MainWindow::createActions()
 void MainWindow::setupTabs()
 {
     // paramètres
-    ui->tabWidget->addTab(new ParamsTab(core, this), trUtf8("Paramètres"));
+    params_tab = new ParamsTab(core, this);
+    ui->tabWidget->addTab(params_tab, trUtf8("Paramètres"));
 
     // clients
-    ui->tabWidget->addTab(new CustomersTab(core, this), trUtf8("Clients"));
+    customers_tab = new CustomersTab(core, this);
+    ui->tabWidget->addTab(customers_tab, trUtf8("Clients"));
 
     // prestations
-    ui->tabWidget->addTab(new ProductsTab(core, this), trUtf8("Prestations"));
+    products_tab = new ProductsTab(core, this);
+    ui->tabWidget->addTab(products_tab, trUtf8("Prestations"));
 }
 
 void MainWindow::onQuit()
@@ -90,11 +97,17 @@ void MainWindow::onDBError(const QString &error)
 void MainWindow::onDBConnected()
 {
     ui->statusbar->showMessage(trUtf8("Base de données connectée."), 3000);
+
+    customers_tab->setEnabled();
+    products_tab->setEnabled();
 }
 
 void MainWindow::onDBDisconnected()
 {
     ui->statusbar->showMessage(trUtf8("Base de données déconnectée."), 3000);
+
+    customers_tab->setEnabled(false);
+    products_tab->setEnabled(false);
 }
 
 void MainWindow::saveSettings()

@@ -25,10 +25,11 @@ public:
 
 public slots:
     /**
-     * Appelé lorsque l'état de connexion à la DB change. Elle
-     * s'occupe de (dés)activer certains widgets
+     * (Dés)active l'onglet
+     *
+     * @param state État d'activation de l'onglet
      */
-    void onDBConnectionStateChanged();
+    void setEnabled(bool state=true);
 
     /**
      * Recharge la liste des clients dans le tableau à partir de la
