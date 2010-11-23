@@ -140,12 +140,10 @@ void MainWindow::about()
                        trUtf8("Le logiciel libre de facturation pour les "
                               "Auto-Entrepreneurs!\n"
                               "--\n"
-                              "Copyright 2010 : Julien PECQUEUR\n"
+                              "Copyrigh : Julien PECQUEUR\n"
                               "Licence : GPL\n"
-                              "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>"
-                              "\n--\n"
-                              "Contributeur(s) :\n"
-                              " * Kévin Gomez <contact@kevingomez.fr>\n"
+                              "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>\n"
+                              "Co-auteur : Kévin Gomez <contact@kevingomez.fr>\n"
                               "\n")
                        );
 }

@@ -48,6 +48,7 @@ void DBWidget::buildWidgets()
     // config des widgets
     db_port->setMaximum(65535);
     db_type->addItems(db_ctrl->getAvailableDrivers());
+    db_pass->setEchoMode(QLineEdit::Password);
 }
 
 void DBWidget::buildLayout()
