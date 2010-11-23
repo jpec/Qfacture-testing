@@ -11,8 +11,6 @@ ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
     this->createActions();
 
     this->loadProducts();
-
-    onDBConnectionStateChanged();
 }
 
 ProductsTab::~ProductsTab()
@@ -117,12 +115,6 @@ void ProductsTab::buildLayout()
 
 void ProductsTab::createActions()
 {
-    // pour (dés)activer l'onglet en fonction de l'état de la connexion à la DB
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
-                  SLOT(onDBConnectionStateChanged()));
-    this->connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
-                  SLOT(onDBConnectionStateChanged()));
-
     // remplissage du tableau dès que la connexion à la DB est établies
     this->connect(DBController::getInstance(), SIGNAL(DBConnected()),
                   products_table, SLOT(feedTable()));
@@ -214,11 +206,9 @@ void ProductsTab::loadProducts()
         return;
 }
 
-void ProductsTab::onDBConnectionStateChanged()
+void ProductsTab::setEnabled(bool state)
 {
-    bool connected = DBController::getInstance()->isDBConnected();
-
-    gbox_actions->setEnabled(connected);
-    gbox_products->setEnabled(connected);
-    gbox_products_form->setEnabled(connected);
+    gbox_actions->setEnabled(state);
+    gbox_products->setEnabled(state);
+    gbox_products_form->setEnabled(state);
 }
