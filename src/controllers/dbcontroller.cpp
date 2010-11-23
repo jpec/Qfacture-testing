@@ -1,10 +1,11 @@
 #include "dbcontroller.h"
 
+#include <QSqlQuery>
 #include <QSqlError>
 #include <QStringList>
 
 
-DBController::DBController() {}
+DBController::DBController(){}
 
 DBController* DBController::getInstance()
 {
@@ -13,6 +14,17 @@ DBController* DBController::getInstance()
     return &instance;
 }
 
+
+bool DBController::exec(QSqlQuery &query)
+{
+    if(!query.exec()) {
+        emit DBError(query.lastError().databaseText());
+
+        return false;
+    }
+
+    return true;
+}
 
 QStringList DBController::getAvailableDrivers() const
 {

@@ -3,10 +3,10 @@
 #include <QMessageBox>
 
 
-ProductWidget::ProductWidget(ProductController *ctrl, QWidget *parent) :
+ProductWidget::ProductWidget(QfactureCore *ctrl, QWidget *parent) :
     QWidget(parent)
 {
-    this->ctrl_product = ctrl;
+    this->ctrl = ctrl;
 
     this->buildLayout();
 }
@@ -47,7 +47,7 @@ void ProductWidget::buildLayout()
 
 void ProductWidget::loadProduct(int id)
 {
-    this->product = ctrl_product->get(id);
+    this->product = ctrl->getProduct(id);
 
     if(product.getId() == 0) {
         QMessageBox::critical(this, trUtf8("Erreur !"),
@@ -83,7 +83,7 @@ void ProductWidget::save()
     product.setPrice(p_price->value());
     product.setDescription(p_description->text());
 
-    if(!ctrl_product->save(product))
+    if(!ctrl->saveProduct(product))
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible d'enregistrer le produit."));
     else {
@@ -108,7 +108,7 @@ void ProductWidget::erase()
         return;
 
     if(product.getId() != 0) {
-        if(ctrl_product->erase(product.getId())) {
+        if(ctrl->eraseProduct(product.getId())) {
             emit productDeleted(product.getId());
 
             QMessageBox::information(this, trUtf8("Produit supprimé"),

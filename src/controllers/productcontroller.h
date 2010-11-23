@@ -3,17 +3,15 @@
 
 #include "managers/productmanager.h"
 
-#include <QObject>
-
 
 /**
  * Contrôleur permettant de gérer les produits
  */
-class ProductController : public QObject
+class ProductController
 {
-    Q_OBJECT
+    friend class QfactureCore;
 
-public:
+private:
     /**
      * Retourne une instance unique du contrôleur
      *
@@ -46,15 +44,7 @@ public:
      */
     bool erase(int id);
 
-signals:
-    /**
-     * Émit lorsque une erreur lors d'une requête à la DB survient
-     *
-     * @param error Le message d'erreur retourné
-     */
-    void DBError(const QString &error);
 
-private:
     ProductController();
     ProductController(const ProductController&);
     ProductController& operator =(const ProductController&);

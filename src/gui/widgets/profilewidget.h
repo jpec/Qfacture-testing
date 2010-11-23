@@ -1,7 +1,7 @@
 #ifndef PROFILEWIDGET_H
 #define PROFILEWIDGET_H
 
-#include "controllers/profilecontroller.h"
+#include "qfacturecore.h"
 
 #include <QLabel>
 #include <QWidget>
@@ -18,7 +18,7 @@ class ProfileWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ProfileWidget(ProfileController *ctrl, QWidget *parent = 0);
+    explicit ProfileWidget(QfactureCore *ctrl, QWidget *parent = 0);
     ~ProfileWidget();
 
 public slots:
@@ -63,9 +63,9 @@ private:
 
 
     /**
-     * Pointeur vers le contrôleur des profils.
+     * Pointeur vers le contrôleur de l'application.
      */
-    ProfileController *ctrl_profile;
+    QfactureCore *ctrl;
 
     /**
      * Layout permettant de créer facilement des formulaires

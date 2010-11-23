@@ -1,14 +1,15 @@
 #ifndef QFACTURECORE_H
 #define QFACTURECORE_H
 
+#include "controllers/profilecontroller.h"
+#include "controllers/productcontroller.h"
+#include "controllers/customercontroller.h"
 
-#include <QHash>
 #include <QObject>
-#include <QSettings>
 
 
 /**
- * Fait office de contrôleur géant (qui ne fait rien pour le moment) et sera
+ * Fait office de wrapper pour tous les contrôleurs et sera le seul
  * utilisé par la GUI.
  */
 class QfactureCore : public QObject
@@ -16,9 +17,6 @@ class QfactureCore : public QObject
     Q_OBJECT
 
 public:
-    /**
-     * Constructeur du core : pas très utile pour le moment ...
-     */
     QfactureCore();
 
     /**
@@ -27,6 +25,134 @@ public:
      * \todo Déplacer la définition du n° ailleurs (fichier dédié ?).
      */
     QString version() const { return "1.0 testing"; }
+
+
+    /* Wrapper pour les méthodes du contrôleur de la DB */
+
+    /**
+     * @see DBController::getAvailableDrivers()
+     */
+    QStringList getAvailableDrivers() const;
+
+    /**
+     * @see DBController::connectDB()
+     */
+    void connectDB(const QString &server, int port, const QString &login,
+                   const QString &pass, const QString &db_name, const QString &db_type="QMYSQL");
+
+    /**
+     * @see DBController::disconnectDB()
+     */
+    void disconnectDB();
+
+    /**
+     * @see DBController::isDBConnected()
+     */
+    bool isDBConnected() const;
+
+
+    /* Wrapper pour les méthodes du contrôleur des profils */
+
+    /**
+     * @see ProfileController::loadLastProfile()
+     */
+    bool loadLastProfile();
+
+    /**
+     * @see ProfileController::getCurrent()
+     */
+    Profile& getCurrentProfile();
+
+    /**
+     * @see ProfileController::save()
+     */
+    bool saveProfile(Profile &p);
+
+    /**
+     * @see ProfileController::get()
+     */
+    Profile getProfile(int id);
+
+    /**
+     * @see ProfileController::saveCurrent()
+     */
+    bool saveCurrentProfile();
+
+
+    /* Wrapper pour les méthodes du contrôleur des produits */
+
+    /**
+     * @see ProductController::save()
+     */
+    bool saveProduct(Product &p);
+
+    /**
+     * @see ProductController::get()
+     */
+    Product getProduct(int id);
+
+    /**
+     * @see ProductController::erase()
+     */
+    bool eraseProduct(int id);
+
+
+    /* Wrapper pour les méthodes du contrôleur des clients */
+
+    /**
+     * @see ProductController::save()
+     */
+    bool saveCustomer(Customer &p);
+
+    /**
+     * @see ProductController::get()
+     */
+    Customer getCustomer(int id);
+
+    /**
+     * @see CustomerController::erase()
+     */
+    bool eraseCustomer(int id);
+
+signals:
+
+    /* Wrapper pour les signaux du contrôleur de la DB */
+
+    /**
+     * @see DBController::DBError()
+     */
+    void DBError(const QString &error);
+
+    /**
+     * @see DBController::DBConnected()
+     */
+    void DBConnected();
+
+    /**
+     * @see DBController::DBDisconnected()
+     */
+    void DBDisconnected();
+
+    /**
+     * @see DBController::DBConnectionError()
+     */
+    void DBConnectionError(const QString &error);
+
+
+    /* Wrapper pour les signaux du contrôleur des profils */
+
+    /**
+     * Émit après la connexion à la DB, lorsque le profil de
+     * l'utilisateur a été chargé.
+     */
+    void lastProfileLoaded();
+
+private:
+    /**
+     * Initialise les signaux émis par le wrapper et ceux qu'il réémet (car
+     * émis par d'autres contrôleurs)
+     */
+    void initSignals();
 };
 
 #endif // QFACTURECORE_H

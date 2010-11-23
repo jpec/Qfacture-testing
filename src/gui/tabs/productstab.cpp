@@ -1,5 +1,4 @@
 #include "productstab.h"
-#include "controllers/dbcontroller.h"
 
 
 ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
@@ -59,7 +58,7 @@ void ProductsTab::buildLayout()
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_products = new QGroupBox(trUtf8("Liste des produits"), this);
     gbox_products_form = new QGroupBox(trUtf8("Client"));
-    w_product_edit = new ProductWidget(ProductController::getInstance());
+    w_product_edit = new ProductWidget(this->core);
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
@@ -116,8 +115,8 @@ void ProductsTab::buildLayout()
 void ProductsTab::createActions()
 {
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()),
-                  products_table, SLOT(feedTable()));
+    this->connect(this->core, SIGNAL(DBConnected()), products_table,
+                  SLOT(feedTable()));
 
     // si SQLTable remonte une erreur SQL, on l'envoie à notre père
     this->connect(products_table, SIGNAL(DBError(QString)), parent(),
@@ -202,7 +201,7 @@ void ProductsTab::loadProduct(QTableWidgetItem *item)
 
 void ProductsTab::loadProducts()
 {
-    if(!DBController::getInstance()->isDBConnected())
+    if(!this->core->isDBConnected())
         return;
 }
 

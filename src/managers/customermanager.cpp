@@ -1,7 +1,7 @@
 #include "customermanager.h"
+#include "controllers/dbcontroller.h"
 
 #include "QVariant"
-#include "QSqlError"
 
 
 Customer CustomerManager::get(int id)
@@ -15,11 +15,8 @@ Customer CustomerManager::get(int id)
 
     query.bindValue(":customer_id", QVariant(id));
 
-    if(!query.exec()) {
-        setError(query.lastError().databaseText(), query.lastQuery());
-
+    if(!DBController::getInstance()->exec(query))
         return Customer();
-    }
 
     // pas de client avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un client vide
@@ -45,12 +42,7 @@ bool CustomerManager::erase(int id)
 
     query.bindValue(":c_id", QVariant(id));
 
-    if(query.exec())
-        return true;
-
-    setError(query.lastError().databaseText(), query.lastQuery());
-
-    return false;
+    return DBController::getInstance()->exec(query);
 }
 
 bool CustomerManager::insert(Customer &customer)
@@ -65,14 +57,12 @@ bool CustomerManager::insert(Customer &customer)
 
     bindCustomer(customer, query);
 
-    if(query.exec())
+    if(DBController::getInstance()->exec(query))
     {
         customer.setId(query.lastInsertId().toInt());
 
         return true;
     }
-
-    setError(query.lastError().databaseText(), query.lastQuery());
 
     return false;
 }
@@ -91,12 +81,7 @@ bool CustomerManager::update(const Customer &customer)
 
     bindCustomer(customer, query);
 
-    if(query.exec())
-        return true;
-
-    setError(query.lastError().databaseText(), query.lastQuery());
-
-    return false;
+    return DBController::getInstance()->exec(query);
 }
 
 void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query)

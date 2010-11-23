@@ -3,17 +3,15 @@
 
 #include "managers/customermanager.h"
 
-#include <QObject>
-
 
 /**
  * Contrôleur permettant de gérer les clients
  */
-class CustomerController : public QObject
+class CustomerController
 {
-    Q_OBJECT
+    friend class QfactureCore;
 
-public:
+private:
     /**
      * Retourne une instance unique du contrôleur
      *
@@ -46,15 +44,7 @@ public:
      */
     bool erase(int id);
 
-signals:
-    /**
-     * Émit lorsque une erreur lors d'une requête à la DB survient
-     *
-     * @param error Le message d'erreur retourné
-     */
-    void DBError(const QString &error);
 
-private:
     CustomerController();
     CustomerController(const CustomerController&);
     CustomerController& operator =(const CustomerController&);

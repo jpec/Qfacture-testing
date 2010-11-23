@@ -68,7 +68,7 @@ void CustomersTab::buildLayout()
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_customers = new QGroupBox(trUtf8("Liste des clients"), this);
     gbox_customers_form = new QGroupBox(trUtf8("Client"));
-    w_customer_edit = new CustomerWidget(CustomerController::getInstance());
+    w_customer_edit = new CustomerWidget(this->core);
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
@@ -125,8 +125,8 @@ void CustomersTab::buildLayout()
 void CustomersTab::createActions()
 {
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()),
-                  customers_table, SLOT(feedTable()));
+    this->connect(this->core, SIGNAL(DBConnected()), customers_table,
+                  SLOT(feedTable()));
 
     // si SQLTable remonte une erreur SQL, on l'envoie à notre père
     this->connect(customers_table, SIGNAL(DBError(QString)), parent(),
@@ -213,7 +213,7 @@ void CustomersTab::loadCustomer(QTableWidgetItem *item)
 
 void CustomersTab::loadCustomers()
 {
-    if(!DBController::getInstance()->isDBConnected())
+    if(!this->core->isDBConnected())
         return;
 }
 

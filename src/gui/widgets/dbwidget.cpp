@@ -4,9 +4,9 @@
 #include <QMessageBox>
 
 
-DBWidget::DBWidget(DBController *db_ctrl, QWidget *parent) : QWidget(parent)
+DBWidget::DBWidget(QfactureCore *ctrl, QWidget *parent) : QWidget(parent)
 {
-    this->db_ctrl = db_ctrl;
+    this->ctrl = ctrl;
 
     this->buildWidgets();
     this->buildLayout();
@@ -47,7 +47,7 @@ void DBWidget::buildWidgets()
 
     // config des widgets
     db_port->setMaximum(65535);
-    db_type->addItems(db_ctrl->getAvailableDrivers());
+    db_type->addItems(ctrl->getAvailableDrivers());
     db_pass->setEchoMode(QLineEdit::Password);
 }
 
@@ -79,7 +79,8 @@ void DBWidget::createActions()
     // appelle la méthode de connexion à la DB lors du clic sur le bouton
     this->connect(btn_ok, SIGNAL(clicked()), this, SLOT(handleDBConnection()));
 
-    this->connect(db_type, SIGNAL(currentIndexChanged(QString)), this, SLOT(onCurrentDBTypeChanged(QString)));
+    this->connect(db_type, SIGNAL(currentIndexChanged(QString)), this,
+                  SLOT(onCurrentDBTypeChanged(QString)));
 }
 
 void DBWidget::onCurrentDBTypeChanged(const QString &type)
@@ -98,11 +99,11 @@ void DBWidget::onCurrentDBTypeChanged(const QString &type)
  */
 void DBWidget::handleDBConnection()
 {
-    if(db_ctrl->isDBConnected())
-        db_ctrl->disconnectDB();
+    if(ctrl->isDBConnected())
+        ctrl->disconnectDB();
     else
-        db_ctrl->connectDB(db_host->text(), db_port->text().toInt(), db_login->text(),
-                           db_pass->text(), db_base->text(), db_type->currentText());
+        ctrl->connectDB(db_host->text(), db_port->text().toInt(), db_login->text(),
+                        db_pass->text(), db_base->text(), db_type->currentText());
 }
 
 void DBWidget::setEnabled(bool enabled)

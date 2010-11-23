@@ -2,7 +2,6 @@
 #define CUSTOMERMANAGER_H
 
 #include "models/customer.h"
-#include "managers/basemanager.h"
 
 #include <QSqlQuery>
 
@@ -10,7 +9,7 @@
 /**
  * Gestionnaire de clients
  */
-class CustomerManager : public BaseManager
+class CustomerManager
 {
 public:
     /**

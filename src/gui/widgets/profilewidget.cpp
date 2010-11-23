@@ -6,9 +6,9 @@
 #include <QMessageBox>
 
 
-ProfileWidget::ProfileWidget(ProfileController *ctrl, QWidget *parent) : QWidget(parent)
+ProfileWidget::ProfileWidget(QfactureCore *ctrl, QWidget *parent) : QWidget(parent)
 {
-    this->ctrl_profile = ctrl;
+    this->ctrl = ctrl;
 
     this->buildLayout();
     this->createActions();
@@ -87,7 +87,8 @@ void ProfileWidget::buildLayout()
 void ProfileWidget::createActions()
 {
     // affiche le profil dès qu'il est chargé
-    this->connect(ctrl_profile, SIGNAL(lastProfileLoaded()), this, SLOT(displayCurrentProfile()));
+    this->connect(ctrl, SIGNAL(lastProfileLoaded()), this,
+                  SLOT(displayCurrentProfile()));
 
     // propose de choisir un logo lors du cloc sur le bouton
     this->connect(btn_logo, SIGNAL(clicked()), this, SLOT(changeLogo()));
@@ -111,10 +112,11 @@ void ProfileWidget::clearContent()
 
 void ProfileWidget::loadLastProfile()
 {
-    if(this->ctrl_profile->loadLastProfile())
+    if(this->ctrl->loadLastProfile())
         return;
 
-    QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible de charger le profil utilisateur."));
+    QMessageBox::critical(this, trUtf8("Erreur !"),
+                          trUtf8("Impossible de charger le profil utilisateur."));
 }
 
 void ProfileWidget::displayCurrentProfile()
@@ -122,17 +124,17 @@ void ProfileWidget::displayCurrentProfile()
     QPixmap pic;
 
     /* Alimentation des widgets */
-    p_name->setText(this->ctrl_profile->getCurrent().getName());
-    p_siret->setText(this->ctrl_profile->getCurrent().getSiret());
-    p_address->setText(this->ctrl_profile->getCurrent().getAddress());
-    p_zip->setText(this->ctrl_profile->getCurrent().getZipCode());
-    p_city->setText(this->ctrl_profile->getCurrent().getCity());
-    p_phone->setText(this->ctrl_profile->getCurrent().getPhone());
-    p_mail->setText(this->ctrl_profile->getCurrent().getMail());
-    p_website->setText(this->ctrl_profile->getCurrent().getWebsite());
+    p_name->setText(this->ctrl->getCurrentProfile().getName());
+    p_siret->setText(this->ctrl->getCurrentProfile().getSiret());
+    p_address->setText(this->ctrl->getCurrentProfile().getAddress());
+    p_zip->setText(this->ctrl->getCurrentProfile().getZipCode());
+    p_city->setText(this->ctrl->getCurrentProfile().getCity());
+    p_phone->setText(this->ctrl->getCurrentProfile().getPhone());
+    p_mail->setText(this->ctrl->getCurrentProfile().getMail());
+    p_website->setText(this->ctrl->getCurrentProfile().getWebsite());
 
     /* Alimentation du widget logo */
-    pic.loadFromData(this->ctrl_profile->getCurrent().getLogo());
+    pic.loadFromData(this->ctrl->getCurrentProfile().getLogo());
     p_logo->setPixmap(pic);
 }
 
@@ -144,7 +146,7 @@ void ProfileWidget::changeLogo()
 
     /* Sélection du logo */
     image = QFileDialog::getOpenFileName(this, trUtf8("Qfacture - Importer un logo..."),
-                                             "", trUtf8("Image Files (*.png *.jpg *.bmp)"));
+                                         "", trUtf8("Image Files (*.png *.jpg *.bmp)"));
 
     // pas d'image sélectionnée
     if(image.isNull())
@@ -155,12 +157,13 @@ void ProfileWidget::changeLogo()
     /* Chargement de l'image */
     img_file.setFileName(image);
     if(!img_file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible d'ouvrir le fichier contenant le logo !"));
+        QMessageBox::critical(this, trUtf8("Erreur !"),
+                              trUtf8("Impossible d'ouvrir le fichier contenant le logo !"));
         return;
     }
 
     /* Mise à jour du profil */
-    this->ctrl_profile->getCurrent().setLogo(img_file.readAll());
+    this->ctrl->getCurrentProfile().setLogo(img_file.readAll());
 
     /* Affichage de l'image */
     img_pixmap.load(image);
@@ -172,17 +175,19 @@ void ProfileWidget::changeLogo()
 
 void ProfileWidget::save()
 {
-    this->ctrl_profile->getCurrent().setName(p_name->text());
-    this->ctrl_profile->getCurrent().setSiret(p_siret->text());
-    this->ctrl_profile->getCurrent().setAddress(p_address->text());
-    this->ctrl_profile->getCurrent().setZipCode(p_zip->text());
-    this->ctrl_profile->getCurrent().setCity(p_city->text());
-    this->ctrl_profile->getCurrent().setPhone(p_phone->text());
-    this->ctrl_profile->getCurrent().setMail(p_mail->text());
-    this->ctrl_profile->getCurrent().setWebsite(p_website->text());
+    this->ctrl->getCurrentProfile().setName(p_name->text());
+    this->ctrl->getCurrentProfile().setSiret(p_siret->text());
+    this->ctrl->getCurrentProfile().setAddress(p_address->text());
+    this->ctrl->getCurrentProfile().setZipCode(p_zip->text());
+    this->ctrl->getCurrentProfile().setCity(p_city->text());
+    this->ctrl->getCurrentProfile().setPhone(p_phone->text());
+    this->ctrl->getCurrentProfile().setMail(p_mail->text());
+    this->ctrl->getCurrentProfile().setWebsite(p_website->text());
 
-    if(ctrl_profile->saveCurrent())
-        QMessageBox::information(this, trUtf8("Profil enregistré"), trUtf8("Le profil a été enregistré."));
+    if(ctrl->saveCurrentProfile())
+        QMessageBox::information(this, trUtf8("Profil enregistré"),
+                                 trUtf8("Le profil a été enregistré."));
     else
-        QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Impossible d'enregistrer le profil utilisateur."));
+        QMessageBox::critical(this, trUtf8("Erreur !"),
+                              trUtf8("Impossible d'enregistrer le profil utilisateur."));
 }

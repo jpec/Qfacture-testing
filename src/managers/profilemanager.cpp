@@ -1,7 +1,7 @@
 #include "profilemanager.h"
+#include "controllers/dbcontroller.h"
 
 #include "QVariant"
-#include "QSqlError"
 
 
 Profile ProfileManager::get(int id)
@@ -15,11 +15,8 @@ Profile ProfileManager::get(int id)
 
     query.bindValue(":profile_id", QVariant(id));
 
-    if(!query.exec()) {
-        setError(query.lastError().databaseText(), query.lastQuery());
-
+    if(!DBController::getInstance()->exec(query))
         return Profile();
-    }
 
     // pas de profil avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un profil vide
@@ -54,14 +51,7 @@ bool ProfileManager::update(const Profile &profile)
 
     bindProfile(profile, query);
 
-    if(query.exec())
-        return true;
-    else
-    {
-        setError(query.lastError().databaseText(), query.lastQuery());
-
-        return false;
-    }
+    return DBController::getInstance()->exec(query);
 }
 
 void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)

@@ -1,7 +1,7 @@
 #ifndef PRODUCTWIDGET_H
 #define PRODUCTWIDGET_H
 
-#include "controllers/productcontroller.h"
+#include "qfacturecore.h"
 
 #include <QWidget>
 #include <QLineEdit>
@@ -17,7 +17,7 @@ class ProductWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductWidget(ProductController *ctrl, QWidget *parent = 0);
+    explicit ProductWidget(QfactureCore *ctrl, QWidget *parent = 0);
     ~ProductWidget();
 
 signals:
@@ -72,9 +72,9 @@ private:
 
 
     /**
-     * Pointeur vers le contrôleur des profils.
+     * Pointeur vers le contrôleur de l'appli.
      */
-    ProductController *ctrl_product;
+    QfactureCore *ctrl;
 
     /**
      * Layout permettant de créer facilement des formulaires

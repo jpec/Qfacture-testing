@@ -1,7 +1,7 @@
 #include "productmanager.h"
+#include "controllers/dbcontroller.h"
 
 #include "QVariant"
-#include "QSqlError"
 
 
 Product ProductManager::get(int id)
@@ -15,11 +15,8 @@ Product ProductManager::get(int id)
 
     query.bindValue(":product_id", QVariant(id));
 
-    if(!query.exec()) {
-        setError(query.lastError().databaseText(), query.lastQuery());
-
+    if(!DBController::getInstance()->exec(query))
         return Product();
-    }
 
     // pas de produit avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un produit vide
@@ -45,12 +42,7 @@ bool ProductManager::erase(int id)
 
     query.bindValue(":a_id", QVariant(id));
 
-    if(query.exec())
-        return true;
-
-    setError(query.lastError().databaseText(), query.lastQuery());
-
-    return false;
+    return DBController::getInstance()->exec(query);
 }
 
 bool ProductManager::insert(Product &product)
@@ -64,14 +56,12 @@ bool ProductManager::insert(Product &product)
 
     bindProduct(product, query);
 
-    if(query.exec())
+    if(DBController::getInstance()->exec(query))
     {
         product.setId(query.lastInsertId().toInt());
 
         return true;
     }
-
-    setError(query.lastError().databaseText(), query.lastQuery());
 
     return false;
 }
@@ -88,12 +78,7 @@ bool ProductManager::update(const Product &product)
 
     bindProduct(product, query);
 
-    if(query.exec())
-        return true;
-
-    setError(query.lastError().databaseText(), query.lastQuery());
-
-    return false;
+    return DBController::getInstance()->exec(query);
 }
 
 void ProductManager::bindProduct(const Product &product, QSqlQuery &query)

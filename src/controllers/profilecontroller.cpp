@@ -23,22 +23,12 @@ ProfileController::~ProfileController()
 
 Profile ProfileController::get(int id)
 {
-    Profile p = profile_manager.get(id);
-
-    if(profile_manager.hasError())
-        emit DBError(profile_manager.getLastErrorMessage());
-
-    return p;
+    return profile_manager.get(id);
 }
 
 bool ProfileController::save(Profile &p)
 {
-    bool success = profile_manager.save(p);
-
-    if(profile_manager.hasError())
-        emit DBError(profile_manager.getLastErrorMessage());
-
-    return success;
+    return profile_manager.save(p);
 }
 
 bool ProfileController::saveCurrent()
@@ -57,8 +47,6 @@ bool ProfileController::loadLastProfile()
 
     if(this->getCurrent().getId() == 0)
         return false;
-
-    emit lastProfileLoaded();
 
     return true;
 }

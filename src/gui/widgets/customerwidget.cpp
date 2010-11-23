@@ -3,10 +3,10 @@
 #include <QMessageBox>
 
 
-CustomerWidget::CustomerWidget(CustomerController *ctrl, QWidget *parent) :
+CustomerWidget::CustomerWidget(QfactureCore *ctrl, QWidget *parent) :
     QWidget(parent)
 {
-    this->ctrl_customer = ctrl;
+    this->ctrl = ctrl;
 
     this->buildLayout();
 }
@@ -59,7 +59,7 @@ void CustomerWidget::buildLayout()
 
 void CustomerWidget::loadCustomer(int id)
 {
-    this->customer = ctrl_customer->get(id);
+    this->customer = ctrl->getCustomer(id);
 
     if(customer.getId() == 0) {
         QMessageBox::critical(this, trUtf8("Erreur !"),
@@ -107,7 +107,7 @@ void CustomerWidget::save()
     customer.setPhone(c_phone->text());
     customer.setMail(c_mail->text());
 
-    if(!ctrl_customer->save(customer))
+    if(!ctrl->saveCustomer(customer))
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible d'enregistrer le client."));
     else {
@@ -132,7 +132,7 @@ void CustomerWidget::erase()
         return;
 
     if(customer.getId() != 0) {
-        if(ctrl_customer->erase(customer.getId())) {
+        if(ctrl->eraseCustomer(customer.getId())) {
             emit customerDeleted(customer.getId());
 
             QMessageBox::information(this, trUtf8("Client supprime"),

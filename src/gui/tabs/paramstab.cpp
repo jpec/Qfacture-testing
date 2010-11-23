@@ -34,8 +34,8 @@ void ParamsTab::buildLayout()
     gbox_db = new QGroupBox(trUtf8("Base de données"), this);
     gbox_profile = new QGroupBox(trUtf8("Profil"), this);
 
-    w_db = new DBWidget(DBController::getInstance(), gbox_db);
-    w_profile = new ProfileWidget(ProfileController::getInstance(), gbox_profile);
+    w_db = new DBWidget(this->core, gbox_db);
+    w_profile = new ProfileWidget(this->core, gbox_profile);
 
     w_profile->setEnabled(false);
 
@@ -55,19 +55,21 @@ void ParamsTab::buildLayout()
 void ParamsTab::createActions()
 {
     // informe le programme que l'état de la connexion à la DB a changé
-    connect(DBController::getInstance(), SIGNAL(DBConnected()), this, SLOT(onDBConnectionStateChanged()));
-    connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this, SLOT(onDBConnectionStateChanged()));
+    connect(this->core, SIGNAL(DBConnected()), this,
+            SLOT(onDBConnectionStateChanged()));
+    connect(this->core, SIGNAL(DBDisconnected()), this,
+            SLOT(onDBConnectionStateChanged()));
 
     // charge le dernier profil utilisé lors de la connexion de la DB
-    connect(DBController::getInstance(), SIGNAL(DBConnected()), w_profile, SLOT(loadLastProfile()));
+    connect(this->core, SIGNAL(DBConnected()), w_profile, SLOT(loadLastProfile()));
 
     // vide le contenu du "widget profile" lorsque la connexion avec la DB est coupée
-    connect(DBController::getInstance(), SIGNAL(DBDisconnected()), w_profile, SLOT(clearContent()));
+    connect(this->core, SIGNAL(DBDisconnected()), w_profile, SLOT(clearContent()));
 }
 
 void ParamsTab::onDBConnectionStateChanged()
 {
-    bool connexion_state = DBController::getInstance()->isDBConnected();
+    bool connexion_state = this->core->isDBConnected();
 
     w_profile->setEnabled(connexion_state);
     w_db->setEnabled(!connexion_state);

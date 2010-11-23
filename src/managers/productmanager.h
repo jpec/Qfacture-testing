@@ -2,7 +2,6 @@
 #define PRODUCTMANAGER_H
 
 #include "models/product.h"
-#include "managers/basemanager.h"
 
 #include <QSqlQuery>
 
@@ -10,7 +9,7 @@
 /**
  * Gestionnaire de produits
  */
-class ProductManager : public BaseManager
+class ProductManager
 {
 public:
     /**

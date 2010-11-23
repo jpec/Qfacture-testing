@@ -1,10 +1,122 @@
 #include "qfacturecore.h"
+#include "controllers/dbcontroller.h"
 
-#include <QSqlError>
-#include <QSqlQuery>
+#include <QStringList>
 
 
 QfactureCore::QfactureCore()
 {
+    initSignals();
+}
 
+void QfactureCore::initSignals()
+{
+    /** Signaux ré-émis **/
+
+    /// DBController
+    // erreur lors d'une requête à la DB
+    connect(DBController::getInstance(), SIGNAL(DBError(QString)), this,
+            SIGNAL(DBError(QString)));
+
+    // erreur à la connexion
+    connect(DBController::getInstance(), SIGNAL(DBConnectionError(QString)), this,
+            SIGNAL(DBConnectionError(QString)));
+
+    // connexion
+    connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
+            SIGNAL(DBConnected()));
+
+    // déconnexion
+    connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
+            SIGNAL(DBDisconnected()));
+}
+
+/* Wrapper des méthodes du contrôleur de la DB */
+
+QStringList QfactureCore::getAvailableDrivers() const
+{
+    return DBController::getInstance()->getAvailableDrivers();
+}
+
+void QfactureCore::connectDB(const QString &server, int port, const QString &login,
+                             const QString &pass, const QString &db_name, const QString &db_type)
+{
+    return DBController::getInstance()->connectDB(server, port, login, pass,
+                                                  db_name, db_type);
+}
+
+void QfactureCore::disconnectDB()
+{
+    return DBController::getInstance()->disconnectDB();
+}
+
+bool QfactureCore::isDBConnected() const
+{
+    return DBController::getInstance()->isDBConnected();
+}
+
+/* Wrapper des méthodes du contrôleur des profils */
+
+bool QfactureCore::loadLastProfile()
+{
+    if(!ProfileController::getInstance()->loadLastProfile())
+        return false;
+
+    emit lastProfileLoaded();
+
+    return true;
+}
+
+Profile& QfactureCore::getCurrentProfile()
+{
+    return ProfileController::getInstance()->getCurrent();
+}
+
+Profile QfactureCore::getProfile(int id)
+{
+    return ProfileController::getInstance()->get(id);
+}
+
+bool QfactureCore::saveProfile(Profile &p)
+{
+    return ProfileController::getInstance()->save(p);
+}
+
+bool QfactureCore::saveCurrentProfile()
+{
+    return ProfileController::getInstance()->saveCurrent();
+}
+
+/* Wrapper pour les méthodes du contrôleur des produits */
+
+bool QfactureCore::saveProduct(Product &p)
+{
+    return ProductController::getInstance()->save(p);
+}
+
+Product QfactureCore::getProduct(int id)
+{
+    return ProductController::getInstance()->get(id);
+}
+
+bool QfactureCore::eraseProduct(int id)
+{
+    return ProductController::getInstance()->erase(id);
+}
+
+/* Wrapper pour les méthodes du contrôleur des clients */
+
+bool QfactureCore::saveCustomer(Customer &p)
+{
+    return CustomerController::getInstance()->save(p);
+}
+
+Customer QfactureCore::getCustomer(int id)
+{
+    return CustomerController::getInstance()->get(id);
+}
+
+bool QfactureCore::eraseCustomer(int id)
+{
+    return CustomerController::getInstance()->erase(id);
 }

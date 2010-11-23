@@ -1,20 +1,17 @@
 #ifndef PROFILECONTROLLER_H
 #define PROFILECONTROLLER_H
 
-#include "models/profile.h"
 #include "managers/profilemanager.h"
-
-#include <QObject>
 
 
 /**
  * Contrôleur permettant de gérer les profils
  */
-class ProfileController : public QObject
+class ProfileController
 {
-    Q_OBJECT
+    friend class QfactureCore;
 
-public:
+private:
     /**
      * Retourne une instance unique du contrôleur
      *
@@ -54,7 +51,6 @@ public:
      */
     Profile get(int id);
 
-public slots:
     /**
      * Enregistre le profil actuellement chargé (s'il y en a un)
      *
@@ -62,21 +58,10 @@ public slots:
      */
     bool saveCurrent();
 
-signals:
-    /**
-     * Émit lorsque une erreur lors d'une requête à la DB survient
-     *
-     * @param error Le message d'erreur retourné
-     */
-    void DBError(const QString &error);
 
     /**
-     * Émit après la connexion à la DB, lorsque le profil de
-     * l'utilisateur a été chargé.
+     * Pour avoir un singleton
      */
-    void lastProfileLoaded();
-
-private:
     ProfileController();
     ProfileController(const ProfileController&);
     ProfileController& operator =(const ProfileController&);

@@ -1,7 +1,7 @@
 #ifndef CUSTOMERWIDGET_H
 #define CUSTOMERWIDGET_H
 
-#include "controllers/customercontroller.h"
+#include "qfacturecore.h"
 
 #include <QWidget>
 #include <QLineEdit>
@@ -16,7 +16,7 @@ class CustomerWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CustomerWidget(CustomerController *ctrl, QWidget *parent = 0);
+    explicit CustomerWidget(QfactureCore *ctrl, QWidget *parent = 0);
     ~CustomerWidget();
 
 signals:
@@ -71,9 +71,9 @@ private:
 
 
     /**
-     * Pointeur vers le contrôleur des profils.
+     * Pointeur vers le contrôleur de l'appli.
      */
-    CustomerController *ctrl_customer;
+    QfactureCore *ctrl;
 
     /**
      * Layout permettant de créer facilement des formulaires

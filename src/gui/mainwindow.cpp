@@ -1,8 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "gui/tabs/paramstab.h"
-#include "gui/tabs/customerstab.h"
-#include "gui/tabs/productstab.h"
 #include "managers/settingsmanager.h"
 
 #include <QMessageBox>
@@ -40,24 +37,17 @@ void MainWindow::createActions()
     this->connect(ui->action_propos, SIGNAL(triggered()), this, SLOT(about()));
 
     // lie l'évènement "DBConnectionError" à l'action correspondante
-    this->connect(DBController::getInstance(), SIGNAL(DBConnectionError(QString)),
-                  this, SLOT(onDBConnectionError(QString)));
+    this->connect(core, SIGNAL(DBConnectionError(QString)), this,
+                  SLOT(onDBConnectionError(QString)));
 
     // affiche un message dans la statusbar à la connexion à la DB
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
-                  SLOT(onDBConnected()));
+    this->connect(core, SIGNAL(DBConnected()), this, SLOT(onDBConnected()));
 
     // affiche un message dans la statusbar à la déconnexion à la DB
-    this->connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
-                  SLOT(onDBDisconnected()));
+    this->connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBDisconnected()));
 
     // lie l'évènement "DBError" à l'action correspondante
-    this->connect(ProductController::getInstance(), SIGNAL(DBError(QString)), this,
-                  SLOT(onDBError(QString)));
-
-    // lie l'évènement "DBError" à l'action correspondante
-    this->connect(CustomerController::getInstance(), SIGNAL(DBError(QString)), this,
-                  SLOT(onDBError(QString)));
+    this->connect(core, SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
 }
 
 void MainWindow::setupTabs()
@@ -68,10 +58,12 @@ void MainWindow::setupTabs()
 
     // clients
     customers_tab = new CustomersTab(core, this);
+    customers_tab->setEnabled(false);
     ui->tabWidget->addTab(customers_tab, trUtf8("Clients"));
 
     // prestations
     products_tab = new ProductsTab(core, this);
+    products_tab->setEnabled(false);
     ui->tabWidget->addTab(products_tab, trUtf8("Prestations"));
 }
 
@@ -79,7 +71,7 @@ void MainWindow::onQuit()
 {
     this->saveSettings();
 
-    DBController::getInstance()->disconnectDB();
+    core->disconnectDB();
 
     qApp->quit();
 }

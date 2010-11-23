@@ -12,7 +12,22 @@ class DBController : public QObject
 {
     Q_OBJECT
 
-public:
+    friend class QfactureCore;
+    friend class CustomerManager;
+    friend class ProductManager;
+    friend class ProfileManager;
+
+private:
+    /**
+     * Exécute la requête passée en paramètre, et émet un signal
+     * si elle échoue.
+     *
+     * @param query La requête à exécuter
+     *
+     * @return bool True si elle a été exécutée correctement, false sinon.
+     */
+    bool exec(QSqlQuery &query);
+
     /**
      * Retourne une instance unique du contrôleur
      *
@@ -58,7 +73,26 @@ public:
      */
     bool isDBConnected() const;
 
+    /**
+     * Pour avoir un singleton
+     */
+    DBController();
+    DBController(const DBController&);
+    DBController& operator =(const DBController&);
+
+    /**
+     * Instance de la connexion à la base de données.
+     */
+    QSqlDatabase db;
+
 signals:
+    /**
+     * Émit lorsque une erreur lors d'une requête à la DB survient
+     *
+     * @param error Le message d'erreur retourné
+     */
+    void DBError(const QString &error);
+
     /**
      * Émit lorsque une connexion a été établie avec la base de données
      */
@@ -73,16 +107,6 @@ signals:
      * Émit lorsque la connexion avec la base de donnée a échoué
      */
     void DBConnectionError(const QString &error);
-
-private:
-    DBController();
-    DBController(const DBController&);
-    DBController& operator =(const DBController&);
-
-    /**
-     * Instance de la connexion à la base de données.
-     */
-    QSqlDatabase db;
 };
 
 #endif // DBCONTROLLER_H

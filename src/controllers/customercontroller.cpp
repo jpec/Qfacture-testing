@@ -13,30 +13,15 @@ CustomerController* CustomerController::getInstance()
 
 Customer CustomerController::get(int id)
 {
-    Customer p = manager.get(id);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return p;
+    return manager.get(id);
 }
 
 bool CustomerController::save(Customer &p)
 {
-    bool success = manager.save(p);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return success;
+    return manager.save(p);
 }
 
 bool CustomerController::erase(int id)
 {
-    bool success = manager.erase(id);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return success;
+    return manager.erase(id);
 }

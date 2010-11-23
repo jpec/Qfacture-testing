@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     models/product.cpp \
     qfacturecore.cpp \
     managers/profilemanager.cpp \
-    managers/basemanager.cpp \
     gui/mainwindow.cpp \
     gui/widgets/profilewidget.cpp \
     gui/tabs/paramstab.cpp \
@@ -43,7 +42,6 @@ HEADERS  += models/person.h \
     models/product.h \
     qfacturecore.h \
     managers/profilemanager.h \
-    managers/basemanager.h \
     gui/mainwindow.h \
     gui/widgets/profilewidget.h \
     gui/tabs/paramstab.h \

@@ -12,30 +12,15 @@ ProductController* ProductController::getInstance()
 
 Product ProductController::get(int id)
 {
-    Product p = manager.get(id);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return p;
+    return manager.get(id);
 }
 
 bool ProductController::save(Product &p)
 {
-    bool success = manager.save(p);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return success;
+    return manager.save(p);
 }
 
 bool ProductController::erase(int id)
 {
-    bool success = manager.erase(id);
-
-    if(manager.hasError())
-        emit DBError(manager.getLastErrorMessage());
-
-    return success;
+    return manager.erase(id);
 }

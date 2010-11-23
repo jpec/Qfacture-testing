@@ -1,6 +1,7 @@
 #ifndef DBWIDGET_H
 #define DBWIDGET_H
 
+#include "qfacturecore.h"
 #include "controllers/dbcontroller.h"
 
 #include <QWidget>
@@ -16,7 +17,7 @@ class DBWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DBWidget(DBController *db_ctrl, QWidget *parent = 0);
+    explicit DBWidget(QfactureCore *ctrl, QWidget *parent = 0);
     ~DBWidget();
 
     /**
@@ -66,9 +67,9 @@ private:
 
 
     /**
-     * Pointeur vers le contrôleur de la base de données
+     * Pointeur vers le contrôleur de l'application
      */
-    DBController *db_ctrl;
+    QfactureCore *ctrl;
 
     /**
      * Layout permettant de créer facilement des formulaires
