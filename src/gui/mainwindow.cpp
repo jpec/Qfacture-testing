@@ -3,6 +3,7 @@
 #include "gui/tabs/paramstab.h"
 #include "gui/tabs/customerstab.h"
 #include "gui/tabs/productstab.h"
+#include "gui/tabs/invoicestab.h"
 #include "managers/settingsmanager.h"
 
 #include <QMessageBox>
@@ -66,6 +67,10 @@ void MainWindow::setupTabs()
 
     // prestations
     ui->tabWidget->addTab(new ProductsTab(core, this), trUtf8("Prestations"));
+
+    // liste des factures
+    ui->tabWidget->addTab(new InvoicesTab(core, this), trUtf8("Liste des factures"));
+
 }
 
 void MainWindow::onQuit()
