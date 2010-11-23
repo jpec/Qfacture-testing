@@ -1,7 +1,7 @@
 #include "sqltable.h"
+#include "controllers/dbcontroller.h"
 
 #include <QSqlQuery>
-#include <QSqlError>
 #include <assert.h>
 
 
@@ -91,12 +91,8 @@ void SQLTable::feedTable()
     if(!like_filter.toString().isEmpty())
         query.bindValue(":like_filter", like_filter);
 
-    if(!query.exec())
-    {
-        emit DBError(query.lastError().databaseText());
-
+    if(!DBController::getInstance()->exec(query))
         return;
-    }
 
     table->setRowCount(query.size());
 

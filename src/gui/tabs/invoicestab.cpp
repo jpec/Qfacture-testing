@@ -10,8 +10,6 @@ InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
     this->createActions();
 
     this->loadInvoices();
-
-    onDBConnectionStateChanged();
 }
 
 InvoicesTab::~InvoicesTab()
@@ -48,8 +46,8 @@ void InvoicesTab::buildLayout()
     labels.append(trUtf8("Client"));
     columns.append("Amount");
     labels.append(trUtf8("Montant"));
-    columns.append("Date de paiement");
-    labels.append(trUtf8("Date2"));
+    columns.append("Date");
+    labels.append(trUtf8("Date de paiement"));
     columns.append("Payment");
     labels.append(trUtf8("Mode de paiement"));
     columns.append("Comment");
@@ -83,7 +81,7 @@ void InvoicesTab::buildLayout()
     btn_del->setEnabled(false);
 
     // création du tableau des factures
-    invoices_table = new SQLTable("invoices");
+    invoices_table = new SQLTable("facture");
 
     invoices_table->setColumns(columns, labels);
 
@@ -108,18 +106,14 @@ void InvoicesTab::buildLayout()
 void InvoicesTab::createActions()
 {
     // pour (dés)activer l'onglet en fonction de l'état de la connexion à la DB
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()), this,
+    this->connect(core, SIGNAL(DBConnected()), this,
                   SLOT(onDBConnectionStateChanged()));
-    this->connect(DBController::getInstance(), SIGNAL(DBDisconnected()), this,
+    this->connect(core, SIGNAL(DBDisconnected()), this,
                   SLOT(onDBConnectionStateChanged()));
 
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(DBController::getInstance(), SIGNAL(DBConnected()),
-                  invoices_table, SLOT(feedTable()));
-
-    // si SQLTable remonte une erreur SQL, on l'envoie à notre père
-    this->connect(invoices_table, SIGNAL(DBError(QString)), parent(),
-                  SLOT(onDBError(QString)));
+    this->connect(core, SIGNAL(DBConnected()), invoices_table,
+                  SLOT(feedTable()));
 
     // charge le profil d'un client lors du clic sur ce dernier dans le tableau
     this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
@@ -159,13 +153,13 @@ void InvoicesTab::loadInvoice(QTableWidgetItem *item)
 
 void InvoicesTab::loadInvoices()
 {
-    if(!DBController::getInstance()->isDBConnected())
+    if(!core->isDBConnected())
         return;
 }
 
 void InvoicesTab::onDBConnectionStateChanged()
 {
-    bool connected = DBController::getInstance()->isDBConnected();
+    bool connected = core->isDBConnected();
 
     gbox_actions->setEnabled(connected);
     gbox_invoices->setEnabled(connected);

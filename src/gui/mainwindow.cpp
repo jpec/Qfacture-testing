@@ -69,7 +69,8 @@ void MainWindow::setupTabs()
 
     // liste des factures
     invoices_tab = new InvoicesTab(core, this);
-    ui->tabWidget->addTab(invoices_tab, trUtf8("Liste des factures"));
+    invoices_tab->setEnabled(false);
+    ui->tabWidget->addTab(invoices_tab, trUtf8("Factures"));
 }
 
 void MainWindow::onQuit()

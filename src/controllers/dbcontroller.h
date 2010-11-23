@@ -13,9 +13,12 @@ class DBController : public QObject
     Q_OBJECT
 
     friend class QfactureCore;
+
     friend class CustomerManager;
     friend class ProductManager;
     friend class ProfileManager;
+
+    friend class SQLTable;
 
 private:
     /**
