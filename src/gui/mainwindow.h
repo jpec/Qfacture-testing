@@ -8,6 +8,7 @@
 #include "gui/tabs/paramstab.h"
 #include "gui/tabs/productstab.h"
 #include "gui/tabs/customerstab.h"
+#include "gui/tabs/invoicestab.h"
 
 
 namespace Ui {
@@ -106,6 +107,11 @@ private:
      * Widget de l'onglet prestations
      */
     ProductsTab *products_tab;
+
+    /**
+     * Widget de l'onglet liste des factures
+     */
+    InvoicesTab *invoices_tab;
 
     /**
      * Pointeur vers le coeur logique de l'application.

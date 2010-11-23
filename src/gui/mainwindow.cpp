@@ -23,6 +23,7 @@ MainWindow::~MainWindow()
     delete params_tab;
     delete customers_tab;
     delete products_tab;
+    delete invoices_tab;
 
     delete ui;
 }
@@ -65,6 +66,10 @@ void MainWindow::setupTabs()
     products_tab = new ProductsTab(core, this);
     products_tab->setEnabled(false);
     ui->tabWidget->addTab(products_tab, trUtf8("Prestations"));
+
+    // liste des factures
+    invoices_tab = new InvoicesTab(core, this);
+    ui->tabWidget->addTab(invoices_tab, trUtf8("Liste des factures"));
 }
 
 void MainWindow::onQuit()
