@@ -26,7 +26,7 @@ public:
      *
      * \todo Déplacer la définition du n° ailleurs (fichier dédié ?).
      */
-    QString version() const { return "1.0 alpha"; }
+    QString version() const { return "1.0 testing"; }
 };
 
 #endif // QFACTURECORE_H
