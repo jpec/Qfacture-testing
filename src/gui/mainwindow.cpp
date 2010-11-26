@@ -98,6 +98,7 @@ void MainWindow::onDBConnected()
 
     customers_tab->setEnabled();
     products_tab->setEnabled();
+    invoices_tab->setEnabled();
 }
 
 void MainWindow::onDBDisconnected()
@@ -106,6 +107,7 @@ void MainWindow::onDBDisconnected()
 
     customers_tab->setEnabled(false);
     products_tab->setEnabled(false);
+    invoices_tab->setEnabled(false);
 }
 
 void MainWindow::saveSettings()
