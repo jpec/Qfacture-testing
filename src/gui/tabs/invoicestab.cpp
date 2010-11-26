@@ -1,6 +1,9 @@
 #include "invoicestab.h"
 #include "controllers/dbcontroller.h"
 
+#include <QMessageBox>
+
+
 InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
     QWidget(parent)
 {
@@ -101,6 +104,14 @@ void InvoicesTab::createActions()
     this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
                   SLOT(loadInvoice(QTableWidgetItem*)));
 
+    // suppression de la facture sélectionnée lors du clic sur le bouton
+    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+
+    // (dés)active les boutons "ouvrir" et "supprimer" en fonction des lignes
+    // sélectionnées (ou pas) dans le tableau
+    this->connect(invoices_table->getWidget(), SIGNAL(itemSelectionChanged()),
+                  this, SLOT(onSelectionChanged()));
+
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
                   SLOT(onSearchFiltersChanged()));
@@ -114,18 +125,31 @@ void InvoicesTab::onSearchFiltersChanged()
                                    QVariant(search->text()));
 }
 
-void InvoicesTab::onNewClicked()
+void InvoicesTab::onSelectionChanged()
 {
-    btn_new->setEnabled(false);
-    btn_open->setEnabled(true);
-    btn_del->setEnabled(true);
+    bool sth_selected = invoices_table->getWidget()->selectedItems().length() != 0;
+
+    btn_open->setEnabled(sth_selected);
+    btn_del->setEnabled(sth_selected);
 }
 
 void InvoicesTab::onDelClicked()
 {
-    btn_new->setEnabled(true);
-    btn_open->setEnabled(false);
-    btn_del->setEnabled(false);
+    QMessageBox msgBox;
+
+    // on vérifie qu'il y a bien quelque chose de sélectionné
+    if(invoices_table->getWidget()->selectedItems().length() == 0)
+        return;
+
+    msgBox.setText(trUtf8("Voulez-vous vraiment supprimer cette facture ?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::No)
+        return;
+
+    QMessageBox::information(this, "Info", QString(trUtf8("ID cliqué :"))
+                            +invoices_table->getWidget()->selectedItems()[0]->data(Qt::UserRole).toString());
 }
 
 void InvoicesTab::loadInvoice(QTableWidgetItem *item)

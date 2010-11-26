@@ -35,11 +35,6 @@ public slots:
     void loadInvoices();
 
 private slots:
-    /**
-     * (Dés)active les boutons qui vont bien lors du clic sur le bouton "nouvelle
-     * facture"
-     */
-    void onNewClicked();
 
     /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
@@ -59,6 +54,11 @@ private slots:
      * Appelé lorsque les critères de recherche ont changé
      */
     void onSearchFiltersChanged();
+
+    /**
+     * Appelé lorsque la facture sélectionnée change.
+     */
+    void onSelectionChanged();
 
 private:
     /**
