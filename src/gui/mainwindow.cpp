@@ -140,7 +140,7 @@ void MainWindow::about()
                        trUtf8("Le logiciel libre de facturation pour les "
                               "Auto-Entrepreneurs!\n"
                               "--\n"
-                              "Copyrigh : Julien PECQUEUR\n"
+                              "Copyright : Julien PECQUEUR\n"
                               "Licence : GPL\n"
                               "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>\n"
                               "Co-auteur : Kévin Gomez <contact@kevingomez.fr>\n"
