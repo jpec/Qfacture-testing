@@ -22,6 +22,16 @@ DBController::DBController()
     tables_definitions["article"]["Name"] = trUtf8("Nom");
     tables_definitions["article"]["Price"] = trUtf8("Prix");
     tables_definitions["article"]["Comment"] = trUtf8("Description");
+
+    // table facture
+    tables_definitions["facture"]["id"] = trUtf8("Identifiant");
+    tables_definitions["facture"]["idClient"] = trUtf8("Identifiant du client");
+    tables_definitions["facture"]["Amount"] = trUtf8("Montant");
+    tables_definitions["facture"]["Comment"] = trUtf8("Commentaire");
+    tables_definitions["facture"]["Payment"] = trUtf8("Mode de paiement");
+    tables_definitions["facture"]["Reference"] = trUtf8("Référence");
+    tables_definitions["facture"]["Type"] = trUtf8("Type");
+    tables_definitions["facture"]["Date"] = trUtf8("Date");
 }
 
 DBController* DBController::getInstance()

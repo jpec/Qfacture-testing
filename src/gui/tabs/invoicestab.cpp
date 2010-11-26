@@ -36,22 +36,10 @@ InvoicesTab::~InvoicesTab()
 void InvoicesTab::buildLayout()
 {
     // définition des colonnes du tableau
-    columns.append("Reference");
-    labels.append(trUtf8("Référence"));
-    columns.append("Date");
-    labels.append(trUtf8("Date de facturation"));
-    columns.append("Type");
-    labels.append(trUtf8("Type"));
-    columns.append("Client");
-    labels.append(trUtf8("Client"));
-    columns.append("Amount");
-    labels.append(trUtf8("Montant"));
-    columns.append("Date");
-    labels.append(trUtf8("Date de paiement"));
-    columns.append("Payment");
-    labels.append(trUtf8("Mode de paiement"));
-    columns.append("Comment");
-    labels.append(trUtf8("Commentaire"));
+    QStringList not_wanted = QStringList() << "id" << "idClient";
+
+    columns = core->getDBColumns("facture", not_wanted);
+    labels = core->getDBLabels("facture", not_wanted);
 
     // construction des layouts
     layout = new QVBoxLayout(this);
@@ -69,7 +57,7 @@ void InvoicesTab::buildLayout()
     search_filters = new QComboBox();
 
     // définition des filtres de recherche disponibles
-    search_filters->addItems(QStringList(labels));
+    search_filters->addItems(labels);
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence(QKeySequence::New));
