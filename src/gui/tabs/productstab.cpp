@@ -39,12 +39,10 @@ ProductsTab::~ProductsTab()
 void ProductsTab::buildLayout()
 {
     // définition des colonnes du tableau
-    columns.append("Name");
-    labels.append(trUtf8("Nom"));
-    columns.append("Price");
-    labels.append(trUtf8("Prix"));
-    columns.append("Comment");
-    labels.append(trUtf8("Description"));
+    QStringList not_wanted = QStringList() << "id";
+
+    columns = core->getDBColumns("article", not_wanted);
+    labels = core->getDBLabels("article", not_wanted);
 
     // construction des layouts
     layout = new QVBoxLayout(this);
@@ -58,7 +56,7 @@ void ProductsTab::buildLayout()
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_products = new QGroupBox(trUtf8("Liste des produits"), this);
     gbox_products_form = new QGroupBox(trUtf8("Client"));
-    w_product_edit = new ProductWidget(this->core);
+    w_product_edit = new ProductWidget(core);
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
@@ -67,7 +65,7 @@ void ProductsTab::buildLayout()
     search_filters = new QComboBox();
 
     // définition des filtres de recherche disponibles
-    search_filters->addItems(QStringList(labels));
+    search_filters->addItems(labels);
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence(QKeySequence::New));

@@ -16,6 +16,12 @@ DBController::DBController()
     tables_definitions["client"]["City"] = trUtf8("Ville");
     tables_definitions["client"]["Phone"] = trUtf8("Téléphone");
     tables_definitions["client"]["Mail"] = trUtf8("Mail");
+
+    // table article
+    tables_definitions["article"]["id"] = trUtf8("Identifiant");
+    tables_definitions["article"]["Name"] = trUtf8("Nom");
+    tables_definitions["article"]["Price"] = trUtf8("Prix");
+    tables_definitions["article"]["Comment"] = trUtf8("Description");
 }
 
 DBController* DBController::getInstance()
