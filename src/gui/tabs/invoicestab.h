@@ -95,7 +95,7 @@ private:
     /**
      * Layout contenant les boutons nouveau, sauvegarder et supprimer
      */
-    QVBoxLayout *actions_layout;
+    QHBoxLayout *actions_layout;
 
     /**
      * Groupbox servant de conteneur pour la liste des actions
@@ -108,9 +108,9 @@ private:
     QPushButton *btn_new;
 
     /**
-     * Bouton "Enregistrer facture"
+     * Bouton "Ouvrir facture"
      */
-    QPushButton *btn_save;
+    QPushButton *btn_open;
 
     /**
      * Bouton "Supprimer facture"

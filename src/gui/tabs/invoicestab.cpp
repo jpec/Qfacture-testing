@@ -15,7 +15,7 @@ InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
 InvoicesTab::~InvoicesTab()
 {
     delete btn_new;
-    delete btn_save;
+    delete btn_open;
     delete btn_del;
     delete search;
     delete search_filters;
@@ -29,7 +29,6 @@ InvoicesTab::~InvoicesTab()
 
     delete gbox_actions;
     delete gbox_invoices;
-  //  delete gbox_customers_form;
 
 }
 
@@ -44,14 +43,14 @@ void InvoicesTab::buildLayout()
     // construction des layouts
     layout = new QVBoxLayout(this);
     invoices_layout = new QVBoxLayout();
-    actions_layout = new QVBoxLayout();
+    actions_layout = new QHBoxLayout();
     search_form_layout = new QHBoxLayout();
 
     // création des widgets
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_invoices = new QGroupBox(trUtf8("Liste des factures"), this);
     btn_new = new QPushButton(trUtf8("Nouvelle facture"));
-    btn_save = new QPushButton(trUtf8("Enregistrer"));
+    btn_open = new QPushButton(trUtf8("Ouvrir"));
     btn_del = new QPushButton(trUtf8("Supprimer la facture"));
     search = new QLineEdit();
     search_filters = new QComboBox();
@@ -60,12 +59,12 @@ void InvoicesTab::buildLayout()
     search_filters->addItems(labels);
 
     // définition des raccourcis clavier pour les boutons
-    btn_new->setShortcut(QKeySequence(QKeySequence::New));
-    btn_save->setShortcut(QKeySequence(QKeySequence::Save));
-    btn_del->setShortcut(QKeySequence(QKeySequence::Delete));
+    btn_new->setShortcut(QKeySequence::New);
+    btn_open->setShortcut(QKeySequence::Open);
+    btn_del->setShortcut(QKeySequence::Delete);
 
     // désactivation des boutons et widgets inutiles (pour le moment)
-    btn_save->setEnabled(false);
+    btn_open->setEnabled(false);
     btn_del->setEnabled(false);
 
     // création du tableau des factures
@@ -82,11 +81,12 @@ void InvoicesTab::buildLayout()
     gbox_invoices->setLayout(invoices_layout);
 
     actions_layout->addWidget(btn_new);
-    actions_layout->addWidget(btn_save);
+    actions_layout->addWidget(btn_open);
     actions_layout->addWidget(btn_del);
     gbox_actions->setLayout(actions_layout);
 
     layout->addWidget(gbox_invoices);
+    layout->addWidget(gbox_actions);
 
     setLayout(layout);
 }
@@ -117,14 +117,14 @@ void InvoicesTab::onSearchFiltersChanged()
 void InvoicesTab::onNewClicked()
 {
     btn_new->setEnabled(false);
-    btn_save->setEnabled(true);
+    btn_open->setEnabled(true);
     btn_del->setEnabled(true);
 }
 
 void InvoicesTab::onDelClicked()
 {
     btn_new->setEnabled(true);
-    btn_save->setEnabled(false);
+    btn_open->setEnabled(false);
     btn_del->setEnabled(false);
 }
 

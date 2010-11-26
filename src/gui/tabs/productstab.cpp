@@ -68,10 +68,10 @@ void ProductsTab::buildLayout()
     search_filters->addItems(labels);
 
     // définition des raccourcis clavier pour les boutons
-    btn_new->setShortcut(QKeySequence(QKeySequence::New));
-    btn_save->setShortcut(QKeySequence(QKeySequence::Save));
-    btn_cancel->setShortcut(QKeySequence(QKeySequence::Undo));
-    btn_del->setShortcut(QKeySequence(QKeySequence::Delete));
+    btn_new->setShortcut(QKeySequence::New);
+    btn_save->setShortcut(QKeySequence::Save);
+    btn_cancel->setShortcut(QKeySequence::Undo);
+    btn_del->setShortcut(QKeySequence::Delete);
 
     // désactivation des boutons et widgets inutiles (pour le moment)
     w_product_edit->setEnabled(false);
