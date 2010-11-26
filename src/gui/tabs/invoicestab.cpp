@@ -105,12 +105,6 @@ void InvoicesTab::buildLayout()
 
 void InvoicesTab::createActions()
 {
-    // pour (dés)activer l'onglet en fonction de l'état de la connexion à la DB
-    this->connect(core, SIGNAL(DBConnected()), this,
-                  SLOT(onDBConnectionStateChanged()));
-    this->connect(core, SIGNAL(DBDisconnected()), this,
-                  SLOT(onDBConnectionStateChanged()));
-
     // remplissage du tableau dès que la connexion à la DB est établies
     this->connect(core, SIGNAL(DBConnected()), invoices_table,
                   SLOT(feedTable()));
@@ -157,11 +151,9 @@ void InvoicesTab::loadInvoices()
         return;
 }
 
-void InvoicesTab::onDBConnectionStateChanged()
+void InvoicesTab::setEnabled(bool state)
 {
-    bool connected = core->isDBConnected();
-
-    gbox_actions->setEnabled(connected);
-    gbox_invoices->setEnabled(connected);
+    gbox_actions->setEnabled(state);
+    gbox_invoices->setEnabled(state);
 }
 
