@@ -1,16 +1,12 @@
-#-------------------------------------------------
-#
+# -------------------------------------------------
 # Project created by QtCreator 2010-10-26T13:40:37
-#
-#-------------------------------------------------
-
-QT       += core gui sql
-
+# -------------------------------------------------
+QT += core \
+    gui \
+    sql
 TARGET = Qfacture
 TEMPLATE = app
-
-
-SOURCES += main.cpp\
+SOURCES += main.cpp \
     models/person.cpp \
     models/customer.cpp \
     models/profile.cpp \
@@ -34,9 +30,9 @@ SOURCES += main.cpp\
     controllers/productcontroller.cpp \
     gui/tabs/productstab.cpp \
     gui/widgets/productwidget.cpp \
-    gui/tabs/invoicestab.cpp
-
-HEADERS  += models/person.h \
+    gui/tabs/invoicestab.cpp \
+    gui/tabs/invoicetab.cpp
+HEADERS += models/person.h \
     models/customer.h \
     models/profile.h \
     models/template.h \
@@ -59,6 +55,6 @@ HEADERS  += models/person.h \
     controllers/productcontroller.h \
     gui/tabs/productstab.h \
     gui/widgets/productwidget.h \
-    gui/tabs/invoicestab.h
-
-FORMS    += gui/mainwindow.ui \
+    gui/tabs/invoicestab.h \
+    gui/tabs/invoicetab.h
+FORMS += gui/mainwindow.ui

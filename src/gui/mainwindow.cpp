@@ -24,6 +24,7 @@ MainWindow::~MainWindow()
     delete customers_tab;
     delete products_tab;
     delete invoices_tab;
+    delete invoice_tab;
 
     delete ui;
 }

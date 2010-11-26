@@ -155,6 +155,13 @@ void InvoicesTab::onDelClicked()
 void InvoicesTab::loadInvoice(QTableWidgetItem *item)
 {
     //w_customer_edit->loadCustomer(item->data(Qt::UserRole).toInt());
+
+
+    // nouvel onglet facture
+    //invoice_tab = new InvoicesTab(core, this);
+    //invoice_tab->setEnabled(false);
+    //ui->tabWidget->addTab(invoice_tab, trUtf8("Facture XXXXX"));
+
 }
 
 void InvoicesTab::loadInvoices()
