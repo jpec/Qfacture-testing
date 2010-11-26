@@ -55,6 +55,20 @@ bool QfactureCore::isDBConnected() const
     return DBController::getInstance()->isDBConnected();
 }
 
+QStringList QfactureCore::getDBLabels(const QString& table,
+                                      const QStringList& except) const
+{
+    return DBController::getInstance()->getLabels(table, except);
+}
+
+
+QStringList QfactureCore::getDBColumns(const QString& table,
+                                       const QStringList& except) const
+{
+    return DBController::getInstance()->getColumns(table, except);
+}
+
+
 /* Wrapper des méthodes du contrôleur des profils */
 
 bool QfactureCore::loadLastProfile()

@@ -1,6 +1,7 @@
 #ifndef DBCONTROLLER_H
 #define DBCONTROLLER_H
 
+#include <QHash>
 #include <QObject>
 #include <QSqlDatabase>
 
@@ -77,16 +78,40 @@ private:
     bool isDBConnected() const;
 
     /**
+     * Retourne la liste des labels des colonnes d'une table donnée.
+     *
+     * @param table Nom de la table
+     * @param except Liste des noms des colonnes dont on ne veut pas le label
+     */
+    QStringList getLabels(const QString& table, const QStringList& except) const;
+
+    /**
+     * Retourne la liste des colonnes d'une table donnée.
+     *
+     * @param table Nom de la table
+     * @param except Colonnes à exclure
+     */
+    QStringList getColumns(const QString& table, const QStringList& except) const;
+
+    /**
      * Pour avoir un singleton
      */
     DBController();
     DBController(const DBController&);
     DBController& operator =(const DBController&);
 
+
     /**
      * Instance de la connexion à la base de données.
      */
     QSqlDatabase db;
+
+    /**
+     * Dictionnaire associant les noms des tables de la DB avec
+     * un autre dictionnaire contenant les noms des colonnes associés à leurs
+     * labels
+     */
+    QHash<QString, QHash<QString, QString> > tables_definitions;
 
 signals:
     /**

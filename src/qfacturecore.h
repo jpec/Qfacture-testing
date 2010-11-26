@@ -50,6 +50,16 @@ public:
      */
     bool isDBConnected() const;
 
+    /**
+     * @see DBController::getLabels()
+     */
+    QStringList getDBLabels(const QString& table, const QStringList& except) const;
+
+    /**
+     * @see DBController::getColumns()
+     */
+    QStringList getDBColumns(const QString& table, const QStringList& except) const;
+
 
     /* Wrapper pour les méthodes du contrôleur des profils */
 

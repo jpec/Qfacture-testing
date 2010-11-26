@@ -109,6 +109,8 @@ void DBWidget::handleDBConnection()
 void DBWidget::setEnabled(bool enabled)
 {
     btn_ok->setText(!enabled ? trUtf8("Déconnexion") : trUtf8("Connexion"));
+
+    db_type->setEnabled(enabled);
     db_host->setEnabled(enabled);
     db_port->setEnabled(enabled);
     db_login->setEnabled(enabled);

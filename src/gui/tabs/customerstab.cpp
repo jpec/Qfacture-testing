@@ -41,20 +41,10 @@ CustomersTab::~CustomersTab()
 void CustomersTab::buildLayout()
 {
     // définition des colonnes du tableau
-    columns.append("Name");
-    labels.append(trUtf8("Nom"));
-    columns.append("Adress");
-    labels.append(trUtf8("Adresse"));
-    columns.append("Adress2");
-    labels.append(trUtf8("Complément"));
-    columns.append("Zip");
-    labels.append(trUtf8("Code postal"));
-    columns.append("City");
-    labels.append(trUtf8("Ville"));
-    columns.append("Phone");
-    labels.append(trUtf8("Téléphone"));
-    columns.append("Mail");
-    labels.append(trUtf8("Mail"));
+    QStringList not_wanted = QStringList() << "id";
+
+    columns = core->getDBColumns("client", not_wanted);
+    labels = core->getDBLabels("client", not_wanted);
 
     // construction des layouts
     layout = new QVBoxLayout(this);
@@ -68,7 +58,7 @@ void CustomersTab::buildLayout()
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_customers = new QGroupBox(trUtf8("Liste des clients"), this);
     gbox_customers_form = new QGroupBox(trUtf8("Client"));
-    w_customer_edit = new CustomerWidget(this->core);
+    w_customer_edit = new CustomerWidget(core);
     btn_new = new QPushButton(trUtf8("Nouveau"));
     btn_save = new QPushButton(trUtf8("Enregistrer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
@@ -77,7 +67,7 @@ void CustomersTab::buildLayout()
     search_filters = new QComboBox();
 
     // définition des filtres de recherche disponibles
-    search_filters->addItems(QStringList(labels));
+    search_filters->addItems(labels);
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence(QKeySequence::New));
