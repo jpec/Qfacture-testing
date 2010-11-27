@@ -97,8 +97,7 @@ void InvoicesTab::buildLayout()
 void InvoicesTab::createActions()
 {
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(core, SIGNAL(DBConnected()), invoices_table,
-                  SLOT(feedTable()));
+    this->connect(core, SIGNAL(DBConnected()), this, SLOT(loadInvoices()));
 
     // charge le profil d'un client lors du clic sur ce dernier dans le tableau
     this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
@@ -168,6 +167,8 @@ void InvoicesTab::loadInvoices()
 {
     if(!core->isDBConnected())
         return;
+
+    invoices_table->feedTable();
 }
 
 void InvoicesTab::setEnabled(bool state)

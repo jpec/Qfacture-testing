@@ -80,6 +80,8 @@ bool DBController::exec(QSqlQuery &query)
     if(!query.exec()) {
         emit DBError(query.lastError().databaseText());
 
+        query.finish();
+
         return false;
     }
 

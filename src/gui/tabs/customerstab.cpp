@@ -115,8 +115,7 @@ void CustomersTab::buildLayout()
 void CustomersTab::createActions()
 {
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(this->core, SIGNAL(DBConnected()), customers_table,
-                  SLOT(feedTable()));
+    this->connect(core, SIGNAL(DBConnected()), this, SLOT(loadCustomers()));
 
     // si SQLTable remonte une erreur SQL, on l'envoie à notre père
     this->connect(customers_table, SIGNAL(DBError(QString)), parent(),
@@ -141,10 +140,10 @@ void CustomersTab::createActions()
 
     // rafraichit les données du tableau à l'enregistrement ou à la suppression
     // d'un client
-    this->connect(w_customer_edit, SIGNAL(customerSaved()), customers_table,
-                  SLOT(feedTable()));
-    this->connect(w_customer_edit, SIGNAL(customerDeleted(int)), customers_table,
-                  SLOT(feedTable()));
+    this->connect(w_customer_edit, SIGNAL(customerSaved()), this,
+                  SLOT(loadCustomers()));
+    this->connect(w_customer_edit, SIGNAL(customerDeleted(int)), this,
+                  SLOT(loadCustomers()));
 
     // on réactive les boutons qu'il faut à la sauvegarde d'un client
     this->connect(w_customer_edit, SIGNAL(customerSaved()), this,
@@ -205,6 +204,8 @@ void CustomersTab::loadCustomers()
 {
     if(!this->core->isDBConnected())
         return;
+
+    customers_table->feedTable();
 }
 
 void CustomersTab::setEnabled(bool state)

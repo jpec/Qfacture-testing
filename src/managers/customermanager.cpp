@@ -7,6 +7,7 @@
 Customer CustomerManager::get(int id)
 {
     QSqlQuery query;
+    Customer c;
 
     query.prepare(
             "SELECT id, Name, Adress, Adress2, Zip, City, Phone, Mail "
@@ -16,14 +17,16 @@ Customer CustomerManager::get(int id)
     query.bindValue(":customer_id", QVariant(id));
 
     if(!DBController::getInstance()->exec(query))
-        return Customer();
+        return c;
 
     // pas de client avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un client vide
-    if(!query.next())
-        return Customer();
+    if(query.next())
+        c = makeCustomer(query);
 
-    return makeCustomer(query);
+    query.finish();
+
+    return c;
 }
 
 bool CustomerManager::save(Customer &customer)
@@ -42,7 +45,14 @@ bool CustomerManager::erase(int id)
 
     query.bindValue(":c_id", QVariant(id));
 
-    return DBController::getInstance()->exec(query);
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
+    return false;
 }
 
 bool CustomerManager::insert(Customer &customer)
@@ -60,6 +70,8 @@ bool CustomerManager::insert(Customer &customer)
     if(DBController::getInstance()->exec(query))
     {
         customer.setId(query.lastInsertId().toInt());
+
+        query.finish();
 
         return true;
     }
@@ -81,7 +93,14 @@ bool CustomerManager::update(const Customer &customer)
 
     bindCustomer(customer, query);
 
-    return DBController::getInstance()->exec(query);
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
+    return false;
 }
 
 void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query)
