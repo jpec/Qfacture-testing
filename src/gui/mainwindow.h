@@ -9,7 +9,7 @@
 #include "gui/tabs/productstab.h"
 #include "gui/tabs/customerstab.h"
 #include "gui/tabs/invoicestab.h"
-#include "gui/tabs/invoicetab.h"
+// #include "gui/tabs/invoicetab.h"
 
 
 namespace Ui {
@@ -117,7 +117,7 @@ private:
     /**
      * Widget de l'onglet facture
      */
-    InvoiceTab *invoice_tab;
+    //InvoiceTab *invoice_tab;
 
     /**
      * Pointeur vers le coeur logique de l'application.
