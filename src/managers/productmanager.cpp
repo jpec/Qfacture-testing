@@ -7,6 +7,7 @@
 Product ProductManager::get(int id)
 {
     QSqlQuery query;
+    Product p;
 
     query.prepare(
             "SELECT id, Name, Price, Comment "
@@ -16,14 +17,16 @@ Product ProductManager::get(int id)
     query.bindValue(":product_id", QVariant(id));
 
     if(!DBController::getInstance()->exec(query))
-        return Product();
+        return p;
 
     // pas de produit avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un produit vide
-    if(!query.next())
-        return Product();
+    if(query.next())
+        p = makeProduct(query);
 
-    return makeProduct(query);
+    query.finish();
+
+    return p;
 }
 
 bool ProductManager::save(Product &product)
@@ -34,6 +37,7 @@ bool ProductManager::save(Product &product)
 bool ProductManager::erase(int id)
 {
     QSqlQuery query;
+    bool result;
 
     if(id == 0)
         return false;
@@ -42,7 +46,11 @@ bool ProductManager::erase(int id)
 
     query.bindValue(":a_id", QVariant(id));
 
-    return DBController::getInstance()->exec(query);
+    result = DBController::getInstance()->exec(query);
+
+    query.finish();
+
+    return result;
 }
 
 bool ProductManager::insert(Product &product)
@@ -59,6 +67,8 @@ bool ProductManager::insert(Product &product)
     if(DBController::getInstance()->exec(query))
     {
         product.setId(query.lastInsertId().toInt());
+
+        query.finish();
 
         return true;
     }
@@ -78,7 +88,14 @@ bool ProductManager::update(const Product &product)
 
     bindProduct(product, query);
 
-    return DBController::getInstance()->exec(query);
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
+    return false;
 }
 
 void ProductManager::bindProduct(const Product &product, QSqlQuery &query)

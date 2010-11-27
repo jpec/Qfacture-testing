@@ -73,7 +73,7 @@ void SQLTable::feedTable()
     QString fields = QStringList(columns).join(",");
     int i, j, nb_cols = columns.count();
 
-    if(columns.count() == 0)
+    if(columns.count() == 0 || !DBController::getInstance()->isDBConnected())
         return;
 
     table->clearContents();
@@ -104,9 +104,10 @@ void SQLTable::feedTable()
             table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
         }
 
-
         i++;
     }
+
+    query.finish();
 
     // pour que la largeur des colonnes soit automatiquement mise à jour
     // pour s'accorder au contenu

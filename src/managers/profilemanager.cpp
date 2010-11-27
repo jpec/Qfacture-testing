@@ -3,10 +3,11 @@
 
 #include "QVariant"
 
-
+#include <iostream>
 Profile ProfileManager::get(int id)
 {
     QSqlQuery query;
+    Profile p;
 
     query.prepare(
             "SELECT id, Name, Siret, Adress, Zip, City, Phone, Mail, Home, Logo "
@@ -16,14 +17,16 @@ Profile ProfileManager::get(int id)
     query.bindValue(":profile_id", QVariant(id));
 
     if(!DBController::getInstance()->exec(query))
-        return Profile();
+        return p;
 
     // pas de profil avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste un profil vide
-    if(!query.next())
-        return Profile();
+    if(query.next())
+        p = makeProfile(query);
 
-    return makeProfile(query);
+    query.finish();
+
+    return p;
 }
 
 bool ProfileManager::save(Profile &profile)
@@ -51,7 +54,14 @@ bool ProfileManager::update(const Profile &profile)
 
     bindProfile(profile, query);
 
-    return DBController::getInstance()->exec(query);
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
+    return false;
 }
 
 void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
