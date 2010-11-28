@@ -136,3 +136,8 @@ QTableWidget* SQLTable::getWidget() const
 {
     return table;
 }
+
+QTableWidgetItem* SQLTable::getSelectedItem() const
+{
+    return table->selectedItems()[0];
+}

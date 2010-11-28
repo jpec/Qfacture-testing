@@ -13,12 +13,20 @@
 #include <QPushButton>
 #include <QTableWidget>
 
+
 class InvoicesTab : public QWidget
 {
     Q_OBJECT
 public:
     explicit InvoicesTab(QfactureCore *core, QWidget *parent = 0);
     ~InvoicesTab();
+
+signals:
+    /**
+     * Signal émis lorsque le widget courant souhaite ouvrir un nouvel onglet
+     * dans l'appli
+     */
+    void newTabRequest(const QString& name, QWidget* content);
 
 public slots:
     /**
@@ -35,7 +43,6 @@ public slots:
     void loadInvoices();
 
 private slots:
-
     /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
      * facture"
@@ -43,12 +50,11 @@ private slots:
     void onDelClicked();
 
     /**
-     * Appelé lorsque l'utilisateur clique sur le tableau. S'occupe de charger
-     * les données de la facture dans le nouvel onglet
-     *
-     * @param item La ligne du tableau représentant la facture
+     * Appelé lorsque l'utilisateur clique sur le bouton d'ouverture d'une facture.
+     * S'occupe de charger les données de la facture sélectionnée dans le tableau
+     * pour l'afficher dans un nouvel onglet
      */
-    void loadInvoice(QTableWidgetItem *item);
+    void loadSelectedInvoice();
 
     /**
      * Appelé lorsque les critères de recherche ont changé

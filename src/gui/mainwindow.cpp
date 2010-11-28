@@ -9,6 +9,13 @@ MainWindow::MainWindow(QfactureCore *core, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tabWidget->setMovable(true);
+
+    // nécéssite d'ajouter dans les menus la possibilité de rouvrir les onglets
+    // importants (paramètres, clients, produits, factures, etc.).
+    // il serait bien de mémoriser la liste des onglets ouverts à la fermeture
+    // de l'appli et de rouvrir ces mêmes onglets
+    // ui->tabWidget->setTabsClosable(true);
 
     this->core = core;
 
@@ -50,6 +57,11 @@ void MainWindow::createActions()
 
     // lie l'évènement "DBError" à l'action correspondante
     this->connect(core, SIGNAL(DBError(QString)), this, SLOT(onDBError(QString)));
+
+    // écoute les demandes de création de nouveaux onglets émises par l'onglet
+    // de gestion des factures
+    this->connect(invoices_tab, SIGNAL(newTabRequest(QString,QWidget*)), this,
+                  SLOT(onNewTabRequest(QString,QWidget*)));
 }
 
 void MainWindow::setupTabs()
@@ -147,4 +159,11 @@ void MainWindow::about()
                               "Co-auteur : Kévin Gomez <contact@kevingomez.fr>\n"
                               "\n")
                        );
+}
+
+void MainWindow::onNewTabRequest(const QString& name, QWidget* content)
+{
+    int index = ui->tabWidget->addTab(content, name);
+
+    ui->tabWidget->setCurrentIndex(index);
 }

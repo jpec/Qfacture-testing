@@ -9,7 +9,7 @@
 #include "gui/tabs/productstab.h"
 #include "gui/tabs/customerstab.h"
 #include "gui/tabs/invoicestab.h"
-// #include "gui/tabs/invoicetab.h"
+//#include "gui/tabs/invoicetab.h"
 
 
 namespace Ui {
@@ -56,6 +56,12 @@ private slots:
      * Sera appelée lors de la déconnexion à la DB
      */
     void onDBDisconnected();
+
+    /**
+     * Signal émis lorsque un widget fils souhaite ouvrir un nouvel onglet
+     * dans l'appli
+     */
+    void onNewTabRequest(const QString& name, QWidget* content);
 
 private:
     /**

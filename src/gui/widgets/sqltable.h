@@ -37,6 +37,11 @@ public:
      */
     void setFilter(const QString& column, Filter f);
 
+    /**
+     * Retourne l'item actuellement sélectionné
+     */
+    QTableWidgetItem* getSelectedItem() const;
+
 signals:
     /**
      * Émit dès que la structure du tableau est modifiée (colonnes

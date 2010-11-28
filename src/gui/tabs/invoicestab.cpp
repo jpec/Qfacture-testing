@@ -1,4 +1,5 @@
 #include "invoicestab.h"
+#include "gui/tabs/invoicetab.h"
 #include "controllers/dbcontroller.h"
 
 #include <QDate>
@@ -107,17 +108,17 @@ void InvoicesTab::createActions()
     // remplissage du tableau dès que la connexion à la DB est établies
     this->connect(core, SIGNAL(DBConnected()), this, SLOT(loadInvoices()));
 
-    // charge le profil d'un client lors du clic sur ce dernier dans le tableau
-    this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
-                  SLOT(loadInvoice(QTableWidgetItem*)));
+    // charge le profil d'un client lors du clic sur le bouton "ouvrir"
+    this->connect(btn_open, SIGNAL(clicked()), this,
+                  SLOT(loadSelectedInvoice()));
 
     // suppression de la facture sélectionnée lors du clic sur le bouton
     this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
 
     // (dés)active les boutons "ouvrir" et "supprimer" en fonction des lignes
     // sélectionnées (ou pas) dans le tableau
-    this->connect(invoices_table->getWidget(), SIGNAL(itemSelectionChanged()),
-                  this, SLOT(onSelectionChanged()));
+    this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
+                  SLOT(onSelectionChanged()));
 
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
@@ -134,10 +135,8 @@ void InvoicesTab::onSearchFiltersChanged()
 
 void InvoicesTab::onSelectionChanged()
 {
-    bool sth_selected = invoices_table->getWidget()->selectedItems().length() != 0;
-
-    btn_open->setEnabled(sth_selected);
-    btn_del->setEnabled(sth_selected);
+    btn_open->setEnabled(true);
+    btn_del->setEnabled(true);
 }
 
 void InvoicesTab::onDelClicked()
@@ -159,16 +158,9 @@ void InvoicesTab::onDelClicked()
                             +invoices_table->getWidget()->selectedItems()[0]->data(Qt::UserRole).toString());
 }
 
-void InvoicesTab::loadInvoice(QTableWidgetItem *item)
+void InvoicesTab::loadSelectedInvoice()
 {
-    //w_customer_edit->loadCustomer(item->data(Qt::UserRole).toInt());
-
-
-    // nouvel onglet facture
-    //invoice_tab = new InvoicesTab(core, this);
-    //invoice_tab->setEnabled(false);
-    //ui->tabWidget->addTab(invoice_tab, trUtf8("Facture XXXXX"));
-
+    emit newTabRequest("Facture XXX", new InvoiceTab(core, this));
 }
 
 void InvoicesTab::loadInvoices()
