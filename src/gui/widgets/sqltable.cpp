@@ -65,11 +65,11 @@ void SQLTable::buildTable()
     feedTable();
 }
 
-
 void SQLTable::feedTable()
 {
     QString where;
     QSqlQuery query;
+    QVariant v;
     QString fields = QStringList(columns).join(",");
     int i, j, nb_cols = columns.count();
 
@@ -99,7 +99,16 @@ void SQLTable::feedTable()
     i = 0;
     while(query.next()) {
         for(j=0; j < nb_cols; ++j) {
-            table->setItem(i, j, new QTableWidgetItem(query.value(j+1).toString()));
+            v = query.value(j+1);
+
+            // application du filtre
+            if(filters.keys().contains(columns.at(j)))
+            {
+                if(filters[columns.at(j)] != 0)
+                    v = (*filters[columns.at(j)])(v);
+            }
+
+            table->setItem(i, j, new QTableWidgetItem(v.toString()));
 
             table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
         }
@@ -113,6 +122,14 @@ void SQLTable::feedTable()
     // pour s'accorder au contenu
     table->resizeColumnsToContents();
 
+}
+
+void SQLTable::setFilter(const QString& column, Filter filter)
+{
+    if(!columns.contains(column))
+        return;
+
+    filters[column] = filter;
 }
 
 QTableWidget* SQLTable::getWidget() const

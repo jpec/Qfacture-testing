@@ -1,7 +1,15 @@
 #include "invoicestab.h"
 #include "controllers/dbcontroller.h"
 
+#include <QDate>
 #include <QMessageBox>
+
+
+QVariant displayDate(QVariant date)
+{
+    return QDate::fromString(date.toString(), Qt::ISODate)
+                 .toString(Qt::SystemLocaleShortDate);
+}
 
 
 InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
@@ -72,8 +80,8 @@ void InvoicesTab::buildLayout()
 
     // création du tableau des factures
     invoices_table = new SQLTable("facture");
-
     invoices_table->setColumns(columns, labels);
+    invoices_table->setFilter("Date", displayDate);
 
     // liaisons des layouts avec les widgets
     search_form_layout->addWidget(search_filters);

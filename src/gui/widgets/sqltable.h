@@ -4,6 +4,9 @@
 #include <QTableWidget>
 
 
+typedef QVariant (*Filter)(QVariant);
+
+
 class SQLTable : public QObject
 {
     Q_OBJECT
@@ -25,6 +28,14 @@ public:
      * @return QTableWidget* Le widget
      */
     QTableWidget *getWidget() const;
+
+    /**
+     * Définit le filtre à appliquer sur les valeurs d'une colonne
+     *
+     * @param column Nom de la colonne affectée
+     * @param filter Pointeur vers le filtre à appliquer
+     */
+    void setFilter(const QString& column, Filter f);
 
 signals:
     /**
@@ -80,6 +91,11 @@ private:
      * Libellés des colonnes
      */
     QList<QString> labels;
+
+    /**
+     * Filtres à appliquer
+     */
+    QHash<QString, Filter> filters;
 
     /**
      * Tableau

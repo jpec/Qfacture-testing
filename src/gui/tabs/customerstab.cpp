@@ -83,7 +83,6 @@ void CustomersTab::buildLayout()
 
     // création du tableau de clients
     customers_table = new SQLTable("client");
-
     customers_table->setColumns(columns, labels);
 
     // liaisons des layouts avec les widgets
