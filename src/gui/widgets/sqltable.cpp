@@ -1,8 +1,8 @@
 #include "sqltable.h"
 #include "controllers/dbcontroller.h"
 
-#include <QSqlQuery>
 #include <assert.h>
+#include <QSqlQuery>
 
 
 SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
@@ -44,12 +44,11 @@ void SQLTable::setColumns(const QList<QString> &columns, const QList<QString> &l
     if(columns.count() != labels.count())
         return;
 
-    this->columns = columns;
+    this->addColumns(table_name, columns);
     this->labels =labels;
 
     emit tableModified();
 }
-
 
 void SQLTable::buildTable()
 {
@@ -58,6 +57,7 @@ void SQLTable::buildTable()
     table->setAlternatingRowColors(true);
     table->setSortingEnabled(true);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     table->setColumnCount(columns.count());
     table->setHorizontalHeaderLabels(QStringList(labels));
@@ -67,10 +67,9 @@ void SQLTable::buildTable()
 
 void SQLTable::feedTable()
 {
-    QString where;
-    QSqlQuery query;
     QVariant v;
-    QString fields = QStringList(columns).join(",");
+    QSqlQuery query;
+    QString fields = QStringList(columns).join(", "), query_sql, table_to_join;
     int i, j, nb_cols = columns.count();
 
     if(columns.count() == 0 || !DBController::getInstance()->isDBConnected())
@@ -78,15 +77,24 @@ void SQLTable::feedTable()
 
     table->clearContents();
 
-    if(!like_filter.toString().isEmpty())
-        where = "WHERE "+like_filter_field+" LIKE :like_filter ";
+    /** construction de la requête **/
 
-    query.prepare(
-        "SELECT id, "+fields+" "
-        "FROM "+table_name+" "
-        +where+
-        "ORDER BY id ASC"
-    );
+    query_sql = "SELECT "+table_name+".id, "+fields+" FROM "+table_name+" ";
+
+    foreach(table_to_join, to_join)
+    {
+        query_sql.append("LEFT JOIN "+table_to_join+" ON "+
+                         DBController::getInstance()->getJoinClause(table_name, table_to_join)+
+                         " ");
+    }
+
+    if(!like_filter.toString().isEmpty())
+        query_sql.append("WHERE "+like_filter_field+" LIKE :like_filter ");
+
+    query_sql.append("ORDER BY "+table_name+".id ASC");
+
+    /** exécution de la requête **/
+    query.prepare(query_sql);
 
     if(!like_filter.toString().isEmpty())
         query.bindValue(":like_filter", like_filter);
@@ -121,7 +129,6 @@ void SQLTable::feedTable()
     // pour que la largeur des colonnes soit automatiquement mise à jour
     // pour s'accorder au contenu
     table->resizeColumnsToContents();
-
 }
 
 void SQLTable::setFilter(const QString& column, Filter filter)
@@ -140,4 +147,32 @@ QTableWidget* SQLTable::getWidget() const
 QTableWidgetItem* SQLTable::getSelectedItem() const
 {
     return table->selectedItems()[0];
+}
+
+void SQLTable::addColumns(const QString &origin_table, const QStringList &columns)
+{
+    // on préfixe les noms des colonnes par le nom de la table à laquelle elles
+    // appartiennent
+    QString col;
+    foreach(col, columns)
+    {
+        this->columns.append(QString(origin_table) + "." + col);
+    }
+}
+
+void SQLTable::join(const QString &table, const QStringList &cols)
+{
+    if(to_join.contains(table))
+        return;
+
+    to_join.append(table);
+
+    addColumns(table, cols);
+
+    foreach(QString col, cols)
+    {
+        this->labels.append(DBController::getInstance()->getLabel(table, col));
+    }
+
+    emit tableModified();
 }

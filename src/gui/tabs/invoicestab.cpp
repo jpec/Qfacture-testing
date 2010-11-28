@@ -76,6 +76,7 @@ void InvoicesTab::buildLayout()
     invoices_table = new SQLTable("facture");
     invoices_table->setColumns(columns, labels);
     invoices_table->setFilter("Date", displayDate);
+    invoices_table->join("client", QStringList() << "Name");
 
     // liaisons des layouts avec les widgets
     search_form_layout->addWidget(search_filters);

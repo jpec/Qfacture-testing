@@ -62,7 +62,8 @@ private:
      * @see http://doc.qt.nokia.com/4.6/qsqldatabase.html#addDatabase-2
      */
     void connectDB(const QString &server, int port, const QString &login,
-                   const QString &pass, const QString &db_name, const QString &db_type="QMYSQL");
+                   const QString &pass, const QString &db_name,
+                   const QString &db_type="QMYSQL");
 
     /**
      * Déconnecte l'application de la base de données et émet le signal
@@ -86,12 +87,26 @@ private:
     QStringList getLabels(const QString& table, const QStringList& except) const;
 
     /**
+     * Retourne le label correspondant à une colonne
+     *
+     * @param table Nom de la table
+     * @param column Nom de la colonne dont on veut le label
+     */
+    QString getLabel(const QString &table, const QString &column) const;
+
+    /**
      * Retourne la liste des colonnes d'une table donnée.
      *
      * @param table Nom de la table
      * @param except Colonnes à exclure
      */
     QStringList getColumns(const QString& table, const QStringList& except) const;
+
+    /**
+     * Retourne la condition de jointure permettant de lier les tables from et
+     * with
+     */
+    QString getJoinClause(const QString &from, const QString &with) const;
 
     /**
      * Pour avoir un singleton
@@ -112,6 +127,11 @@ private:
      * labels
      */
     QHash<QString, QHash<QString, QString> > tables_definitions;
+
+    /**
+     * Dictionnaire recensant les clauses de jointures des tables
+     */
+    QHash<QString, QHash<QString, QString> > join_clauses;
 
 signals:
     /**

@@ -32,6 +32,12 @@ DBController::DBController()
     tables_definitions["facture"]["Reference"] = trUtf8("Référence");
     tables_definitions["facture"]["Type"] = trUtf8("Type");
     tables_definitions["facture"]["Date"] = trUtf8("Date");
+
+    /** Clauses de jointures **/
+
+    // table facture
+    join_clauses["facture"]["client"] = "facture.idClient = client.id";
+
 }
 
 DBController* DBController::getInstance()
@@ -59,6 +65,11 @@ QStringList DBController::getColumns(const QString& table,
     return QStringList(cols);
 }
 
+QString DBController::getJoinClause(const QString &from, const QString &with) const
+{
+    return join_clauses[from][with];
+}
+
 QStringList DBController::getLabels(const QString& table,
                                     const QStringList& except) const
 {
@@ -73,6 +84,11 @@ QStringList DBController::getLabels(const QString& table,
     }
 
     return labels;
+}
+
+QString DBController::getLabel(const QString &table, const QString &column) const
+{
+    return tables_definitions[table][column];
 }
 
 bool DBController::exec(QSqlQuery &query)

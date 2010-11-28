@@ -60,6 +60,11 @@ public:
      */
     QStringList getDBColumns(const QString& table, const QStringList& except) const;
 
+    /**
+     * @see DBController::getJoinClause()
+     */
+    QString getDBJoinClause(const QString &from, const QString &with) const;
+
 
     /* Wrapper pour les méthodes du contrôleur des profils */
 

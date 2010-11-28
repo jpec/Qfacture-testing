@@ -42,6 +42,13 @@ public:
      */
     QTableWidgetItem* getSelectedItem() const;
 
+    /**
+     * Ajoute une table à la liste des tables à lier
+     *
+     * @param table Nom de la table
+     */
+    void join(const QString &table, const QStringList &cols=QStringList());
+
 signals:
     /**
      * Émit dès que la structure du tableau est modifiée (colonnes
@@ -87,6 +94,8 @@ private slots:
     void selectionChanged();
 
 private:
+    void addColumns(const QString &origin_table, const QStringList &columns);
+
     /**
      * Colonnes du tableau
      */
@@ -96,6 +105,11 @@ private:
      * Libellés des colonnes
      */
     QList<QString> labels;
+
+    /**
+     * Liste des tables à joindre avec la table principale
+     */
+    QList<QString> to_join;
 
     /**
      * Filtres à appliquer

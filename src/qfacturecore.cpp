@@ -68,6 +68,11 @@ QStringList QfactureCore::getDBColumns(const QString& table,
     return DBController::getInstance()->getColumns(table, except);
 }
 
+QString QfactureCore::getDBJoinClause(const QString &from, const QString &with) const
+{
+    return DBController::getInstance()->getJoinClause(from, with);
+}
+
 
 /* Wrapper des méthodes du contrôleur des profils */
 
