@@ -1,4 +1,5 @@
 #include "customerstab.h"
+#include "utils/utils.h"
 #include "controllers/dbcontroller.h"
 
 
@@ -84,6 +85,7 @@ void CustomersTab::buildLayout()
     // création du tableau de clients
     customers_table = new SQLTable("client");
     customers_table->setColumns(columns, labels);
+    customers_table->setFilter("Phone", displayPhone);
 
     // liaisons des layouts avec les widgets
     search_form_layout->addWidget(search_filters);

@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     gui/tabs/productstab.cpp \
     gui/widgets/productwidget.cpp \
     gui/tabs/invoicestab.cpp \
-    gui/tabs/invoicetab.cpp
+    gui/tabs/invoicetab.cpp \
+    utils/utils.cpp
 HEADERS += models/person.h \
     models/customer.h \
     models/profile.h \
@@ -56,5 +57,6 @@ HEADERS += models/person.h \
     gui/tabs/productstab.h \
     gui/widgets/productwidget.h \
     gui/tabs/invoicestab.h \
-    gui/tabs/invoicetab.h
+    gui/tabs/invoicetab.h \
+    utils/utils.h
 FORMS += gui/mainwindow.ui

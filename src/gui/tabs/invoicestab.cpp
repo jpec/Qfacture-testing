@@ -1,16 +1,9 @@
 #include "invoicestab.h"
+#include "utils/utils.h"
 #include "gui/tabs/invoicetab.h"
 #include "controllers/dbcontroller.h"
 
-#include <QDate>
 #include <QMessageBox>
-
-
-QVariant displayDate(QVariant date)
-{
-    return QDate::fromString(date.toString(), Qt::ISODate)
-                 .toString(Qt::SystemLocaleShortDate);
-}
 
 
 InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
@@ -155,7 +148,7 @@ void InvoicesTab::onDelClicked()
         return;
 
     QMessageBox::information(this, "Info", QString(trUtf8("ID cliqué :"))
-                            +invoices_table->getWidget()->selectedItems()[0]->data(Qt::UserRole).toString());
+                            +invoices_table->getSelectedItem()->data(Qt::UserRole).toString());
 }
 
 void InvoicesTab::loadSelectedInvoice()
