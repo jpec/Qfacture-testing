@@ -84,7 +84,7 @@ void ProductWidget::save()
     product.setPrice(p_price->value());
     product.setDescription(p_description->text());
 
-    if(!ctrl->saveProduct(product))
+    if(!ctrl->save(product))
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible d'enregistrer le produit."));
     else {

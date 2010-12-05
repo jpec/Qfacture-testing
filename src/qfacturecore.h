@@ -81,7 +81,7 @@ public:
     /**
      * @see ProfileController::save()
      */
-    bool saveProfile(Profile &p);
+    bool save(Profile &p);
 
     /**
      * @see ProfileController::get()
@@ -99,7 +99,7 @@ public:
     /**
      * @see ProductController::save()
      */
-    bool saveProduct(Product &p);
+    bool save(Product &p);
 
     /**
      * @see ProductController::get()
@@ -117,7 +117,7 @@ public:
     /**
      * @see ProductController::save()
      */
-    bool saveCustomer(Customer &p);
+    bool save(Customer &p);
 
     /**
      * @see ProductController::get()

@@ -107,7 +107,7 @@ void CustomerWidget::save()
     customer.setPhone(c_phone->text());
     customer.setMail(c_mail->text());
 
-    if(!ctrl->saveCustomer(customer))
+    if(!ctrl->save(customer))
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible d'enregistrer le client."));
     else {

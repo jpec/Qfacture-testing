@@ -115,8 +115,8 @@ void InvoicesTab::createActions()
                   SLOT(onSelectionChanged()));
 
     // charge une facture lors du double-clic sur la ligne du tableau la représentant
-    this->connect(invoices_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this,
-                  SLOT(loadInvoice(QTableWidgetItem*)));
+    this->connect(invoices_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+                  this, SLOT(loadInvoice(QTableWidgetItem*)));
 
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,

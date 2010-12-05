@@ -96,7 +96,7 @@ Profile QfactureCore::getProfile(int id)
     return ProfileController::getInstance()->get(id);
 }
 
-bool QfactureCore::saveProfile(Profile &p)
+bool QfactureCore::save(Profile &p)
 {
     return ProfileController::getInstance()->save(p);
 }
@@ -108,7 +108,7 @@ bool QfactureCore::saveCurrentProfile()
 
 /* Wrapper pour les méthodes du contrôleur des produits */
 
-bool QfactureCore::saveProduct(Product &p)
+bool QfactureCore::save(Product &p)
 {
     return ProductController::getInstance()->save(p);
 }
@@ -125,7 +125,7 @@ bool QfactureCore::eraseProduct(int id)
 
 /* Wrapper pour les méthodes du contrôleur des clients */
 
-bool QfactureCore::saveCustomer(Customer &p)
+bool QfactureCore::save(Customer &p)
 {
     return CustomerController::getInstance()->save(p);
 }
