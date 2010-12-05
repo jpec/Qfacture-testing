@@ -11,7 +11,10 @@ SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
     this->table_name = table_name;
 
     connect(this, SIGNAL(tableModified()), this, SLOT(buildTable()));
-    connect(table, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
+    connect(table, SIGNAL(itemSelectionChanged()), this,
+            SLOT(selectionChanged()));
+    connect(table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this,
+            SIGNAL(itemDoubleClicked(QTableWidgetItem*)));
 }
 
 SQLTable::~SQLTable()

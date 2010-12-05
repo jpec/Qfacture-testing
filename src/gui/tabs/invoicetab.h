@@ -17,7 +17,7 @@ class InvoiceTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit InvoiceTab(QfactureCore *core, QWidget *parent = 0);
+    explicit InvoiceTab(int id, QfactureCore *core, QWidget *parent = 0);
     ~InvoiceTab();
 
 public slots:

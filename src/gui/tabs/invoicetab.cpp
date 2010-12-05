@@ -1,7 +1,7 @@
 #include "invoicetab.h"
 #include "controllers/dbcontroller.h"
 
-InvoiceTab::InvoiceTab(QfactureCore *core, QWidget *parent) :
+InvoiceTab::InvoiceTab(int id, QfactureCore *core, QWidget *parent) :
         QWidget(parent)
 {
     this->core = core;

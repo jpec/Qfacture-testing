@@ -66,6 +66,13 @@ private slots:
      */
     void onSelectionChanged();
 
+    /**
+     * Charge la facture représentée par l'item du tableau
+     *
+     * @param item Ligne du tableau représentant la facture
+     */
+    void loadInvoice(QTableWidgetItem *item);
+
 private:
     /**
      * Construit la GUI de l'onglet
@@ -77,6 +84,14 @@ private:
      * principaux évènements.
      */
     void createActions();
+
+    /**
+     * Charge une facture dans un nouvel onglet
+     *
+     * @param id Id de la facture
+     */
+    void loadInvoice(int id);
+
 
     /**
      * Layout principal du widget

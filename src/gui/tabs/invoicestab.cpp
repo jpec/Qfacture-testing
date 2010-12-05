@@ -114,6 +114,10 @@ void InvoicesTab::createActions()
     this->connect(invoices_table, SIGNAL(itemSelected(QTableWidgetItem*)), this,
                   SLOT(onSelectionChanged()));
 
+    // charge une facture lors du double-clic sur la ligne du tableau la représentant
+    this->connect(invoices_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this,
+                  SLOT(loadInvoice(QTableWidgetItem*)));
+
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
                   SLOT(onSearchFiltersChanged()));
@@ -148,13 +152,22 @@ void InvoicesTab::onDelClicked()
     if(msgBox.exec() == QMessageBox::No)
         return;
 
-    QMessageBox::information(this, "Info", QString(trUtf8("ID cliqué :"))
-                            +invoices_table->getSelectedItem()->data(Qt::UserRole).toString());
+    QMessageBox::information(this, "Info", trUtf8("ID cliqué : %1").arg(invoices_table->getSelectedItem()->data(Qt::UserRole).toString()));
 }
 
 void InvoicesTab::loadSelectedInvoice()
 {
-    emit newTabRequest("Facture XXX", new InvoiceTab(core, this));
+    loadInvoice(invoices_table->getSelectedItem()->data(Qt::UserRole).toInt());
+}
+
+void InvoicesTab::loadInvoice(int id)
+{
+    emit newTabRequest(trUtf8("Facture %1").arg(id), new InvoiceTab(id, core, this));
+}
+
+void InvoicesTab::loadInvoice(QTableWidgetItem *item)
+{
+    loadInvoice(item->data(Qt::UserRole).toInt());
 }
 
 void InvoicesTab::loadInvoices()

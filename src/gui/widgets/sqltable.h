@@ -68,6 +68,11 @@ signals:
      */
     void itemSelected(QTableWidgetItem *item);
 
+    /**
+     * Émit lorsque l'utilisateur double clique sur un élément du tableau
+     */
+    void itemDoubleClicked(QTableWidgetItem *item);
+
 public slots:
     /**
      * Interroge la base de données pour remplir le tableau
