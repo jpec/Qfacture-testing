@@ -27,7 +27,7 @@ InvoicesTab::~InvoicesTab()
 
     delete invoices_table;
 
-    delete search_form_layout;
+    delete search_bar_layout;
     delete invoices_layout;
     delete actions_layout;
     delete layout;
@@ -41,27 +41,71 @@ void InvoicesTab::buildLayout()
 {
     // définition des colonnes du tableau
     QStringList not_wanted = QStringList() << "id" << "idClient";
-
     columns = core->getDBColumns("facture", not_wanted);
     labels = core->getDBLabels("facture", not_wanted);
 
     // construction des layouts
     layout = new QVBoxLayout(this);
     invoices_layout = new QVBoxLayout();
-    actions_layout = new QHBoxLayout();
-    search_form_layout = new QHBoxLayout();
 
-    // création des widgets
+    // création des groupbox
     gbox_actions = new QGroupBox(trUtf8("Actions"));
     gbox_invoices = new QGroupBox(trUtf8("Liste des factures"), this);
-    btn_new = new QPushButton(trUtf8("Nouvelle facture"));
-    btn_open = new QPushButton(trUtf8("Ouvrir"));
-    btn_del = new QPushButton(trUtf8("Supprimer la facture"));
-    search = new QLineEdit();
-    search_filters = new QComboBox();
+
+    // création de la barre de recherche
+    buildSearchBar(labels);
+
+    // création des boutons d'actions
+    buildActionButtons();
+
+    // création du tableau des factures
+    buildInvoicesTableLayout(columns, labels);
+
+    // ajout de la barre de recherche et du tableau de factures  dans invoices_layout
+    invoices_layout->addLayout(search_bar_layout);
+    invoices_layout->addWidget(invoices_table->getWidget());
+
+    // définition des layouts des groupbox
+    gbox_invoices->setLayout(invoices_layout);
+    gbox_actions->setLayout(actions_layout);
+
+    // ajout des groupbox au layout principal
+    layout->addWidget(gbox_invoices);
+    layout->addWidget(gbox_actions);
+}
+
+void InvoicesTab::buildInvoicesTableLayout(QStringList columns, QStringList labels)
+{
+    this->invoices_table = new SQLTable("facture");
+    invoices_table->setColumns(columns, labels);
+    invoices_table->setFilter("Date", displayDate);
+    invoices_table->join("client", QStringList() << "Name");
+}
+
+void InvoicesTab::buildSearchBar(QStringList filters)
+{
+    // création des widgets
+    this->search_bar_layout = new QHBoxLayout();
+    this->search = new QLineEdit();
+    this->search_filters = new QComboBox();
 
     // définition des filtres de recherche disponibles
-    search_filters->addItems(labels);
+    search_filters->addItems(filters);
+
+    // ajout de la QComboBox et du QLineEdit au layout
+    search_bar_layout->addWidget(search_filters);
+    search_bar_layout->addWidget(search);
+}
+
+void InvoicesTab::buildActionButtons()
+{
+    // layout contenant les boutons
+    this->actions_layout = new QHBoxLayout();
+
+    // création des widgets
+    this->btn_new = new QPushButton(trUtf8("Nouvelle facture"));
+    this->btn_open = new QPushButton(trUtf8("Ouvrir"));
+    this->btn_del = new QPushButton(trUtf8("Supprimer la facture"));
 
     // définition des raccourcis clavier pour les boutons
     btn_new->setShortcut(QKeySequence::New);
@@ -72,29 +116,10 @@ void InvoicesTab::buildLayout()
     btn_open->setEnabled(false);
     btn_del->setEnabled(false);
 
-    // création du tableau des factures
-    invoices_table = new SQLTable("facture");
-    invoices_table->setColumns(columns, labels);
-    invoices_table->setFilter("Date", displayDate);
-    invoices_table->join("client", QStringList() << "Name");
-
-    // liaisons des layouts avec les widgets
-    search_form_layout->addWidget(search_filters);
-    search_form_layout->addWidget(search);
-
-    invoices_layout->addLayout(search_form_layout);
-    invoices_layout->addWidget(invoices_table->getWidget());
-    gbox_invoices->setLayout(invoices_layout);
-
+    // ajout des boutons au layout
     actions_layout->addWidget(btn_new);
     actions_layout->addWidget(btn_open);
     actions_layout->addWidget(btn_del);
-    gbox_actions->setLayout(actions_layout);
-
-    layout->addWidget(gbox_invoices);
-    layout->addWidget(gbox_actions);
-
-    setLayout(layout);
 }
 
 void InvoicesTab::createActions()

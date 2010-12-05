@@ -80,6 +80,26 @@ private:
     void buildLayout();
 
     /**
+     * Construit le tableau contenant la liste des factures
+     *
+     * @param columns Nom des colonnes du tableau
+     * @param labels Libellés des colonnes
+     */
+    void buildInvoicesTableLayout(QStringList columns, QStringList labels);
+
+    /**
+     * Construit la barre de recherche
+     *
+     * @param filters Filtres disponibles pour la recherche
+     */
+    void buildSearchBar(QStringList filters);
+
+    /**
+     * Construit la barre d'action contenant les boutons
+     */
+    void buildActionButtons();
+
+    /**
      * Cette méthode, appelée par le constructeur, s'occupe de connecter les
      * principaux évènements.
      */
@@ -111,7 +131,7 @@ private:
     /**
      * Layout contenant le formulaire de recherche
      */
-    QHBoxLayout *search_form_layout;
+    QHBoxLayout *search_bar_layout;
 
     /**
      * Layout contenant les boutons nouveau, sauvegarder et supprimer
