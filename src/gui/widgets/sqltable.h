@@ -49,6 +49,13 @@ public:
      */
     void join(const QString &table, const QStringList &cols=QStringList());
 
+    /**
+     * Supprime une ligne dans le tableau.
+     *
+     * @param item Element représentant la ligne
+     */
+    void removeItem(const QTableWidgetItem *item);
+
 signals:
     /**
      * Émit dès que la structure du tableau est modifiée (colonnes

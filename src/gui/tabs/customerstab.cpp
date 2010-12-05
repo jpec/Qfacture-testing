@@ -114,10 +114,6 @@ void CustomersTab::createActions()
     // remplissage du tableau dès que la connexion à la DB est établies
     this->connect(core, SIGNAL(DBConnected()), customers_table, SLOT(feedTable()));
 
-    // si SQLTable remonte une erreur SQL, on l'envoie à notre père
-    this->connect(customers_table, SIGNAL(DBError(QString)), parent(),
-                  SLOT(onDBError(QString)));
-
     // vide le formulaire de saisie d'un client lors du clic sur le bouton new
     this->connect(btn_new, SIGNAL(clicked()), w_customer_edit,
                   SLOT(clearContent()));

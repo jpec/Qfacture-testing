@@ -42,6 +42,13 @@ void SQLTable::selectionChanged()
     emit itemSelected(table->selectedItems()[0]);
 }
 
+void SQLTable::removeItem(const QTableWidgetItem *item)
+{
+    table->removeRow(table->row(item));
+
+    emit tableModified();
+}
+
 void SQLTable::setColumns(const QList<QString> &columns, const QList<QString> &labels)
 {
     if(columns.count() != labels.count())
