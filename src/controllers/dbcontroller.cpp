@@ -49,7 +49,7 @@ DBController* DBController::getInstance()
 
 
 QStringList DBController::getColumns(const QString& table,
-                                        const QStringList& except) const
+                                     const QStringList& except) const
 {
     QList<QString> cols = tables_definitions[table].keys();
     QString col;
@@ -67,7 +67,10 @@ QStringList DBController::getColumns(const QString& table,
 
 QString DBController::getJoinClause(const QString &from, const QString &with) const
 {
-    return join_clauses[from][with];
+    if(join_clauses.keys().contains(from))
+        return join_clauses[from][with];
+    else
+        return join_clauses[with][from];
 }
 
 QStringList DBController::getLabels(const QString& table,

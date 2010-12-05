@@ -42,13 +42,18 @@ private slots:
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "nouveau
      * client"
      */
-    void onNewClicked();
+    void onNewCustomer();
+
+    /**
+     * (Dés)active les boutons qui vont bien lors de l'édition d'un client
+     */
+    void onEditCustomer();
 
     /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
      * client"
      */
-    void onDelClicked();
+    void onDelCustomer();
 
     /**
      * Appelé lorsque l'utilisateur clique sur le tableau. S'occupe de charger

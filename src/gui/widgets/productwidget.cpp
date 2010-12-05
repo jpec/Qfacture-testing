@@ -30,6 +30,7 @@ void ProductWidget::buildLayout()
 
     // définition des spécifications des widgets
     p_price->setRange(0, 999999.99);
+    p_price->setSuffix(trUtf8(" €"));
 
     // création des layouts
     layout = new QFormLayout(this);
@@ -68,7 +69,7 @@ void ProductWidget::clearContent()
     product = Product();
 
     p_name->clear();
-    p_price->clear();
+    p_price->setValue(0);
     p_description->clear();
 }
 

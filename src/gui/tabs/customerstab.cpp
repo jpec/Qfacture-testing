@@ -127,17 +127,17 @@ void CustomersTab::createActions()
                   SLOT(clearContent()));
 
     // lors du clic sur le bouton de création d'un new client
-    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewClicked()));
+    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewCustomer()));
     // ou lors du chargement d'un client
     this->connect(w_customer_edit, SIGNAL(customerLoaded()), this,
-                  SLOT(onNewClicked()));
+                  SLOT(onEditCustomer()));
 
     // lors du clic sur le bouton de sauvegarde d'un new client
     this->connect(btn_save, SIGNAL(clicked()), w_customer_edit, SLOT(save()));
 
     // supprime le client chargé, ou annule la création d'un nouveau client
     this->connect(btn_del, SIGNAL(clicked()), w_customer_edit, SLOT(erase()));
-    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelCustomer()));
 
     // rafraichit les données du tableau à l'enregistrement ou à la suppression
     // d'un client
@@ -148,7 +148,7 @@ void CustomersTab::createActions()
 
     // on réactive les boutons qu'il faut à la sauvegarde d'un client
     this->connect(w_customer_edit, SIGNAL(customerSaved()), this,
-                  SLOT(onDelClicked()));
+                  SLOT(onDelCustomer()));
     // et on vide le formulaire
     this->connect(w_customer_edit, SIGNAL(customerSaved()), w_customer_edit,
                   SLOT(clearContent()));
@@ -160,7 +160,7 @@ void CustomersTab::createActions()
     // annule une saisie
     this->connect(btn_cancel, SIGNAL(clicked()), w_customer_edit,
                   SLOT(clearContent()));
-    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelCustomer()));
 
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
@@ -175,7 +175,18 @@ void CustomersTab::onSearchFiltersChanged()
                                    QVariant(search->text()));
 }
 
-void CustomersTab::onNewClicked()
+void CustomersTab::onNewCustomer()
+{
+    w_customer_edit->setEnabled(true);
+    w_customer_edit->setFocus();
+
+    btn_new->setEnabled(false);
+    btn_save->setEnabled(true);
+    btn_del->setEnabled(false);
+    btn_cancel->setEnabled(true);
+}
+
+void CustomersTab::onEditCustomer()
 {
     w_customer_edit->setEnabled(true);
     w_customer_edit->setFocus();
@@ -186,7 +197,7 @@ void CustomersTab::onNewClicked()
     btn_cancel->setEnabled(true);
 }
 
-void CustomersTab::onDelClicked()
+void CustomersTab::onDelCustomer()
 {
     w_customer_edit->setEnabled(false);
 

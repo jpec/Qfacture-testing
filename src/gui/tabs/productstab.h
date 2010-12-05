@@ -42,13 +42,18 @@ private slots:
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "nouveau
      * produit"
      */
-    void onNewClicked();
+    void onNewProduct();
+
+    /**
+     * (Dés)active les boutons qui vont bien lors de l'édition d'un produit
+     */
+    void onEditProduct();
 
     /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
      * produit"
      */
-    void onDelClicked();
+    void onDelProduct();
 
     /**
      * Appelé lorsque l'utilisateur clique sur le tableau. S'occupe de charger

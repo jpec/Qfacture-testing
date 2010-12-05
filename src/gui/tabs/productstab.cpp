@@ -125,17 +125,17 @@ void ProductsTab::createActions()
                   SLOT(clearContent()));
 
     // lors du clic sur le bouton de création d'un new produit
-    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewClicked()));
+    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewProduct()));
     // ou lors du chargement d'un produit
     this->connect(w_product_edit, SIGNAL(productLoaded()), this,
-                  SLOT(onNewClicked()));
+                  SLOT(onEditProduct()));
 
     // lors du clic sur le bouton de sauvegarde d'un new produit
     this->connect(btn_save, SIGNAL(clicked()), w_product_edit, SLOT(save()));
 
     // supprime le produit chargé, ou annule la création d'un nouveau produit
     this->connect(btn_del, SIGNAL(clicked()), w_product_edit, SLOT(erase()));
-    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+    this->connect(btn_del, SIGNAL(clicked()), this, SLOT(onDelProduct()));
 
     // rafraichit les données du tableau à l'enregistrement ou à la suppression d'un produit
     this->connect(w_product_edit, SIGNAL(productSaved()), products_table,
@@ -145,7 +145,7 @@ void ProductsTab::createActions()
 
     // on réactive les boutons qu'il faut à la sauvegarde d'un produit
     this->connect(w_product_edit, SIGNAL(productSaved()), this,
-                  SLOT(onDelClicked()));
+                  SLOT(onDelProduct()));
     // et on vide le formulaire
     this->connect(w_product_edit, SIGNAL(productSaved()), w_product_edit,
                   SLOT(clearContent()));
@@ -156,7 +156,7 @@ void ProductsTab::createActions()
 
     // annule une saisie
     this->connect(btn_cancel, SIGNAL(clicked()), w_product_edit, SLOT(clearContent()));
-    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelClicked()));
+    this->connect(btn_cancel, SIGNAL(clicked()), this, SLOT(onDelProduct()));
 
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
@@ -171,7 +171,18 @@ void ProductsTab::onSearchFiltersChanged()
                                   QVariant(search->text()));
 }
 
-void ProductsTab::onNewClicked()
+void ProductsTab::onNewProduct()
+{
+    w_product_edit->setEnabled(true);
+    w_product_edit->setFocus();
+
+    btn_new->setEnabled(false);
+    btn_save->setEnabled(true);
+    btn_del->setEnabled(false);
+    btn_cancel->setEnabled(true);
+}
+
+void ProductsTab::onEditProduct()
 {
     w_product_edit->setEnabled(true);
     w_product_edit->setFocus();
@@ -182,7 +193,7 @@ void ProductsTab::onNewClicked()
     btn_cancel->setEnabled(true);
 }
 
-void ProductsTab::onDelClicked()
+void ProductsTab::onDelProduct()
 {
     w_product_edit->setEnabled(false);
 
