@@ -5,7 +5,6 @@ ParamsTab::ParamsTab(QfactureCore *core, QWidget *parent) : QWidget(parent)
     this->core = core;
 
     this->buildLayout();
-
     this->createActions();
 }
 

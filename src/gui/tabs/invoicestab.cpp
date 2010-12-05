@@ -13,8 +13,6 @@ InvoicesTab::InvoicesTab(QfactureCore *core, QWidget *parent) :
 
     this->buildLayout();
     this->createActions();
-
-    this->loadInvoices();
 }
 
 InvoicesTab::~InvoicesTab()
@@ -125,7 +123,7 @@ void InvoicesTab::buildActionButtons()
 void InvoicesTab::createActions()
 {
     // remplissage du tableau dès que la connexion à la DB est établies
-    this->connect(core, SIGNAL(DBConnected()), this, SLOT(loadInvoices()));
+    this->connect(core, SIGNAL(DBConnected()), invoices_table, SLOT(feedTable()));
 
     // charge le profil d'un client lors du clic sur le bouton "ouvrir"
     this->connect(btn_open, SIGNAL(clicked()), this,
@@ -193,14 +191,6 @@ void InvoicesTab::loadInvoice(int id)
 void InvoicesTab::loadInvoice(QTableWidgetItem *item)
 {
     loadInvoice(item->data(Qt::UserRole).toInt());
-}
-
-void InvoicesTab::loadInvoices()
-{
-    if(!core->isDBConnected())
-        return;
-
-    invoices_table->feedTable();
 }
 
 void InvoicesTab::setEnabled(bool state)

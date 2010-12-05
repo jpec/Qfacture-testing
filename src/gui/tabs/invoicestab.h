@@ -36,12 +36,6 @@ public slots:
      */
     void setEnabled(bool state=true);
 
-    /**
-     * Recharge la liste des factures dans le tableau à partir de la
-     * DB
-     */
-    void loadInvoices();
-
 private slots:
     /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer

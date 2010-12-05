@@ -8,8 +8,6 @@ ProductsTab::ProductsTab(QfactureCore *core, QWidget *parent) :
 
     this->buildLayout();
     this->createActions();
-
-    this->loadProducts();
 }
 
 ProductsTab::~ProductsTab()
@@ -106,8 +104,6 @@ void ProductsTab::buildLayout()
 
     layout->addWidget(gbox_products);
     layout->addLayout(edit_product_layout);
-
-    setLayout(layout);
 }
 
 void ProductsTab::createActions()
@@ -206,12 +202,6 @@ void ProductsTab::onDelProduct()
 void ProductsTab::loadProduct(QTableWidgetItem *item)
 {
     w_product_edit->loadProduct(item->data(Qt::UserRole).toInt());
-}
-
-void ProductsTab::loadProducts()
-{
-    if(!this->core->isDBConnected())
-        return;
 }
 
 void ProductsTab::setEnabled(bool state)
