@@ -32,7 +32,10 @@ SOURCES += main.cpp \
     gui/widgets/productwidget.cpp \
     gui/tabs/invoicestab.cpp \
     gui/tabs/invoicetab.cpp \
-    utils/utils.cpp
+    utils/utils.cpp \
+    controllers/invoicecontroller.cpp \
+    managers/invoicemanager.cpp \
+    models/invoice.cpp
 HEADERS += models/person.h \
     models/customer.h \
     models/profile.h \
@@ -58,5 +61,8 @@ HEADERS += models/person.h \
     gui/widgets/productwidget.h \
     gui/tabs/invoicestab.h \
     gui/tabs/invoicetab.h \
-    utils/utils.h
+    utils/utils.h \
+    controllers/invoicecontroller.h \
+    managers/invoicemanager.h \
+    models/invoice.h
 FORMS += gui/mainwindow.ui
