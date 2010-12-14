@@ -42,19 +42,33 @@ public:
      */
     QString getRef() const;
 
-//    /**
-//     * Définit le prix HT de ce produit.
-//     *
-//     * @param price Le prix du produit.
-//     */
-//    void setPrice(float price);
-//
-//    /**
-//     * Retourne le prix de ce produit.
-//     *
-//     * @return float Le prix.
-//     */
-//    float getPrice() const;
+    /**
+     * Définit la date d'établissement de la facture.
+     *
+     * @param date La nouvelle date.
+     */
+    void setDate(const QDate &date);
+
+    /**
+     * Retourne la date d'établissement de la facture
+     *
+     * @return QDate La Date.
+     */
+    QDate getDate() const;
+
+    /**
+     * Définit le montant de la facture.
+     *
+     * @param price Le montant de la facture.
+     */
+    void setAmount(float price);
+
+    /**
+     * Retourne le montant de la facture.
+     *
+     * @return float Le montant de la facture.
+     */
+    float getAmount() const;
 
     /**
      * Définit la description de la facture.
@@ -81,10 +95,15 @@ private:
      */
     QString ref;
 
-//    /**
-//     * Prix du produit (HT, logique)
-//     */
-//    float price;
+    /**
+     * Le montant de la facture
+     */
+    float amount;
+
+    /**
+     * La date d'établissement de la facture
+     */
+    QDate date;
 
     /**
      * Brève description de la facture.

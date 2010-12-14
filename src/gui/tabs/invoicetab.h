@@ -13,11 +13,14 @@
 #include <QPushButton>
 #include <QTableWidget>
 
+#include "models/invoice.h"
+
+
 class InvoiceTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit InvoiceTab(int id, QfactureCore *core, QWidget *parent = 0);
+    explicit InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent = 0);
     ~InvoiceTab();
 
 public slots:
@@ -39,6 +42,11 @@ private:
      * Pointeur vers le contrôleur principal
      */
     QfactureCore *core;
+
+    /**
+     * Facture représentée dans l'onglet
+     */
+    Invoice invoice;
 };
 
 #endif // INVOICETAB_H

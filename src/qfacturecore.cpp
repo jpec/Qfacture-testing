@@ -139,3 +139,10 @@ bool QfactureCore::eraseCustomer(int id)
 {
     return CustomerController::getInstance()->erase(id);
 }
+
+/* Wrapper pour les méthodes du contrôleur des factures */
+
+Invoice QfactureCore::getInvoice(int id)
+{
+    return InvoiceController::getInstance()->get(id);
+}

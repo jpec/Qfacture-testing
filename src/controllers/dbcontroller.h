@@ -18,6 +18,7 @@ class DBController : public QObject
     friend class CustomerManager;
     friend class ProductManager;
     friend class ProfileManager;
+    friend class InvoiceManager;
 
     friend class SQLTable;
 

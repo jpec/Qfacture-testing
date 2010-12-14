@@ -4,6 +4,7 @@
 #include "controllers/profilecontroller.h"
 #include "controllers/productcontroller.h"
 #include "controllers/customercontroller.h"
+#include "controllers/invoicecontroller.h"
 
 #include <QObject>
 
@@ -128,6 +129,13 @@ public:
      * @see CustomerController::erase()
      */
     bool eraseCustomer(int id);
+
+    /* Wrapper pour les méthodes du contrôleur des factures */
+
+    /**
+     * @see InvoiceController::get()
+     */
+    Invoice getInvoice(int id);
 
 signals:
 

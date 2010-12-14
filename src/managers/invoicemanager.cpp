@@ -6,31 +6,31 @@
 Invoice InvoiceManager::get(int id)
 {
     QSqlQuery query;
-    Invoice p;
+    Invoice in;
 
-//    query.prepare(
-//           "SELECT id, Name, Price, Comment "
-//            "FROM article WHERE id = :Invoice_id"
-//        );
-//
-//    query.bindValue(":Invoice_id", QVariant(id));
-//
-//    if(!DBController::getInstance()->exec(query))
-//        return p;
-//
-//    // pas de produit avec l'ID demandé, on ne remonte pas d'erreur
-//    // mais juste un produit vide
-//    if(query.next())
-//        p = makeInvoice(query);
+    query.prepare(
+           "SELECT id, idClient, Amount, Comment, Reference, Type, Date "
+            "FROM facture WHERE id = :Invoice_id"
+        );
+
+    query.bindValue(":Invoice_id", QVariant(id));
+
+    if(!DBController::getInstance()->exec(query))
+        return in;
+
+    // pas de facture avec l'ID demandé, on ne remonte pas d'erreur
+    // mais juste une facture vide
+    if(query.next())
+        in = makeInvoice(query);
 
     query.finish();
 
-    return p;
+    return in;
 }
 
-bool InvoiceManager::save(Invoice &Invoice)
+bool InvoiceManager::save(Invoice &invoice)
 {
-    return (Invoice.getId() == 0) ? insert(Invoice) : update(Invoice);
+    return (invoice.getId() == 0) ? insert(invoice) : update(invoice);
 }
 
 bool InvoiceManager::erase(int id)
@@ -107,12 +107,12 @@ void InvoiceManager::bindInvoice(const Invoice &Invoice, QSqlQuery &query)
 
 Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
 {
-    Invoice Invoice;
+    Invoice invoice;
 
-//    Invoice.setId(query.value(0).toInt());
-//    Invoice.setName(query.value(1).toString());
-//    Invoice.setPrice(query.value(2).toFloat());
-//    Invoice.setDescription(query.value(3).toString());
+    invoice.setId(query.value(0).toInt());
+    invoice.setAmount(query.value(2).toFloat());
+    invoice.setDescription(query.value(3).toString());
+    invoice.setRef(query.value(4).toString());
 
-    return Invoice;
+    return invoice;
 }

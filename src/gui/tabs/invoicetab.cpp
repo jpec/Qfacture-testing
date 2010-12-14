@@ -1,10 +1,11 @@
 #include "invoicetab.h"
 #include "controllers/dbcontroller.h"
 
-InvoiceTab::InvoiceTab(int id, QfactureCore *core, QWidget *parent) :
+InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
         QWidget(parent)
 {
     this->core = core;
+    this->invoice = invoice;
 
     this->loadInvoice();
 }
@@ -17,8 +18,7 @@ InvoiceTab::~InvoiceTab()
 
 void InvoiceTab::loadInvoice()
 {
-    if(!core->isDBConnected())
-        return;
+    // do sth here
 }
 
 void InvoiceTab::setEnabled(bool state)

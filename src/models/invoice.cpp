@@ -1,5 +1,8 @@
 #include "invoice.h"
 
+#include <QDate>
+
+
 Invoice::Invoice() : id(0), ref(""), description("")
 {
 }
@@ -33,15 +36,25 @@ QString Invoice::getRef() const
     return this->ref;
 }
 
-//void Invoice::setPrice(float price)
-//{
-//    this->price = price;
-//}
-//
-//float Invoice::getPrice() const
-//{
-//    return this->price;
-//}
+void Invoice::setDate(const QDate &date)
+{
+    this->date = date;
+}
+
+QDate Invoice::getDate() const
+{
+    return date;
+}
+
+void Invoice::setAmount(float amount)
+{
+    this->amount = amount;
+}
+
+float Invoice::getAmount() const
+{
+    return this->amount;
+}
 
 void Invoice::setDescription(const QString &description)
 {

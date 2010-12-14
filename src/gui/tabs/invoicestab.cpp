@@ -185,7 +185,17 @@ void InvoicesTab::loadSelectedInvoice()
 
 void InvoicesTab::loadInvoice(int id)
 {
-    emit newTabRequest(trUtf8("Facture %1").arg(id), new InvoiceTab(id, core, this));
+    Invoice invoice = core->getInvoice(id);
+
+    if(invoice.getId() == 0)
+    {
+        QMessageBox::critical(this, trUtf8("Erreur"), trUtf8("Impossible de charger la facture"));
+
+        return;
+    }
+
+    emit newTabRequest(trUtf8("Facture %1").arg(invoice.getRef()),
+                       new InvoiceTab(invoice, core, this));
 }
 
 void InvoicesTab::loadInvoice(QTableWidgetItem *item)
