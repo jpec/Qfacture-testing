@@ -35,8 +35,8 @@ bool InvoiceManager::save(Invoice &invoice)
 
 bool InvoiceManager::erase(int id)
 {
-    QSqlQuery query;
-    bool result;
+    //QSqlQuery query;
+    bool result = false;
 
     if(id == 0)
         return false;
@@ -49,7 +49,7 @@ bool InvoiceManager::erase(int id)
 //
 //    query.finish();
 //
-//    return result;
+    return result;
 }
 
 bool InvoiceManager::insert(Invoice &Invoice)

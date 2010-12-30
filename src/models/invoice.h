@@ -2,6 +2,7 @@
 #define INVOICE_H
 
 #include <QString>
+#include <QDate>
 
 
 /**
