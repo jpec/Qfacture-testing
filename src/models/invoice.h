@@ -1,6 +1,8 @@
 #ifndef INVOICE_H
 #define INVOICE_H
 
+#include "models/customer.h"
+
 #include <QString>
 #include <QDate>
 
@@ -85,6 +87,20 @@ public:
      */
     QString getDescription() const;
 
+    /**
+     * Définit le client auquel est liée la facture
+     *
+     * @param customer Le nouveau client.
+     */
+    void setCustomer(const Customer &customer);
+
+    /**
+     * Retourne le client auquel est liée la facture.
+     *
+     * @return Customer Le client.
+     */
+    Customer getCustomer() const;
+
 private:
     /**
      * Identifiant de la facture.
@@ -110,6 +126,16 @@ private:
      * Brève description de la facture.
      */
     QString description;
+
+    /**
+     * Type de la facture
+     */
+    QString type;
+
+    /**
+     * Client
+     */
+    Customer customer;
 };
 
 #endif // INVOICE_H

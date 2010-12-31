@@ -38,6 +38,7 @@ public slots:
 private slots:
     void onDBStateChanged();
     void onInvoiceStateChanged();
+    void onAvailableProductDoubleClicked(QTableWidgetItem *item);
 
 private:
     /**
@@ -50,6 +51,11 @@ private:
      * Affiche les données de la facture dans l'onglet
      */
     void displayInvoiceData();
+
+    /**
+     * Crée la liste des produits disponibles
+     */
+    void createAvailableProductsList();
 
     /**
      * Construit la GUI de l'onglet
@@ -102,7 +108,7 @@ private:
 
     QVBoxLayout *l_products;
     QGroupBox *gbox_products;
-    QTableWidget *t_available_products;
+    SQLTable *t_available_products;
     QTableWidget *t_selected_products;
 
     /**

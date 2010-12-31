@@ -1,6 +1,9 @@
 #include "invoicetab.h"
 #include "controllers/dbcontroller.h"
 
+#include <QMessageBox>
+
+
 InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
         QWidget(parent)
 {
@@ -55,6 +58,9 @@ void InvoiceTab::createActions()
 
     // activation de l'onglet dès que la connexion à la DB est établie
     connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBStateChanged()));
+
+    connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+            this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
 }
 
 void InvoiceTab::onDBStateChanged()
@@ -75,12 +81,18 @@ void InvoiceTab::onInvoiceStateChanged()
         displayInvoiceData();
 }
 
+void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
+{
+    QMessageBox::critical(this, trUtf8("Erreur !"), item->data(Qt::UserRole).toString());
+}
+
 void InvoiceTab::displayInvoiceData()
 {
     le_facture_no->setText(QVariant(invoice.getId()).toString());
     le_facture_montant->setText(QVariant(invoice.getAmount()).toString()+trUtf8(" €"));
     le_facture_date->setDate(invoice.getDate());
     le_comment->setText(invoice.getDescription());
+    le_selected_client->setText(invoice.getCustomer().getName());
 }
 
 void InvoiceTab::buildLayout()
@@ -120,18 +132,36 @@ void InvoiceTab::buildBody()
 
 void InvoiceTab::buildProductsBox()
 {
+    QStringList columns_labels;
+    columns_labels << trUtf8("Désignation") << trUtf8("Prix unitaire")
+                   << trUtf8("Quantité") << trUtf8("Remise") << trUtf8("Total");
+
+    createAvailableProductsList();
+
     l_products = new QVBoxLayout();
     gbox_products = new QGroupBox(trUtf8("Liste des prestations"));
+    t_selected_products = new QTableWidget(2, 5);
 
-    t_available_products = new QTableWidget(10, 6);
-    t_selected_products = new QTableWidget(10, 6);
+    t_selected_products->setHorizontalHeaderLabels(columns_labels);
 
-    l_products->addWidget(t_available_products);
+    l_products->addWidget(t_available_products->getWidget());
     l_products->addWidget(t_selected_products);
 
     gbox_products->setLayout(l_products);
 
     l_body->addWidget(gbox_products);
+}
+
+void InvoiceTab::createAvailableProductsList()
+{
+    // définition des colonnes du tableau
+    QStringList not_wanted = QStringList() << "id";
+    QStringList columns = core->getDBColumns("article", not_wanted);
+    QStringList labels = core->getDBLabels("article", not_wanted);
+
+    // création du tableau de produits
+    t_available_products = new SQLTable("article");
+    t_available_products->setColumns(columns, labels);
 }
 
 void InvoiceTab::buildClientBox()

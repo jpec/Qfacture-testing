@@ -65,3 +65,16 @@ QString Invoice::getDescription() const
 {
     return this->description;
 }
+
+void Invoice::setCustomer(const Customer &customer)
+{
+    if(customer.getId() == 0)
+        return;
+
+    this->customer = customer;
+}
+
+Customer Invoice::getCustomer() const
+{
+    return customer;
+}

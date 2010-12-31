@@ -9,8 +9,12 @@ Invoice InvoiceManager::get(int id)
     Invoice in;
 
     query.prepare(
-           "SELECT id, idClient, Amount, Comment, Reference, Type, Date "
-            "FROM facture WHERE id = :Invoice_id"
+           "SELECT "
+                "f.id, idClient, Amount, Comment, Reference, Type, Date, "
+                "c.name "
+           "FROM facture f "
+           "LEFT JOIN client c ON c.id = f.idClient "
+           "WHERE f.id = :Invoice_id "
         );
 
     query.bindValue(":Invoice_id", QVariant(id));
@@ -108,13 +112,17 @@ void InvoiceManager::bindInvoice(const Invoice &Invoice, QSqlQuery &query)
 Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
 {
     Invoice invoice;
+    Customer c;
 
     invoice.setId(query.value(0).toInt());
     invoice.setAmount(query.value(2).toFloat());
     invoice.setDescription(query.value(3).toString());
     invoice.setRef(query.value(4).toString());
-
     invoice.setDate(QDate::fromString(query.value(6).toString(), Qt::ISODate));
+
+    c.setId(query.value(1).toInt());
+    c.setName(query.value(7).toString());
+    invoice.setCustomer(c);
 
     return invoice;
 }
