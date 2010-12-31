@@ -10,8 +10,8 @@ Product ProductManager::get(int id)
     Product p;
 
     query.prepare(
-            "SELECT id, Name, Price, Comment "
-            "FROM article WHERE id = :product_id"
+            "SELECT aID, name, price, comment "
+            "FROM article WHERE aID = :product_id"
         );
 
     query.bindValue(":product_id", QVariant(id));
@@ -42,7 +42,7 @@ bool ProductManager::erase(int id)
     if(id == 0)
         return false;
 
-    query.prepare("DELETE FROM article WHERE id = :a_id");
+    query.prepare("DELETE FROM article WHERE aID = :a_id");
 
     query.bindValue(":a_id", QVariant(id));
 
@@ -58,7 +58,7 @@ bool ProductManager::insert(Product &product)
     QSqlQuery query;
 
     query.prepare(
-            "INSERT INTO article (Name, Price, Comment) "
+            "INSERT INTO article (name, price, comment) "
             "VALUES (:name, :price, :comment)"
     );
 
@@ -82,8 +82,8 @@ bool ProductManager::update(const Product &product)
 
     query.prepare(
             "UPDATE article "
-            "SET Name = :name, Price = :price, Comment = :comment "
-            "WHERE id = :a_id"
+            "SET name = :name, price = :price, comment = :comment "
+            "WHERE aID = :a_id"
     );
 
     bindProduct(product, query);

@@ -10,8 +10,8 @@ Customer CustomerManager::get(int id)
     Customer c;
 
     query.prepare(
-            "SELECT id, Name, Adress, Adress2, Zip, City, Phone, Mail "
-            "FROM client WHERE id = :customer_id"
+            "SELECT cID, name, address, complement, zip, city, phone, mail "
+            "FROM client WHERE cID = :customer_id"
         );
 
     query.bindValue(":customer_id", QVariant(id));
@@ -41,7 +41,7 @@ bool CustomerManager::erase(int id)
     if(id == 0)
         return false;
 
-    query.prepare("DELETE FROM client WHERE id = :c_id");
+    query.prepare("DELETE FROM client WHERE cID = :c_id");
 
     query.bindValue(":c_id", QVariant(id));
 
@@ -60,8 +60,8 @@ bool CustomerManager::insert(Customer &customer)
     QSqlQuery query;
 
     query.prepare(
-            "INSERT INTO client (Name, Adress, Adress2, Zip, City, Phone, "
-                                     "Mail) "
+            "INSERT INTO client (name, address, complement, zip, city, phone, "
+                                 "Mail) "
             "VALUES (:name, :address, :address2, :zip, :city, :phone, :mail)"
     );
 
@@ -85,10 +85,10 @@ bool CustomerManager::update(const Customer &customer)
 
     query.prepare(
             "UPDATE client "
-            "SET Name = :name, Adress = :address, Adress2 = :complement, "
-                "Zip = :zip, City = :city, Phone = :phone, "
-                "Mail = :mail "
-            "WHERE id = :c_id"
+            "SET name = :name, address = :address, complement = :complement, "
+                "zip = :zip, city = :city, phone = :phone, "
+                "mail = :mail "
+            "WHERE cID = :c_id"
     );
 
     bindCustomer(customer, query);

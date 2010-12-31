@@ -155,7 +155,7 @@ void InvoiceTab::buildProductsBox()
 void InvoiceTab::createAvailableProductsList()
 {
     // définition des colonnes du tableau
-    QStringList not_wanted = QStringList() << "id";
+    QStringList not_wanted = QStringList() << "aID";
     QStringList columns = core->getDBColumns("article", not_wanted);
     QStringList labels = core->getDBLabels("article", not_wanted);
 

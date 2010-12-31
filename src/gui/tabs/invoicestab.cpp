@@ -38,7 +38,7 @@ InvoicesTab::~InvoicesTab()
 void InvoicesTab::buildLayout()
 {
     // définition des colonnes du tableau
-    QStringList not_wanted = QStringList() << "id" << "idClient";
+    QStringList not_wanted = QStringList() << "fID" << "c_ID";
     columns = core->getDBColumns("facture", not_wanted);
     labels = core->getDBLabels("facture", not_wanted);
 
@@ -76,8 +76,8 @@ void InvoicesTab::buildInvoicesTableLayout(QStringList columns, QStringList labe
 {
     this->invoices_table = new SQLTable("facture");
     invoices_table->setColumns(columns, labels);
-    invoices_table->setFilter("Date", displayDate);
-    invoices_table->join("client", QStringList() << "Name");
+    invoices_table->setFilter("date", displayDate);
+    invoices_table->join("client", QStringList() << "name");
 }
 
 void InvoicesTab::buildSearchBar(QStringList filters)

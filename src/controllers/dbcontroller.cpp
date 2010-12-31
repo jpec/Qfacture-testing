@@ -8,35 +8,33 @@
 DBController::DBController()
 {
     // table client
-    tables_definitions["client"]["id"] = trUtf8("Identifiant");
-    tables_definitions["client"]["Name"] = trUtf8("Nom");
-    tables_definitions["client"]["Adress"] = trUtf8("Adresse");
-    tables_definitions["client"]["Adress2"] = trUtf8("Complément");
-    tables_definitions["client"]["Zip"] = trUtf8("Code postal");
-    tables_definitions["client"]["City"] = trUtf8("Ville");
-    tables_definitions["client"]["Phone"] = trUtf8("Téléphone");
-    tables_definitions["client"]["Mail"] = trUtf8("Mail");
+    tables_definitions["client"]["cID"] = trUtf8("Identifiant");
+    tables_definitions["client"]["name"] = trUtf8("Nom");
+    tables_definitions["client"]["address"] = trUtf8("Adresse");
+    tables_definitions["client"]["complement"] = trUtf8("Complément");
+    tables_definitions["client"]["zip"] = trUtf8("Code postal");
+    tables_definitions["client"]["city"] = trUtf8("Ville");
+    tables_definitions["client"]["phone"] = trUtf8("Téléphone");
+    tables_definitions["client"]["mail"] = trUtf8("Mail");
 
     // table article
-    tables_definitions["article"]["id"] = trUtf8("Identifiant");
-    tables_definitions["article"]["Name"] = trUtf8("Nom");
-    tables_definitions["article"]["Price"] = trUtf8("Prix");
-    tables_definitions["article"]["Comment"] = trUtf8("Description");
+    tables_definitions["article"]["aID"] = trUtf8("Identifiant");
+    tables_definitions["article"]["name"] = trUtf8("Nom");
+    tables_definitions["article"]["price"] = trUtf8("Prix");
+    tables_definitions["article"]["comment"] = trUtf8("Description");
 
     // table facture
-    tables_definitions["facture"]["id"] = trUtf8("Identifiant");
-    tables_definitions["facture"]["idClient"] = trUtf8("Identifiant du client");
-    tables_definitions["facture"]["Amount"] = trUtf8("Montant");
-    tables_definitions["facture"]["Comment"] = trUtf8("Commentaire");
-    tables_definitions["facture"]["Payment"] = trUtf8("Mode de paiement");
-    tables_definitions["facture"]["Reference"] = trUtf8("Référence");
-    tables_definitions["facture"]["Type"] = trUtf8("Type");
-    tables_definitions["facture"]["Date"] = trUtf8("Date");
+    tables_definitions["facture"]["fID"] = trUtf8("Identifiant");
+    tables_definitions["facture"]["c_ID"] = trUtf8("Identifiant du client");
+    tables_definitions["facture"]["amount"] = trUtf8("Montant");
+    tables_definitions["facture"]["comment"] = trUtf8("Commentaire");
+    tables_definitions["facture"]["type"] = trUtf8("Type");
+    tables_definitions["facture"]["date"] = trUtf8("Date");
 
     /** Clauses de jointures **/
 
     // table facture
-    join_clauses["facture"]["client"] = "facture.idClient = client.id";
+    join_clauses["facture"]["client"] = "facture.c_ID = client.cID";
 
 }
 
@@ -92,6 +90,11 @@ QStringList DBController::getLabels(const QString& table,
 QString DBController::getLabel(const QString &table, const QString &column) const
 {
     return tables_definitions[table][column];
+}
+
+QString DBController::getPK(const QString &table) const
+{
+    return tables_definitions[table].keys().at(0);
 }
 
 bool DBController::exec(QSqlQuery &query)

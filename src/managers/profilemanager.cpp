@@ -10,8 +10,10 @@ Profile ProfileManager::get(int id)
     Profile p;
 
     query.prepare(
-            "SELECT id, Name, Siret, Adress, Zip, City, Phone, Mail, Home, Logo "
-            "FROM user WHERE id = :profile_id"
+            "SELECT "
+                "uID, name, siret, address, complement, zip, city, phone, "
+                "mail, website, logo, fac_reference_format "
+            "FROM user WHERE uID = :profile_id"
         );
 
     query.bindValue(":profile_id", QVariant(id));
@@ -46,10 +48,11 @@ bool ProfileManager::update(const Profile &profile)
 
     query.prepare(
             "UPDATE user "
-            "SET Name = :name, Siret = :siret, Adress = :address, "
-                "Zip = :zip, City = :city, Phone = :phone, "
-                "Mail = :mail, Home = :home, Logo = :logo "
-            "WHERE id = :p_id"
+            "SET name = :name, ciret = :siret, address = :address, "
+                "zip = :zip, city = :city, phone = :phone, "
+                "mail = :mail, website = :website, logo = :logo, "
+                "fac_reference_format = :fac_reference_format"
+            "WHERE uID = :p_id"
     );
 
     bindProfile(profile, query);
@@ -74,8 +77,9 @@ void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
     query.bindValue(":city", profile.getCity());
     query.bindValue(":phone", profile.getPhone());
     query.bindValue(":mail", profile.getMail());
-    query.bindValue(":home", profile.getWebsite());
+    query.bindValue(":website", profile.getWebsite());
     query.bindValue(":logo", profile.getLogo());
+    query.bindValue(":fac_reference_format", "");
 }
 
 Profile ProfileManager::makeProfile(QSqlQuery &query)
@@ -86,12 +90,12 @@ Profile ProfileManager::makeProfile(QSqlQuery &query)
     profile.setName(query.value(1).toString());
     profile.setSiret(query.value(2).toString());
     profile.setAddress(query.value(3).toString());
-    profile.setZipCode(query.value(4).toString());
-    profile.setCity(query.value(5).toString());
-    profile.setPhone(query.value(6).toString());
-    profile.setMail(query.value(7).toString());
-    profile.setWebsite(query.value(8).toString());
-    profile.setLogo(query.value(9).toByteArray());
+    profile.setZipCode(query.value(5).toString());
+    profile.setCity(query.value(6).toString());
+    profile.setPhone(query.value(7).toString());
+    profile.setMail(query.value(8).toString());
+    profile.setWebsite(query.value(9).toString());
+    profile.setLogo(query.value(10).toByteArray());
 
     return profile;
 }

@@ -37,7 +37,7 @@ ProductsTab::~ProductsTab()
 void ProductsTab::buildLayout()
 {
     // définition des colonnes du tableau
-    QStringList not_wanted = QStringList() << "id";
+    QStringList not_wanted = QStringList() << "aID";
 
     columns = core->getDBColumns("article", not_wanted);
     labels = core->getDBLabels("article", not_wanted);

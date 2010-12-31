@@ -96,6 +96,13 @@ private:
     QString getLabel(const QString &table, const QString &column) const;
 
     /**
+     * Retourne la clé primaire de la table passée en paramètre
+     *
+     * @param table Nom de la table
+     */
+    QString getPK(const QString &table) const;
+
+    /**
      * Retourne la liste des colonnes d'une table donnée.
      *
      * @param table Nom de la table

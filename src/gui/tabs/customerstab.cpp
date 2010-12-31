@@ -40,7 +40,7 @@ CustomersTab::~CustomersTab()
 void CustomersTab::buildLayout()
 {
     // définition des colonnes du tableau
-    QStringList not_wanted = QStringList() << "id";
+    QStringList not_wanted = QStringList() << "cID";
 
     columns = core->getDBColumns("client", not_wanted);
     labels = core->getDBLabels("client", not_wanted);
@@ -83,7 +83,7 @@ void CustomersTab::buildLayout()
     // création du tableau de clients
     customers_table = new SQLTable("client");
     customers_table->setColumns(columns, labels);
-    customers_table->setFilter("Phone", displayPhone);
+    customers_table->setFilter("phone", displayPhone);
 
     // liaisons des layouts avec les widgets
     search_form_layout->addWidget(search_filters);

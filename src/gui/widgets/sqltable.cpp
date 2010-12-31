@@ -79,6 +79,7 @@ void SQLTable::feedTable()
 {
     QVariant v;
     QSqlQuery query;
+    QString pk_name = DBController::getInstance()->getPK(table_name);
     QString fields = QStringList(columns).join(", "), query_sql, table_to_join;
     int i, j, nb_cols = columns.count();
 
@@ -89,7 +90,7 @@ void SQLTable::feedTable()
 
     /** construction de la requête **/
 
-    query_sql = "SELECT "+table_name+".id, "+fields+" FROM "+table_name+" ";
+    query_sql = "SELECT "+pk_name+", "+fields+" FROM "+table_name+" ";
 
     foreach(table_to_join, to_join)
     {
@@ -101,7 +102,7 @@ void SQLTable::feedTable()
     if(!like_filter.toString().isEmpty())
         query_sql.append("WHERE "+like_filter_field+" LIKE :like_filter ");
 
-    query_sql.append("ORDER BY "+table_name+".id ASC");
+    query_sql.append("ORDER BY "+table_name+"."+pk_name+" ASC");
 
     /** exécution de la requête **/
     query.prepare(query_sql);
@@ -128,7 +129,7 @@ void SQLTable::feedTable()
 
             table->setItem(i, j, new QTableWidgetItem(v.toString()));
 
-            table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
+            //table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
         }
 
         i++;
