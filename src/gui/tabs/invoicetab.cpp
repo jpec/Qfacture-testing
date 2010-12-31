@@ -9,6 +9,8 @@ InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
 
     buildLayout();
     createActions();
+
+    onInvoiceStateChanged();
 }
 
 InvoiceTab::~InvoiceTab()
@@ -60,6 +62,25 @@ void InvoiceTab::onDBStateChanged()
     bool connected = core->isDBConnected();
 
     setEnabled(connected);
+}
+
+void InvoiceTab::onInvoiceStateChanged()
+{
+    bool saved = invoice.getId() != 0;
+
+    btn_print->setEnabled(saved);
+    btn_del->setEnabled(saved);
+
+    if(saved)
+        displayInvoiceData();
+}
+
+void InvoiceTab::displayInvoiceData()
+{
+    le_facture_no->setText(QVariant(invoice.getId()).toString());
+    le_facture_montant->setText(QVariant(invoice.getAmount()).toString()+trUtf8(" €"));
+    le_facture_date->setDate(invoice.getDate());
+    le_comment->setText(invoice.getDescription());
 }
 
 void InvoiceTab::buildLayout()
@@ -140,6 +161,8 @@ void InvoiceTab::buildCommentBox()
 
     gbox_comment = new QGroupBox(trUtf8("Commentaire"));
     le_comment = new QLineEdit();
+
+    le_comment->setPlaceholderText(trUtf8("Description de la facture ..."));
 
     l_comment->addWidget(le_comment);
 

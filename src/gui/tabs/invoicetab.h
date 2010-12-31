@@ -37,6 +37,7 @@ public slots:
 
 private slots:
     void onDBStateChanged();
+    void onInvoiceStateChanged();
 
 private:
     /**
@@ -44,6 +45,11 @@ private:
      * principaux évènements.
      */
     void createActions();
+
+    /**
+     * Affiche les données de la facture dans l'onglet
+     */
+    void displayInvoiceData();
 
     /**
      * Construit la GUI de l'onglet

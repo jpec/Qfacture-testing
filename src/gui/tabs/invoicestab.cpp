@@ -125,7 +125,10 @@ void InvoicesTab::createActions()
     // remplissage du tableau dès que la connexion à la DB est établies
     this->connect(core, SIGNAL(DBConnected()), invoices_table, SLOT(feedTable()));
 
-    // charge le profil d'un client lors du clic sur le bouton "ouvrir"
+    // création d'une facture lors du clic sur le bouton
+    this->connect(btn_new, SIGNAL(clicked()), this, SLOT(onNewClicked()));
+
+    // charge une facture lors du clic sur le bouton "ouvrir"
     this->connect(btn_open, SIGNAL(clicked()), this,
                   SLOT(loadSelectedInvoice()));
 
@@ -160,6 +163,11 @@ void InvoicesTab::onSelectionChanged()
     btn_del->setEnabled(true);
 }
 
+void InvoicesTab::onNewClicked()
+{
+    loadInvoice(0);
+}
+
 void InvoicesTab::onDelClicked()
 {
     QMessageBox msgBox;
@@ -186,16 +194,10 @@ void InvoicesTab::loadSelectedInvoice()
 void InvoicesTab::loadInvoice(int id)
 {
     Invoice invoice = core->getInvoice(id);
+    QString tab_name = invoice.getId() == 0 ? trUtf8("Nouvelle facture")
+                                            : trUtf8("Facture %1").arg(invoice.getRef());
 
-    if(invoice.getId() == 0)
-    {
-        QMessageBox::critical(this, trUtf8("Erreur"), trUtf8("Impossible de charger la facture"));
-
-        return;
-    }
-
-    emit newTabRequest(trUtf8("Facture %1").arg(invoice.getRef()),
-                       new InvoiceTab(invoice, core, this));
+    emit newTabRequest(tab_name, new InvoiceTab(invoice, core, this));
 }
 
 void InvoicesTab::loadInvoice(QTableWidgetItem *item)

@@ -114,5 +114,7 @@ Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
     invoice.setDescription(query.value(3).toString());
     invoice.setRef(query.value(4).toString());
 
+    invoice.setDate(QDate::fromString(query.value(6).toString(), Qt::ISODate));
+
     return invoice;
 }

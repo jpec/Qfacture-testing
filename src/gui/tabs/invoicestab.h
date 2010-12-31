@@ -38,6 +38,11 @@ public slots:
 
 private slots:
     /**
+     * Ouvre un onglet pour créer une facture
+     */
+    void onNewClicked();
+
+    /**
      * (Dés)active les boutons qui vont bien lors du clic sur le bouton "supprimer
      * facture"
      */
