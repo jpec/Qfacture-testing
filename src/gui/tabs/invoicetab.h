@@ -35,7 +35,16 @@ public slots:
      */
     void setEnabled(bool state=true);
 
+private slots:
+    void onDBStateChanged();
+
 private:
+    /**
+     * Cette méthode, appelée par le constructeur, s'occupe de connecter les
+     * principaux évènements.
+     */
+    void createActions();
+
     /**
      * Construit la GUI de l'onglet
      */
@@ -54,13 +63,14 @@ private:
     void buildClientBox();
     void buildCommentBox();
     void buildDetailsBox();
+    void buildProductsBox();
 
 
     QVBoxLayout *l_layout;
     QHBoxLayout *l_header;
     QVBoxLayout *l_header_left;
     QVBoxLayout *l_header_right;
-    QHBoxLayout *l_body;
+    QVBoxLayout *l_body;
 
     QVBoxLayout *l_client;
     QLineEdit *le_client;
@@ -80,10 +90,14 @@ private:
     QComboBox *le_facture_type;
     QLineEdit *le_facture_montant;
     QComboBox *le_facture_reglement;
-    QPushButton *btn_creer;
     QPushButton *btn_sauver;
     QPushButton *btn_print;
     QPushButton *btn_del;
+
+    QVBoxLayout *l_products;
+    QGroupBox *gbox_products;
+    QTableWidget *t_available_products;
+    QTableWidget *t_selected_products;
 
     /**
      * Pointeur vers le contrôleur principal
