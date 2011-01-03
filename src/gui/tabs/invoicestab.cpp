@@ -74,7 +74,7 @@ void InvoicesTab::buildLayout()
 
 void InvoicesTab::buildInvoicesTableLayout(QStringList columns, QStringList labels)
 {
-    this->invoices_table = new SQLTable("facture");
+    this->invoices_table = new SQLTable("facture", core->getCurrentProfile().getId());
     invoices_table->setColumns(columns, labels);
     invoices_table->setFilter("date", displayDate);
     invoices_table->join("client", QStringList() << "name");

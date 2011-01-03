@@ -81,7 +81,7 @@ void CustomersTab::buildLayout()
     btn_cancel->setEnabled(false);
 
     // création du tableau de clients
-    customers_table = new SQLTable("client");
+    customers_table = new SQLTable("client", core->getCurrentProfile().getId());
     customers_table->setColumns(columns, labels);
     customers_table->setFilter("phone", displayPhone);
 

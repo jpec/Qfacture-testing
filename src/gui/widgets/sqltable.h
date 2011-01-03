@@ -11,7 +11,7 @@ class SQLTable : public QObject
 {
     Q_OBJECT
 public:
-    explicit SQLTable(const QString &table_name, QWidget *parent = 0);
+    explicit SQLTable(const QString &table_name, int uid = -1, QWidget *parent = 0);
     ~SQLTable();
 
     /**
@@ -107,6 +107,11 @@ private slots:
 
 private:
     void addColumns(const QString &origin_table, const QStringList &columns);
+
+    /**
+     * ID du profil dont on doit charger les données (-1 pour ne pas filtrer)
+     */
+    int uid;
 
     /**
      * Colonnes du tableau

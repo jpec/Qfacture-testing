@@ -5,10 +5,11 @@
 #include <QSqlQuery>
 
 
-SQLTable::SQLTable(const QString &table_name, QWidget *parent) : QObject(parent)
+SQLTable::SQLTable(const QString &table_name, int uid, QWidget *parent) : QObject(parent)
 {
     table = new QTableWidget(parent);
     this->table_name = table_name;
+    this->uid = (uid > 0 || uid == -1) ? uid : -1;
 
     connect(this, SIGNAL(tableModified()), this, SLOT(buildTable()));
     connect(table, SIGNAL(itemSelectionChanged()), this,
@@ -80,7 +81,7 @@ void SQLTable::feedTable()
     QVariant v;
     QSqlQuery query;
     QString pk_name = DBController::getInstance()->getPK(table_name);
-    QString fields = QStringList(columns).join(", "), query_sql, table_to_join;
+    QString fields = QStringList(columns).join(", "), query_sql, join_table;
     int i, j, nb_cols = columns.count();
 
     if(columns.count() == 0 || !DBController::getInstance()->isDBConnected())
@@ -92,20 +93,28 @@ void SQLTable::feedTable()
 
     query_sql = "SELECT "+pk_name+", "+fields+" FROM "+table_name+" ";
 
-    foreach(table_to_join, to_join)
+    foreach(join_table, to_join)
     {
-        query_sql.append("LEFT JOIN "+table_to_join+" ON "+
-                         DBController::getInstance()->getJoinClause(table_name, table_to_join)+
-                         " ");
+        query_sql.append("LEFT JOIN "+join_table+" ON "+
+                         DBController::getInstance()->getJoinClause(table_name, join_table)+" ");
     }
 
+    // filtre en fonction de l'utilisateur courant
+    if(uid != -1)
+        query_sql.append("WHERE "+table_name+".u_ID = :uid");
+    else
+        query_sql.append("WHERE 1 = 1 "); // dirty hack pour ne pas avoir de bug avec les autres clauses du WHERE
+
     if(!like_filter.toString().isEmpty())
-        query_sql.append("WHERE "+like_filter_field+" LIKE :like_filter ");
+        query_sql.append("AND "+like_filter_field+" LIKE :like_filter ");
 
     query_sql.append("ORDER BY "+table_name+"."+pk_name+" ASC");
 
     /** exécution de la requête **/
     query.prepare(query_sql);
+
+    if(uid != -1)
+        query.bindValue(":uid", this->uid);
 
     if(!like_filter.toString().isEmpty())
         query.bindValue(":like_filter", like_filter);

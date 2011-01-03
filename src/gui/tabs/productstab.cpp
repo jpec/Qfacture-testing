@@ -78,7 +78,7 @@ void ProductsTab::buildLayout()
     btn_cancel->setEnabled(false);
 
     // création du tableau de produits
-    products_table = new SQLTable("article");
+    products_table = new SQLTable("article", core->getCurrentProfile().getId());
 
     products_table->setColumns(columns, labels);
 
