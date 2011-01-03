@@ -94,6 +94,11 @@ private:
     QLineEdit *p_address;
 
     /**
+     * Champ texte pour le complément d'adresse postale
+     */
+    QLineEdit *p_complement;
+
+    /**
      * Champ texte pour le code postal
      */
     QLineEdit *p_zip;

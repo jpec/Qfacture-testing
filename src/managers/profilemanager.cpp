@@ -49,9 +49,9 @@ bool ProfileManager::update(const Profile &profile)
     query.prepare(
             "UPDATE user "
             "SET name = :name, siret = :siret, address = :address, "
-                "zip = :zip, city = :city, phone = :phone, "
-                "mail = :mail, website = :website, logo = :logo, "
-                "fac_reference_format = :fac_reference_format "
+                "complement = :complement, zip = :zip, city = :city, "
+                "phone = :phone, mail = :mail, website = :website, "
+                "logo = :logo, fac_reference_format = :fac_reference_format "
             "WHERE uID = :p_id"
     );
 
@@ -73,6 +73,7 @@ void ProfileManager::bindProfile(const Profile &profile, QSqlQuery &query)
     query.bindValue(":name", profile.getName());
     query.bindValue(":siret", profile.getSiret());
     query.bindValue(":address", profile.getAddress());
+    query.bindValue(":complement", profile.getAddressComplement());
     query.bindValue(":zip", profile.getZipCode());
     query.bindValue(":city", profile.getCity());
     query.bindValue(":phone", profile.getPhone());
@@ -90,6 +91,7 @@ Profile ProfileManager::makeProfile(QSqlQuery &query)
     profile.setName(query.value(1).toString());
     profile.setSiret(query.value(2).toString());
     profile.setAddress(query.value(3).toString());
+    profile.setAddressComplement(query.value(4).toString());
     profile.setZipCode(query.value(5).toString());
     profile.setCity(query.value(6).toString());
     profile.setPhone(query.value(7).toString());

@@ -22,6 +22,7 @@ ProfileWidget::~ProfileWidget()
     delete p_name;
     delete p_siret;
     delete p_address;
+    delete p_complement;
     delete p_zip;
     delete p_city;
     delete p_phone;
@@ -37,18 +38,19 @@ ProfileWidget::~ProfileWidget()
 void ProfileWidget::buildLayout()
 {
     // création des champs
-    p_name = new QLineEdit(this);
-    p_siret = new QLineEdit(this);
-    p_address = new QLineEdit(this);
-    p_zip = new QLineEdit(this);
-    p_city = new QLineEdit(this);
-    p_phone = new QLineEdit(this);
-    p_mail = new QLineEdit(this);
-    p_website = new QLineEdit(this);
-    p_logo = new QLabel(trUtf8("Aucun logo sélectionné."), this);
+    p_name = new QLineEdit();
+    p_siret = new QLineEdit();
+    p_address = new QLineEdit();
+    p_complement = new QLineEdit();
+    p_zip = new QLineEdit();
+    p_city = new QLineEdit();
+    p_phone = new QLineEdit();
+    p_mail = new QLineEdit();
+    p_website = new QLineEdit();
+    p_logo = new QLabel(trUtf8("Aucun logo sélectionné."));
 
-    btn_logo = new QPushButton(trUtf8("Changer de logo"), this);
-    btn_ok = new QPushButton(trUtf8("Enregistrer"), this);
+    btn_logo = new QPushButton(trUtf8("Changer de logo"));
+    btn_ok = new QPushButton(trUtf8("Enregistrer"));
 
     // création des layouts
     layout = new QVBoxLayout(this);
@@ -62,6 +64,7 @@ void ProfileWidget::buildLayout()
     form_layout->addRow(trUtf8("Raison sociale"), p_name);
     form_layout->addRow(trUtf8("SIRET"), p_siret);
     form_layout->addRow(trUtf8("Adresse"), p_address);
+    form_layout->addRow(trUtf8("Complément"), p_complement);
     form_layout->addRow(trUtf8("Code postal"), p_zip);
     form_layout->addRow(trUtf8("Ville"), p_city);
     form_layout->addRow(trUtf8("Téléphone"), p_phone);
@@ -102,6 +105,7 @@ void ProfileWidget::clearContent()
     p_name->clear();
     p_siret->clear();
     p_address->clear();
+    p_complement->clear();
     p_zip->clear();
     p_city->clear();
     p_phone->clear();
@@ -127,6 +131,7 @@ void ProfileWidget::displayCurrentProfile()
     p_name->setText(this->ctrl->getCurrentProfile().getName());
     p_siret->setText(this->ctrl->getCurrentProfile().getSiret());
     p_address->setText(this->ctrl->getCurrentProfile().getAddress());
+    p_complement->setText(this->ctrl->getCurrentProfile().getAddressComplement());
     p_zip->setText(this->ctrl->getCurrentProfile().getZipCode());
     p_city->setText(this->ctrl->getCurrentProfile().getCity());
     p_phone->setText(this->ctrl->getCurrentProfile().getPhone());
@@ -178,6 +183,7 @@ void ProfileWidget::save()
     this->ctrl->getCurrentProfile().setName(p_name->text());
     this->ctrl->getCurrentProfile().setSiret(p_siret->text());
     this->ctrl->getCurrentProfile().setAddress(p_address->text());
+    this->ctrl->getCurrentProfile().setAddressComplement(p_complement->text());
     this->ctrl->getCurrentProfile().setZipCode(p_zip->text());
     this->ctrl->getCurrentProfile().setCity(p_city->text());
     this->ctrl->getCurrentProfile().setPhone(p_phone->text());
