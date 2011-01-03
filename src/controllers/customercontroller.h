@@ -25,24 +25,29 @@ private:
      * \note En cas d'un nouveau client, l'id est renseigné lors de l'enregistrement
      *
      * @param p Le client à enregistrer
+     * @param uid Identifiant du profil "possédant" le client
      */
-    bool save(Customer &p);
+    bool save(Customer &p, int uid);
 
     /**
      * Récupère un client
      *
      * @param id L'identifiant du client
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return Customer Le client chargé.
      */
-    Customer get(int id);
+    Customer get(int id, int uid);
 
     /**
      * Supprime un client
      *
      * @param id L'identifiant du client
+     * @param uid Identifiant du profil "possédant" le client
+     *
+     * @return bool Booléen indiquant le succès ou l'échec de la suppression
      */
-    bool erase(int id);
+    bool erase(int id, int uid);
 
 
     CustomerController();

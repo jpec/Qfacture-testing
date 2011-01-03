@@ -138,7 +138,7 @@ void SQLTable::feedTable()
 
             table->setItem(i, j, new QTableWidgetItem(v.toString()));
 
-            //table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
+            table->item(i, j)->setData(Qt::UserRole, query.value(0).toInt());
         }
 
         i++;

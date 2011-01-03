@@ -4,17 +4,23 @@
 #include "QVariant"
 
 
-Customer CustomerManager::get(int id)
+Customer CustomerManager::get(int id, int uid)
 {
     QSqlQuery query;
+    QString sql;
     Customer c;
 
-    query.prepare(
-            "SELECT cID, name, address, complement, zip, city, phone, mail "
-            "FROM client WHERE cID = :customer_id"
-        );
+    sql = "SELECT cID, name, address, complement, zip, city, phone, mail "
+          "FROM client WHERE cID = :customer_id";
+
+    if(uid != -1)
+        sql += " AND u_ID = :uid";
+
+    query.prepare(sql);
 
     query.bindValue(":customer_id", QVariant(id));
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
 
     if(!DBController::getInstance()->exec(query))
         return c;
@@ -29,21 +35,25 @@ Customer CustomerManager::get(int id)
     return c;
 }
 
-bool CustomerManager::save(Customer &customer)
+bool CustomerManager::save(Customer &customer, int uid)
 {
-    return (customer.getId() == 0) ? insert(customer) : update(customer);
+    return (customer.getId() == 0) ? insert(customer, uid) : update(customer, uid);
 }
 
-bool CustomerManager::erase(int id)
+bool CustomerManager::erase(int id, int uid)
 {
     QSqlQuery query;
+    QString sql;
 
-    if(id == 0)
+    if(id <= 0)
         return false;
 
-    query.prepare("DELETE FROM client WHERE cID = :c_id");
+    sql = "DELETE FROM client WHERE cID = :c_id AND u_ID = :uid";
+
+    query.prepare(sql);
 
     query.bindValue(":c_id", QVariant(id));
+    query.bindValue(":uid", QVariant(uid));
 
     if(DBController::getInstance()->exec(query))
     {
@@ -55,17 +65,18 @@ bool CustomerManager::erase(int id)
     return false;
 }
 
-bool CustomerManager::insert(Customer &customer)
+bool CustomerManager::insert(Customer &customer, int uid)
 {
     QSqlQuery query;
 
     query.prepare(
-            "INSERT INTO client (name, address, complement, zip, city, phone, "
-                                 "Mail) "
-            "VALUES (:name, :address, :address2, :zip, :city, :phone, :mail)"
+            "INSERT INTO client "
+                "(u_ID, name, address, complement, zip, city, phone, Mail) "
+            "VALUES "
+                "(:uid, :name, :address, :address2, :zip, :city, :phone, :mail)"
     );
 
-    bindCustomer(customer, query);
+    bindCustomer(customer, query, uid);
 
     if(DBController::getInstance()->exec(query))
     {
@@ -79,19 +90,23 @@ bool CustomerManager::insert(Customer &customer)
     return false;
 }
 
-bool CustomerManager::update(const Customer &customer)
+bool CustomerManager::update(const Customer &customer, int uid)
 {
     QSqlQuery query;
+    QString sql;
 
-    query.prepare(
-            "UPDATE client "
-            "SET name = :name, address = :address, complement = :complement, "
-                "zip = :zip, city = :city, phone = :phone, "
-                "mail = :mail "
-            "WHERE cID = :c_id"
-    );
+    sql = "UPDATE client "
+          "SET name = :name, address = :address, complement = :complement, "
+              "zip = :zip, city = :city, phone = :phone, "
+              "mail = :mail "
+          "WHERE cID = :c_id";
 
-    bindCustomer(customer, query);
+    if(uid != -1)
+        sql += " AND u_ID = :uid";
+
+    query.prepare(sql);
+
+    bindCustomer(customer, query, uid);
 
     if(DBController::getInstance()->exec(query))
     {
@@ -103,7 +118,7 @@ bool CustomerManager::update(const Customer &customer)
     return false;
 }
 
-void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query)
+void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query, int uid)
 {
     query.bindValue(":c_id", customer.getId());
     query.bindValue(":name", customer.getName());
@@ -113,6 +128,9 @@ void CustomerManager::bindCustomer(const Customer &customer, QSqlQuery &query)
     query.bindValue(":city", customer.getCity());
     query.bindValue(":phone", customer.getPhone());
     query.bindValue(":mail", customer.getMail());
+
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
 }
 
 Customer CustomerManager::makeCustomer(QSqlQuery &query)

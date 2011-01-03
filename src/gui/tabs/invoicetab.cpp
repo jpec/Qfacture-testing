@@ -160,7 +160,7 @@ void InvoiceTab::createAvailableProductsList()
     QStringList labels = core->getDBLabels("article", not_wanted);
 
     // création du tableau de produits
-    t_available_products = new SQLTable("article");
+    t_available_products = new SQLTable("article", core->getCurrentProfile().getId());
     t_available_products->setColumns(columns, labels);
 }
 

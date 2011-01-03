@@ -15,33 +15,34 @@ public:
     /**
      * Récupère le profil d'un client
      *
-     * @param id L'identifiant du profil à utiliser
-     *
-     * @throws DBErrorException Si la requête à la DB échoue
+     * @param id L'identifiant du client à charger
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return Customer Le client chargé.
      */
-    Customer get(int id);
+    Customer get(int id, int uid=-1);
 
     /**
-     * Enregistre ou met à jour le profile d'un client.
+     * Enregistre ou met à jour le profil d'un client.
      *
      * \note En cas d'un nouveau client, l'id est renseigné lors de l'enregistrement
      *
-     * @param p Le client à enregistrer
+     * @param customer Le client à enregistrer
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return bool Succès de l'enregistrement
      */
-    bool save(Customer &customer);
+    bool save(Customer &customer, int uid);
 
     /**
      * Supprime un client.
      *
-     * @param p Le client à supprimer
+     * @param id Le client à supprimer
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return bool Succès de la suppression
      */
-    bool erase(int id);
+    bool erase(int id, int uid);
 
 private:
     /**
@@ -61,20 +62,22 @@ private:
      *
      * \note l'id est renseigné ici.
      *
-     * @param costumer Le client à enregistrer
+     * @param customer Le client à enregistrer
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return bool Succès de l'insertion
      */
-    bool insert(Customer &customer);
+    bool insert(Customer &customer, int uid);
 
     /**
      * Réalise la mise à jour d'un client
      *
      * @param customer Le client à mettre à jour
+     * @param uid Identifiant du profil "possédant" le client
      *
      * @return bool Succès de la mise à jour
      */
-    bool update(const Customer &customer);
+    bool update(const Customer &customer, int uid);
 
     /**
      * Effectue un bindValue() sur la query avec les champs du
@@ -82,8 +85,9 @@ private:
      *
      * @param customer Client à binder
      * @param query Query à laquelle lier le profile
+     * @param uid Identifiant du profil "possédant" le client
      */
-    void bindCustomer(const Customer &customer, QSqlQuery &query);
+    void bindCustomer(const Customer &customer, QSqlQuery &query, int uid=-1);
 };
 
 #endif // CUSTOMERMANAGER_H

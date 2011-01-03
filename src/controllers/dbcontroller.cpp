@@ -8,6 +8,7 @@
 DBController::DBController()
 {
     // table client
+    tables_pk["client"] = "cID";
     tables_definitions["client"]["cID"] = trUtf8("Identifiant");
     tables_definitions["client"]["name"] = trUtf8("Nom");
     tables_definitions["client"]["address"] = trUtf8("Adresse");
@@ -18,12 +19,14 @@ DBController::DBController()
     tables_definitions["client"]["mail"] = trUtf8("Mail");
 
     // table article
+    tables_pk["article"] = "aID";
     tables_definitions["article"]["aID"] = trUtf8("Identifiant");
     tables_definitions["article"]["name"] = trUtf8("Nom");
     tables_definitions["article"]["price"] = trUtf8("Prix");
     tables_definitions["article"]["comment"] = trUtf8("Description");
 
     // table facture
+    tables_pk["facture"] = "fID";
     tables_definitions["facture"]["fID"] = trUtf8("Identifiant");
     tables_definitions["facture"]["c_ID"] = trUtf8("Identifiant du client");
     tables_definitions["facture"]["amount"] = trUtf8("Montant");
@@ -94,7 +97,7 @@ QString DBController::getLabel(const QString &table, const QString &column) cons
 
 QString DBController::getPK(const QString &table) const
 {
-    return tables_definitions[table].keys().at(0);
+    return tables_pk[table];
 }
 
 bool DBController::exec(QSqlQuery &query)

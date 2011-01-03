@@ -137,6 +137,11 @@ private:
     QHash<QString, QHash<QString, QString> > tables_definitions;
 
     /**
+     * Liste des clés primaires de chaques tables
+     */
+    QHash<QString, QString> tables_pk;
+
+    /**
      * Dictionnaire recensant les clauses de jointures des tables
      */
     QHash<QString, QHash<QString, QString> > join_clauses;

@@ -127,17 +127,26 @@ bool QfactureCore::eraseProduct(int id)
 
 bool QfactureCore::save(Customer &p)
 {
-    return CustomerController::getInstance()->save(p);
+    if(getCurrentProfile().getId() == 0)
+        return false;
+
+    return CustomerController::getInstance()->save(p, getCurrentProfile().getId());
 }
 
 Customer QfactureCore::getCustomer(int id)
 {
-    return CustomerController::getInstance()->get(id);
+    if(getCurrentProfile().getId() == 0)
+        return Customer();
+
+    return CustomerController::getInstance()->get(id, getCurrentProfile().getId());
 }
 
 bool QfactureCore::eraseCustomer(int id)
 {
-    return CustomerController::getInstance()->erase(id);
+    if(getCurrentProfile().getId() == 0)
+        return false;
+
+    return CustomerController::getInstance()->erase(id, getCurrentProfile().getId());
 }
 
 /* Wrapper pour les méthodes du contrôleur des factures */

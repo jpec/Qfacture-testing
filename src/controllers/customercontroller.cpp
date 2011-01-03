@@ -11,17 +11,17 @@ CustomerController* CustomerController::getInstance()
 }
 
 
-Customer CustomerController::get(int id)
+Customer CustomerController::get(int id, int uid)
 {
-    return manager.get(id);
+    return manager.get(id, uid);
 }
 
-bool CustomerController::save(Customer &p)
+bool CustomerController::save(Customer &p, int uid)
 {
-    return manager.save(p);
+    return manager.save(p, uid);
 }
 
-bool CustomerController::erase(int id)
+bool CustomerController::erase(int id, int uid)
 {
-    return manager.erase(id);
+    return manager.erase(id, uid);
 }
