@@ -48,10 +48,10 @@ bool ProfileManager::update(const Profile &profile)
 
     query.prepare(
             "UPDATE user "
-            "SET name = :name, ciret = :siret, address = :address, "
+            "SET name = :name, siret = :siret, address = :address, "
                 "zip = :zip, city = :city, phone = :phone, "
                 "mail = :mail, website = :website, logo = :logo, "
-                "fac_reference_format = :fac_reference_format"
+                "fac_reference_format = :fac_reference_format "
             "WHERE uID = :p_id"
     );
 
