@@ -68,7 +68,7 @@ QString Invoice::getDescription() const
 
 void Invoice::setCustomer(const Customer &customer)
 {
-    if(customer.getId() == 0)
+    if(customer.isNew())
         return;
 
     this->customer = customer;

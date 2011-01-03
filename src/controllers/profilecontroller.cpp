@@ -33,7 +33,7 @@ bool ProfileController::save(Profile &p)
 
 bool ProfileController::saveCurrent()
 {
-    if(this->getCurrent().getId() == 0)
+    if(this->getCurrent().isNew())
         return false;
 
     return this->save(this->getCurrent());
@@ -45,7 +45,7 @@ bool ProfileController::loadLastProfile()
 
     this->profile = this->get(settings.get("Profile", "id", QVariant(1)).toInt());
 
-    if(this->getCurrent().getId() == 0)
+    if(this->getCurrent().isNew())
         return false;
 
     return true;

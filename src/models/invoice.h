@@ -10,7 +10,7 @@
 /**
  * Classe représentant une facture
  */
-class Invoice
+class Invoice : public ModelBase
 {
 public:
     Invoice();

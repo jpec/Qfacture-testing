@@ -194,8 +194,8 @@ void InvoicesTab::loadSelectedInvoice()
 void InvoicesTab::loadInvoice(int id)
 {
     Invoice invoice = core->getInvoice(id);
-    QString tab_name = invoice.getId() == 0 ? trUtf8("Nouvelle facture")
-                                            : trUtf8("Facture %1").arg(invoice.getRef());
+    QString tab_name = invoice.isNew() ? trUtf8("Nouvelle facture")
+                                       : trUtf8("Facture %1").arg(invoice.getRef());
 
     emit newTabRequest(tab_name, new InvoiceTab(invoice, core, this));
 }

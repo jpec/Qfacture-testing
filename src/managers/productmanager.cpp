@@ -31,7 +31,7 @@ Product ProductManager::get(int id)
 
 bool ProductManager::save(Product &product)
 {
-    return (product.getId() == 0) ? insert(product) : update(product);
+    return product.isNew() ? insert(product) : update(product);
 }
 
 bool ProductManager::erase(int id)

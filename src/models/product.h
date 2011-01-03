@@ -1,13 +1,15 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
+#include "models/modelbase.h"
+
 #include <QString>
 
 
 /**
  * Classe représentant un produit, un prestation.
  */
-class Product
+class Product : public ModelBase
 {
 public:
     Product();

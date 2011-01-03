@@ -33,7 +33,7 @@ Profile ProfileManager::get(int id)
 
 bool ProfileManager::save(Profile &profile)
 {
-    return (profile.getId() == 0) ? insert(profile) : update(profile);
+    return profile.isNew() ? insert(profile) : update(profile);
 }
 
 bool ProfileManager::insert(Profile &profile)

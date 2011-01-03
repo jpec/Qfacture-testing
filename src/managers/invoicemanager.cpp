@@ -34,7 +34,7 @@ Invoice InvoiceManager::get(int id)
 
 bool InvoiceManager::save(Invoice &invoice)
 {
-    return (invoice.getId() == 0) ? insert(invoice) : update(invoice);
+    return invoice.isNew() ? insert(invoice) : update(invoice);
 }
 
 bool InvoiceManager::erase(int id)

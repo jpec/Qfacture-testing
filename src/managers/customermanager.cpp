@@ -37,7 +37,7 @@ Customer CustomerManager::get(int id, int uid)
 
 bool CustomerManager::save(Customer &customer, int uid)
 {
-    return (customer.getId() == 0) ? insert(customer, uid) : update(customer, uid);
+    return customer.isNew() ? insert(customer, uid) : update(customer, uid);
 }
 
 bool CustomerManager::erase(int id, int uid)

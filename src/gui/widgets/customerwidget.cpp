@@ -61,7 +61,7 @@ void CustomerWidget::loadCustomer(int id)
 {
     this->customer = ctrl->getCustomer(id);
 
-    if(customer.getId() == 0) {
+    if(customer.isNew()) {
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible de charger le client."));
 

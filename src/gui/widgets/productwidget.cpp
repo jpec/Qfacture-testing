@@ -50,7 +50,7 @@ void ProductWidget::loadProduct(int id)
 {
     this->product = ctrl->getProduct(id);
 
-    if(product.getId() == 0) {
+    if(product.isNew()) {
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible de charger le produit."));
 

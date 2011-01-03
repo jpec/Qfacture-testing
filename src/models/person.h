@@ -1,13 +1,15 @@
 #ifndef PERSON_H
 #define PERSON_H
 
+#include "models/modelbase.h"
+
 #include <QString>
 
 
 /**
   * Classe représentant une personne.
   */
-class Person
+class Person : public ModelBase
 {
 public:
     /**

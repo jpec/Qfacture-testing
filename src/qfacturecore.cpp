@@ -127,7 +127,7 @@ bool QfactureCore::eraseProduct(int id)
 
 bool QfactureCore::save(Customer &p)
 {
-    if(getCurrentProfile().getId() == 0)
+    if(getCurrentProfile().isNew())
         return false;
 
     return CustomerController::getInstance()->save(p, getCurrentProfile().getId());
@@ -135,7 +135,7 @@ bool QfactureCore::save(Customer &p)
 
 Customer QfactureCore::getCustomer(int id)
 {
-    if(getCurrentProfile().getId() == 0)
+    if(getCurrentProfile().isNew())
         return Customer();
 
     return CustomerController::getInstance()->get(id, getCurrentProfile().getId());
@@ -143,7 +143,7 @@ Customer QfactureCore::getCustomer(int id)
 
 bool QfactureCore::eraseCustomer(int id)
 {
-    if(getCurrentProfile().getId() == 0)
+    if(getCurrentProfile().isNew())
         return false;
 
     return CustomerController::getInstance()->erase(id, getCurrentProfile().getId());
