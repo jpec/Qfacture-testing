@@ -26,10 +26,10 @@ SQLTable::~SQLTable()
 
 void SQLTable::setLikeFilter(const QString &like_filter_field, const QVariant &like_filter)
 {
-    if(!columns.contains(like_filter_field))
+    if(!columns.contains(like_filter_field) && !columns.contains(table_name+"."+like_filter_field))
         return;
 
-    this->like_filter_field = like_filter_field;
+    this->like_filter_field = like_filter_field.indexOf('.') == 0 ? table_name+"."+like_filter_field : like_filter_field;
     this->like_filter = like_filter.toString().isEmpty() ? like_filter : "%"+like_filter.value<QString>()+"%";
 
     feedTable();
