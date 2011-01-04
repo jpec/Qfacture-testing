@@ -9,17 +9,17 @@ InvoiceController* InvoiceController::getInstance()
     return &instance;
 }
 
-Invoice InvoiceController::get(int id)
+Invoice InvoiceController::get(int id, int uid)
 {
-    return manager.get(id);
+    return manager.get(id, uid);
 }
 
-bool InvoiceController::save(Invoice &i)
+bool InvoiceController::save(Invoice &i, int uid)
 {
-    return manager.save(i);
+    return manager.save(i, uid);
 }
 
-bool InvoiceController::erase(int id)
+bool InvoiceController::erase(int id, int uid)
 {
-    return manager.erase(id);
+    return manager.erase(id, uid);
 }

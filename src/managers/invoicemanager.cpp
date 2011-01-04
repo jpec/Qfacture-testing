@@ -3,27 +3,33 @@
 
 #include "QVariant"
 
-Invoice InvoiceManager::get(int id)
+Invoice InvoiceManager::get(int id, int uid)
 {
     QSqlQuery query;
+    QString sql;
     Invoice in;
 
-    query.prepare(
-           "SELECT "
-                "fID, c_ID, amount, comment, Type, date, "
-                "c.name "
-           "FROM facture f "
-           "LEFT JOIN client c ON c.cID = f.c_ID "
-           "WHERE f.fID = :Invoice_id "
-        );
+    sql = "SELECT "
+              "fID, c_ID, amount, comment, Type, date, "
+              "c.name "
+          "FROM facture f "
+          "LEFT JOIN client c ON c.cID = f.c_ID "
+          "WHERE f.fID = :Invoice_id";
+
+    if(uid != -1)
+        sql += " AND u_ID = :uid";
+
+    query.prepare(sql);
 
     query.bindValue(":Invoice_id", QVariant(id));
-
-    if(!DBController::getInstance()->exec(query))
-        return in;
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
 
     // pas de facture avec l'ID demandé, on ne remonte pas d'erreur
     // mais juste une facture vide
+    if(!DBController::getInstance()->exec(query))
+        return in;
+
     if(query.next())
         in = makeInvoice(query);
 
@@ -32,81 +38,41 @@ Invoice InvoiceManager::get(int id)
     return in;
 }
 
-bool InvoiceManager::save(Invoice &invoice)
+bool InvoiceManager::save(Invoice &invoice, int uid)
 {
-    return invoice.isNew() ? insert(invoice) : update(invoice);
-}
-
-bool InvoiceManager::erase(int id)
-{
-    //QSqlQuery query;
-    bool result = false;
-
-    if(id == 0)
+    if(uid < 1)
         return false;
 
-//    query.prepare("DELETE FROM facture WHERE id = :a_id");
-//
-//    query.bindValue(":a_id", QVariant(id));
-//
-//    result = DBController::getInstance()->exec(query);
-//
-//    query.finish();
-//
-    return result;
+    return invoice.isNew() ? insert(invoice, uid) : update(invoice, uid);
 }
 
-bool InvoiceManager::insert(Invoice &Invoice)
+bool InvoiceManager::erase(int id, int uid)
 {
-    QSqlQuery query;
-
-//    query.prepare(
-//            "INSERT INTO article (Name, Price, Comment) "
-//            "VALUES (:name, :price, :comment)"
-//    );
-//
-//    bindInvoice(Invoice, query);
-//
-//    if(DBController::getInstance()->exec(query))
-//    {
-//        Invoice.setId(query.lastInsertId().toInt());
-//
-//        query.finish();
-//
-//        return true;
-//    }
-
+    // not implemented
     return false;
 }
 
-bool InvoiceManager::update(const Invoice &Invoice)
+bool InvoiceManager::insert(Invoice &Invoice, int uid)
 {
-    QSqlQuery query;
-
-//    query.prepare(
-//            "UPDATE article "
-//            "SET Name = :name, Price = :price, Comment = :comment "
-//            "WHERE id = :a_id"
-//    );
-//
-//    bindInvoice(Invoice, query);
-//
-//    if(DBController::getInstance()->exec(query))
-//    {
-//        query.finish();
-//
-//        return true;
-//    }
-
+    // not implemented
     return false;
 }
 
-void InvoiceManager::bindInvoice(const Invoice &Invoice, QSqlQuery &query)
+bool InvoiceManager::update(const Invoice &Invoice, int uid)
+{
+    // not implemented
+    return false;
+}
+
+void InvoiceManager::bindInvoice(const Invoice &Invoice, QSqlQuery &query, int uid)
 {
 //    query.bindValue(":a_id", Invoice.getId());
 //    query.bindValue(":name", Invoice.getName());
 //    query.bindValue(":price", Invoice.getPrice());
 //    query.bindValue(":comment", Invoice.getDescription());
+
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
 }
 
 Invoice InvoiceManager::makeInvoice(QSqlQuery &query)

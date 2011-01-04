@@ -153,5 +153,5 @@ bool QfactureCore::eraseCustomer(int id)
 
 Invoice QfactureCore::getInvoice(int id)
 {
-    return InvoiceController::getInstance()->get(id);
+    return InvoiceController::getInstance()->get(id, getCurrentProfile().getId());
 }

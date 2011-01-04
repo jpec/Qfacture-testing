@@ -42,7 +42,7 @@ public:
      *
      * @return bool Succès de la suppression
      */
-    bool erase(int id, int uid);
+    bool erase(int id, int uid=-1);
 
 private:
     /**

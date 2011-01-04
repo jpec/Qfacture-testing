@@ -25,24 +25,27 @@ private:
      * \note En cas d'une nouvelle facture, l'id est renseigné lors de l'enregistrement
      *
      * @param i La facture à enregistrer
+     * @param uid Identifiant du profil "possédant" la facture
      */
-    bool save(Invoice &i);
+    bool save(Invoice &i, int uid);
 
     /**
      * Récupère une facture
      *
      * @param id L'identifiant de la facture
+     * @param uid Identifiant du profil "possédant" la facture
      *
      * @return Invoice La facture chargée.
      */
-    Invoice get(int id);
+    Invoice get(int id, int uid);
 
     /**
      * Supprime une facture
      *
      * @param id L'identifiant de la facture
+     * @param uid Identifiant du profil "possédant" la facture
      */
-    bool erase(int id);
+    bool erase(int id, int uid);
 
 
     InvoiceController();

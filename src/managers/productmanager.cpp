@@ -22,11 +22,11 @@ Product ProductManager::get(int id, int uid)
     if(uid != -1)
         query.bindValue(":uid", QVariant(uid));
 
+    // pas de produit avec l'ID demandé, on ne remonte pas d'erreur
+    // mais juste un produit vide
     if(!DBController::getInstance()->exec(query))
         return p;
 
-    // pas de produit avec l'ID demandé, on ne remonte pas d'erreur
-    // mais juste un produit vide
     if(query.next())
         p = makeProduct(query);
 
