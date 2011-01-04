@@ -101,7 +101,7 @@ void SQLTable::feedTable()
 
     // filtre en fonction de l'utilisateur courant
     if(uid != -1)
-        query_sql.append("WHERE "+table_name+".u_ID = :uid");
+        query_sql.append("WHERE "+table_name+".u_ID = :uid ");
     else
         query_sql.append("WHERE 1 = 1 "); // dirty hack pour ne pas avoir de bug avec les autres clauses du WHERE
 

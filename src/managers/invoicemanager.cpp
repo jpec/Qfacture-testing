@@ -3,6 +3,7 @@
 
 #include "QVariant"
 
+
 Invoice InvoiceManager::get(int id, int uid)
 {
     QSqlQuery query;
@@ -14,10 +15,10 @@ Invoice InvoiceManager::get(int id, int uid)
               "c.name "
           "FROM facture f "
           "LEFT JOIN client c ON c.cID = f.c_ID "
-          "WHERE f.fID = :Invoice_id";
+          "WHERE f.fID = :f_id";
 
     if(uid != -1)
-        sql += " AND u_ID = :uid";
+        sql += " AND f.u_ID = :uid";
 
     query.prepare(sql);
 
@@ -64,12 +65,12 @@ bool InvoiceManager::update(const Invoice &Invoice, int uid)
     return false;
 }
 
-void InvoiceManager::bindInvoice(const Invoice &Invoice, QSqlQuery &query, int uid)
+void InvoiceManager::bindInvoice(const Invoice &invoice, QSqlQuery &query, int uid)
 {
-//    query.bindValue(":a_id", Invoice.getId());
-//    query.bindValue(":name", Invoice.getName());
-//    query.bindValue(":price", Invoice.getPrice());
-//    query.bindValue(":comment", Invoice.getDescription());
+    query.bindValue(":f_id", invoice.getId());
+//    query.bindValue(":name", invoice.getName());
+//    query.bindValue(":price", invoice.getPrice());
+//    query.bindValue(":comment", invoice.getDescription());
 
     if(uid != -1)
         query.bindValue(":uid", QVariant(uid));
