@@ -10,17 +10,17 @@ ProductController* ProductController::getInstance()
     return &instance;
 }
 
-Product ProductController::get(int id)
+Product ProductController::get(int id, int uid)
 {
-    return manager.get(id);
+    return manager.get(id, uid);
 }
 
-bool ProductController::save(Product &p)
+bool ProductController::save(Product &p, int uid)
 {
-    return manager.save(p);
+    return manager.save(p, uid);
 }
 
-bool ProductController::erase(int id)
+bool ProductController::erase(int id, int uid)
 {
-    return manager.erase(id);
+    return manager.erase(id, uid);
 }

@@ -23,26 +23,29 @@ private:
      * Enregistre ou met à jour un produit.
      *
      * \note En cas d'un nouveau produit, l'id est renseigné lors de l'enregistrement
+     * @param uid Identifiant du profil "possédant" le produit
      *
      * @param p Le produit à enregistrer
      */
-    bool save(Product &p);
+    bool save(Product &p, int uid);
 
     /**
      * Récupère un produit
      *
      * @param id L'identifiant du produit
+     * @param uid Identifiant du profil "possédant" le produit
      *
      * @return Product Le produit chargé.
      */
-    Product get(int id);
+    Product get(int id, int uid);
 
     /**
      * Supprime un produit
      *
      * @param id L'identifiant du produit
+     * @param uid Identifiant du profil "possédant" le produit
      */
-    bool erase(int id);
+    bool erase(int id, int uid);
 
 
     ProductController();

@@ -110,17 +110,17 @@ bool QfactureCore::saveCurrentProfile()
 
 bool QfactureCore::save(Product &p)
 {
-    return ProductController::getInstance()->save(p);
+    return ProductController::getInstance()->save(p, getCurrentProfile().getId());
 }
 
 Product QfactureCore::getProduct(int id)
 {
-    return ProductController::getInstance()->get(id);
+    return ProductController::getInstance()->get(id, getCurrentProfile().getId());
 }
 
 bool QfactureCore::eraseProduct(int id)
 {
-    return ProductController::getInstance()->erase(id);
+    return ProductController::getInstance()->erase(id, getCurrentProfile().getId());
 }
 
 /* Wrapper pour les méthodes du contrôleur des clients */

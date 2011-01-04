@@ -37,6 +37,9 @@ Customer CustomerManager::get(int id, int uid)
 
 bool CustomerManager::save(Customer &customer, int uid)
 {
+    if(uid < 1)
+        return false;
+
     return customer.isNew() ? insert(customer, uid) : update(customer, uid);
 }
 
@@ -48,12 +51,16 @@ bool CustomerManager::erase(int id, int uid)
     if(id <= 0)
         return false;
 
-    sql = "DELETE FROM client WHERE cID = :c_id AND u_ID = :uid";
+    sql = "DELETE FROM client WHERE cID = :c_id";
+
+    if(uid != -1)
+        sql += " AND u_ID = :uid";
 
     query.prepare(sql);
 
     query.bindValue(":c_id", QVariant(id));
-    query.bindValue(":uid", QVariant(uid));
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
 
     if(DBController::getInstance()->exec(query))
     {
@@ -93,18 +100,12 @@ bool CustomerManager::insert(Customer &customer, int uid)
 bool CustomerManager::update(const Customer &customer, int uid)
 {
     QSqlQuery query;
-    QString sql;
 
-    sql = "UPDATE client "
-          "SET name = :name, address = :address, complement = :complement, "
-              "zip = :zip, city = :city, phone = :phone, "
-              "mail = :mail "
-          "WHERE cID = :c_id";
-
-    if(uid != -1)
-        sql += " AND u_ID = :uid";
-
-    query.prepare(sql);
+    query.prepare("UPDATE client "
+                  "SET name = :name, address = :address, complement = :complement, "
+                      "zip = :zip, city = :city, phone = :phone, "
+                      "mail = :mail "
+                  "WHERE cID = :c_id AND u_ID = :uid");
 
     bindCustomer(customer, query, uid);
 
