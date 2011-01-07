@@ -14,7 +14,9 @@ InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
     createActions();
 
     onInvoiceStateChanged();
+
     loadCustomersList();
+    loadReglementTypes();
 }
 
 InvoiceTab::~InvoiceTab()
@@ -197,6 +199,23 @@ void InvoiceTab::loadCustomersList()
         li_clients->addItem(c_list.at(i).getName());
 
         li_clients->item(i)->setData(Qt::UserRole, c_list.at(i).getId());
+    }
+}
+
+void InvoiceTab::loadReglementTypes()
+{
+    le_facture_reglement->clear();
+
+    QHash<int, QString> r_list = core->getReglements();
+
+    QHashIterator<int, QString> iterator(r_list);
+    int i = 0;
+    while (iterator.hasNext()) {
+        iterator.next();
+
+        le_facture_reglement->addItem(iterator.value());
+
+        le_facture_reglement->setItemData(i, QVariant(iterator.key()), Qt::UserRole);
     }
 }
 

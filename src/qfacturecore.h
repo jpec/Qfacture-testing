@@ -142,6 +142,11 @@ public:
      */
     Invoice getInvoice(int id);
 
+    /**
+     * @see InvoiceController::getReglements()
+     */
+    QHash<int, QString> getReglements();
+
 signals:
 
     /* Wrapper pour les signaux du contrôleur de la DB */

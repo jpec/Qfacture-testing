@@ -18,6 +18,14 @@ Invoice InvoiceController::get(int id, int uid)
     return manager.get(id, uid);
 }
 
+QHash<int, QString> InvoiceController::getReglements(int uid)
+{
+    if(uid < 1)
+        return QHash<int, QString>();
+
+    return manager.getReglements(uid);
+}
+
 bool InvoiceController::save(Invoice &i, int uid)
 {
     // la facture doit appartenir à quelqu'un

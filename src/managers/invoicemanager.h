@@ -3,7 +3,10 @@
 
 #include "models/invoice.h"
 
+#include <QHash>
 #include <QSqlQuery>
+#include <QStringList>
+
 
 /**
  * Gestionnaire de factures
@@ -20,6 +23,16 @@ public:
      * @return Invoice La facture chargée.
      */
     Invoice get(int id, int uid=-1);
+
+    /**
+     * Retourne les types de documents disponibles
+     */
+    QStringList getTypes(int uid);
+
+    /**
+     * Retourne les types de reglement disponibles
+     */
+    QHash<int, QString> getReglements(int uid);
 
     /**
      * Enregistre ou met à jour le détail d'une facture.

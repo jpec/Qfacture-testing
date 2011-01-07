@@ -63,6 +63,8 @@ private:
      */
     void createAvailableProductsList();
 
+    void loadReglementTypes();
+
     /**
      * Construit la GUI de l'onglet
      */

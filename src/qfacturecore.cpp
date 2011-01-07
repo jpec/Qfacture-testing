@@ -163,3 +163,8 @@ Invoice QfactureCore::getInvoice(int id)
 {
     return InvoiceController::getInstance()->get(id, getCurrentProfile().getId());
 }
+
+QHash<int, QString> QfactureCore::getReglements()
+{
+    return InvoiceController::getInstance()->getReglements(getCurrentProfile().getId());
+}

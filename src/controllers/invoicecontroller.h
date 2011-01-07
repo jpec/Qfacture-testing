@@ -40,6 +40,11 @@ private:
     Invoice get(int id, int uid);
 
     /**
+     * Retourne les types de reglement disponibles
+     */
+    QHash<int, QString> getReglements(int uid);
+
+    /**
      * Supprime une facture
      *
      * @param id L'identifiant de la facture

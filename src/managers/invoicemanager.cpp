@@ -39,6 +39,34 @@ Invoice InvoiceManager::get(int id, int uid)
     return in;
 }
 
+QStringList InvoiceManager::getTypes(int uid)
+{
+    QSqlQuery query;
+    QStringList list;
+
+    return list;
+}
+
+QHash<int, QString> InvoiceManager::getReglements(int uid)
+{
+    QSqlQuery query;
+    QHash<int, QString> list;
+
+    query.prepare("SELECT trID, name FROM types_reglements WHERE u_ID = :uid");
+
+    query.bindValue(":uid", QVariant(uid));
+
+    if(!DBController::getInstance()->exec(query))
+        return list;
+
+    while(query.next())
+        list[query.value(0).toInt()] = query.value(1).toString();
+
+    query.finish();
+
+    return list;
+}
+
 bool InvoiceManager::save(Invoice &invoice, int uid)
 {
     if(uid < 1)
