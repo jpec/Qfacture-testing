@@ -35,22 +35,32 @@ Customer CustomerManager::get(int id, int uid)
     return c;
 }
 
-QList<Customer> CustomerManager::getList(int uid)
+QList<Customer> CustomerManager::getList(int uid, const QString &name_filter)
 {
     QSqlQuery query;
-    QString sql;
+    QString sql, filter;
     QList<Customer> list;
 
     sql = "SELECT cID, name, address, complement, zip, city, phone, mail "
-          "FROM client";
+          "FROM client WHERE 1 = 1";
 
     if(uid != -1)
-        sql += " WHERE u_ID = :uid";
+        sql += " AND u_ID = :uid";
+
+    if(!name_filter.isEmpty())
+    {
+        filter = "%"+name_filter+"%";
+
+        sql += " AND name LIKE :name_filter";
+    }
 
     query.prepare(sql);
 
     if(uid != -1)
         query.bindValue(":uid", QVariant(uid));
+
+    if(!name_filter.isEmpty())
+        query.bindValue(":name_filter", filter);
 
     if(!DBController::getInstance()->exec(query))
         return list;

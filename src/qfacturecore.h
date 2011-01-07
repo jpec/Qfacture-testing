@@ -128,7 +128,7 @@ public:
     /**
      * @see CustomerController::getList()
      */
-    QList<Customer> getCustomersList();
+    QList<Customer> getCustomersList(const QString &name_filter="");
 
     /**
      * @see CustomerController::erase()

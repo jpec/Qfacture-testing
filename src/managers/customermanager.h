@@ -30,7 +30,7 @@ public:
      *
      * @return QList<Customer> Les clients chargés.
      */
-    QList<Customer> getList(int uid=-1);
+    QList<Customer> getList(int uid=-1, const QString &name_filter="");
 
     /**
      * Enregistre ou met à jour le profil d'un client.

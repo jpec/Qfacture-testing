@@ -141,12 +141,12 @@ Customer QfactureCore::getCustomer(int id)
     return CustomerController::getInstance()->get(id, getCurrentProfile().getId());
 }
 
-QList<Customer> QfactureCore::getCustomersList()
+QList<Customer> QfactureCore::getCustomersList(const QString &name_filter)
 {
     if(getCurrentProfile().isNew())
         return QList<Customer>();
 
-    return CustomerController::getInstance()->getList(getCurrentProfile().getId());
+    return CustomerController::getInstance()->getList(getCurrentProfile().getId(), name_filter);
 }
 
 bool QfactureCore::eraseCustomer(int id)

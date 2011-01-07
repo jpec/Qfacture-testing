@@ -66,6 +66,11 @@ void InvoiceTab::createActions()
     // changement du client lors du double-clic sur son nom dans la list
     connect(li_clients, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onCustomerDoubleClicked(QListWidgetItem*)));
+
+    // rechargement de la liste des clients lorsque l'utilisateur tappe du texte
+    // dans la textbox des filtres
+    connect(le_client, SIGNAL(textChanged(QString)), this,
+            SLOT(loadCustomersList()));
 }
 
 void InvoiceTab::onDBStateChanged()
@@ -183,7 +188,9 @@ void InvoiceTab::createAvailableProductsList()
 
 void InvoiceTab::loadCustomersList()
 {
-    QList<Customer> c_list = core->getCustomersList();
+    li_clients->clear();
+
+    QList<Customer> c_list = core->getCustomersList(le_client->text());
 
     for(int i = 0; i < c_list.size(); ++i)
     {

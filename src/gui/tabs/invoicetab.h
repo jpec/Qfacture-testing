@@ -41,6 +41,11 @@ private slots:
     void onAvailableProductDoubleClicked(QTableWidgetItem *item);
     void onCustomerDoubleClicked(QListWidgetItem *item);
 
+    /**
+     * Charge la liste des clients
+     */
+    void loadCustomersList();
+
 private:
     /**
      * Cette méthode, appelée par le constructeur, s'occupe de connecter les
@@ -57,11 +62,6 @@ private:
      * Crée la liste des produits disponibles
      */
     void createAvailableProductsList();
-
-    /**
-     * Charge la liste des clients
-     */
-    void loadCustomersList();
 
     /**
      * Construit la GUI de l'onglet

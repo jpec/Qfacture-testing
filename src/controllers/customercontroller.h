@@ -48,7 +48,7 @@ private:
      *
      * @return QList<Customer> Les clients chargés.
      */
-    QList<Customer> getList(int uid);
+    QList<Customer> getList(int uid, const QString &name_filter="");
 
     /**
      * Supprime un client
