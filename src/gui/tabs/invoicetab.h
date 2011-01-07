@@ -2,6 +2,7 @@
 #define INVOICETAB_H
 
 #include "qfacturecore.h"
+#include "models/invoice.h"
 #include "gui/widgets/sqltable.h"
 
 #include <QListWidget>
@@ -14,10 +15,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QListWidget>
 #include <QFormLayout>
 #include <QTableWidget>
-
-#include "models/invoice.h"
 
 
 class InvoiceTab : public QWidget
@@ -39,6 +39,7 @@ private slots:
     void onDBStateChanged();
     void onInvoiceStateChanged();
     void onAvailableProductDoubleClicked(QTableWidgetItem *item);
+    void onCustomerDoubleClicked(QListWidgetItem *item);
 
 private:
     /**
@@ -56,6 +57,11 @@ private:
      * Crée la liste des produits disponibles
      */
     void createAvailableProductsList();
+
+    /**
+     * Charge la liste des clients
+     */
+    void loadCustomersList();
 
     /**
      * Construit la GUI de l'onglet

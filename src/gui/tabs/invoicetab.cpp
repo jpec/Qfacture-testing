@@ -14,6 +14,7 @@ InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
     createActions();
 
     onInvoiceStateChanged();
+    loadCustomersList();
 }
 
 InvoiceTab::~InvoiceTab()
@@ -61,6 +62,10 @@ void InvoiceTab::createActions()
 
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
+
+    // changement du client lors du double-clic sur son nom dans la list
+    connect(li_clients, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
+            SLOT(onCustomerDoubleClicked(QListWidgetItem*)));
 }
 
 void InvoiceTab::onDBStateChanged()
@@ -79,6 +84,18 @@ void InvoiceTab::onInvoiceStateChanged()
 
     if(saved)
         displayInvoiceData();
+}
+
+void InvoiceTab::onCustomerDoubleClicked(QListWidgetItem *item)
+{
+    Customer c = core->getCustomer(item->data(Qt::UserRole).toInt());
+
+    if(c.isNew())
+        QMessageBox::critical(this, trUtf8("Erreur"),
+                              "Impossible de récupérer les données client");
+
+    this->invoice.setCustomer(c);
+    le_selected_client->setText(c.getName());
 }
 
 void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
@@ -164,6 +181,18 @@ void InvoiceTab::createAvailableProductsList()
     t_available_products->setColumns(columns, labels);
 }
 
+void InvoiceTab::loadCustomersList()
+{
+    QList<Customer> c_list = core->getCustomersList();
+
+    for(int i = 0; i < c_list.size(); ++i)
+    {
+        li_clients->addItem(c_list.at(i).getName());
+
+        li_clients->item(i)->setData(Qt::UserRole, c_list.at(i).getId());
+    }
+}
+
 void InvoiceTab::buildClientBox()
 {
     l_client = new QVBoxLayout();
@@ -215,6 +244,7 @@ void InvoiceTab::buildDetailsBox()
 
     le_facture_no->setEnabled(false);
     le_facture_montant->setEnabled(false);
+    le_facture_date->setDisplayFormat("dd/MM/yyyy");
 
     form_details->addRow(trUtf8("Numéro de la facture"), le_facture_no);
     form_details->addRow(trUtf8("Date de facturation"), le_facture_date);

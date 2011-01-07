@@ -35,6 +35,34 @@ Customer CustomerManager::get(int id, int uid)
     return c;
 }
 
+QList<Customer> CustomerManager::getList(int uid)
+{
+    QSqlQuery query;
+    QString sql;
+    QList<Customer> list;
+
+    sql = "SELECT cID, name, address, complement, zip, city, phone, mail "
+          "FROM client";
+
+    if(uid != -1)
+        sql += " WHERE u_ID = :uid";
+
+    query.prepare(sql);
+
+    if(uid != -1)
+        query.bindValue(":uid", QVariant(uid));
+
+    if(!DBController::getInstance()->exec(query))
+        return list;
+
+    while(query.next())
+        list.append(makeCustomer(query));
+
+    query.finish();
+
+    return list;
+}
+
 bool CustomerManager::save(Customer &customer, int uid)
 {
     if(uid < 1)

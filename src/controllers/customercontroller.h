@@ -3,6 +3,8 @@
 
 #include "managers/customermanager.h"
 
+#include <QList>
+
 
 /**
  * Contrôleur permettant de gérer les clients
@@ -38,6 +40,15 @@ private:
      * @return Customer Le client chargé.
      */
     Customer get(int id, int uid);
+
+    /**
+     * Récupère une liste de clients
+     *
+     * @param uid Identifiant du profil "possédant" les clients
+     *
+     * @return QList<Customer> Les clients chargés.
+     */
+    QList<Customer> getList(int uid);
 
     /**
      * Supprime un client

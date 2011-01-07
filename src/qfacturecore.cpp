@@ -141,6 +141,14 @@ Customer QfactureCore::getCustomer(int id)
     return CustomerController::getInstance()->get(id, getCurrentProfile().getId());
 }
 
+QList<Customer> QfactureCore::getCustomersList()
+{
+    if(getCurrentProfile().isNew())
+        return QList<Customer>();
+
+    return CustomerController::getInstance()->getList(getCurrentProfile().getId());
+}
+
 bool QfactureCore::eraseCustomer(int id)
 {
     if(getCurrentProfile().isNew())

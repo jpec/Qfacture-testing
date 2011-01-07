@@ -126,6 +126,11 @@ public:
     Customer getCustomer(int id);
 
     /**
+     * @see CustomerController::getList()
+     */
+    QList<Customer> getCustomersList();
+
+    /**
      * @see CustomerController::erase()
      */
     bool eraseCustomer(int id);

@@ -3,6 +3,7 @@
 
 #include "models/customer.h"
 
+#include <QList>
 #include <QSqlQuery>
 
 
@@ -21,6 +22,15 @@ public:
      * @return Customer Le client chargé.
      */
     Customer get(int id, int uid=-1);
+
+    /**
+     * Récupère une liste de clients
+     *
+     * @param uid Identifiant du profil "possédant" les clients
+     *
+     * @return QList<Customer> Les clients chargés.
+     */
+    QList<Customer> getList(int uid=-1);
 
     /**
      * Enregistre ou met à jour le profil d'un client.

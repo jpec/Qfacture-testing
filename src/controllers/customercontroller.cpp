@@ -20,6 +20,15 @@ Customer CustomerController::get(int id, int uid)
     return manager.get(id, uid);
 }
 
+QList<Customer> CustomerController::getList(int uid)
+{
+    // les clients doit appartenir à quelqu'un
+    if(uid < 1)
+        return QList<Customer>();
+
+    return manager.getList(uid);
+}
+
 bool CustomerController::save(Customer &p, int uid)
 {
     // le client doit appartenir à quelqu'un
