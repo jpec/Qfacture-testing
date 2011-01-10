@@ -136,7 +136,16 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
     t_selected_products->setItem(row_id, 1, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
     t_selected_products->setItem(row_id, 2, new QTableWidgetItem(QString("1")));
     t_selected_products->setItem(row_id, 3, new QTableWidgetItem(QString("0")));
-    t_selected_products->setItem(row_id, 4, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
+
+    // ces colonne sont traitées différement : pas d'édition possible
+    QTableWidgetItem *amount_item = new QTableWidgetItem(QVariant(p.getPrice()).toString());
+    amount_item->setFlags(amount_item->flags() & (~Qt::ItemIsEditable));
+    t_selected_products->setItem(row_id, 4, amount_item);
+
+    QTableWidgetItem *delete_item = new QTableWidgetItem(QIcon::fromTheme("edit-delete"),
+                                                         trUtf8("Supprimer"));
+    delete_item->setFlags(delete_item->flags() & (~Qt::ItemIsEditable));
+    t_selected_products->setItem(row_id, 5, delete_item);
 
     t_selected_products->item(row_id, 0)->setData(Qt::UserRole, p.getId());
 }
@@ -198,13 +207,14 @@ void InvoiceTab::buildProductsBox()
 {
     QStringList columns_labels;
     columns_labels << trUtf8("Désignation") << trUtf8("Prix unitaire")
-                   << trUtf8("Quantité") << trUtf8("Remise (%)") << trUtf8("Total");
+                   << trUtf8("Quantité") << trUtf8("Remise (%)") << trUtf8("Total")
+                   << trUtf8("Action");
 
     createAvailableProductsList();
 
     l_products = new QVBoxLayout();
     gbox_products = new QGroupBox(trUtf8("Liste des prestations"));
-    t_selected_products = new QTableWidget(0, 5);
+    t_selected_products = new QTableWidget(0, 6);
 
     t_selected_products->setSelectionMode(QAbstractItemView::SingleSelection);
     t_selected_products->setHorizontalHeaderLabels(columns_labels);
