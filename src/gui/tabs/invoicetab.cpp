@@ -107,13 +107,40 @@ void InvoiceTab::onCustomerDoubleClicked(QListWidgetItem *item)
 
 void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
 {
-    QMessageBox::critical(this, trUtf8("Erreur !"), item->data(Qt::UserRole).toString());
+    Product p = core->getProduct(item->data(Qt::UserRole).toInt());
+
+    if(p.isNew())
+    {
+        QMessageBox::critical(this, trUtf8("Erreur !"), trUtf8("Produit inconnu"));
+
+        return;
+    }
+
+    int row_id = t_selected_products->rowCount();
+
+    for(int i=0; i < row_id; ++i)
+    {
+        // si le produit est déjà dans le tableau, on incrémente juste la quantité
+        if(t_selected_products->item(i, 0)->data(Qt::UserRole).toInt() == p.getId())
+            t_selected_products->item(i, 2)->setText(QVariant(t_selected_products->item(i, 2)->text().toInt() + 1).toString());
+    }
+
+    t_selected_products->setRowCount(row_id + 1);
+
+    t_selected_products->setItem(row_id, 0, new QTableWidgetItem(p.getDescription()));
+    t_selected_products->setItem(row_id, 1, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
+    t_selected_products->setItem(row_id, 2, new QTableWidgetItem(QString("1")));
+    t_selected_products->setItem(row_id, 3, new QTableWidgetItem(QString("0")));
+    t_selected_products->setItem(row_id, 4, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
+
+    t_selected_products->item(row_id, 0)->setData(Qt::UserRole, p.getId());
 }
 
 void InvoiceTab::displayInvoiceData()
 {
     le_facture_no->setText(QVariant(invoice.getId()).toString());
-    le_facture_montant->setText(QVariant(invoice.getAmount()).toString()+trUtf8(" €"));
+    le_facture_montant->setText(QVariant(invoice.getAmount()).toString()
+                                + trUtf8(" €"));
     le_facture_date->setDate(invoice.getDate());
     le_comment->setText(invoice.getDescription());
     le_selected_client->setText(invoice.getCustomer().getName());
@@ -158,13 +185,13 @@ void InvoiceTab::buildProductsBox()
 {
     QStringList columns_labels;
     columns_labels << trUtf8("Désignation") << trUtf8("Prix unitaire")
-                   << trUtf8("Quantité") << trUtf8("Remise") << trUtf8("Total");
+                   << trUtf8("Quantité") << trUtf8("Remise (%)") << trUtf8("Total");
 
     createAvailableProductsList();
 
     l_products = new QVBoxLayout();
     gbox_products = new QGroupBox(trUtf8("Liste des prestations"));
-    t_selected_products = new QTableWidget(2, 5);
+    t_selected_products = new QTableWidget(0, 5);
 
     t_selected_products->setHorizontalHeaderLabels(columns_labels);
 
@@ -197,7 +224,6 @@ void InvoiceTab::loadCustomersList()
     for(int i = 0; i < c_list.size(); ++i)
     {
         li_clients->addItem(c_list.at(i).getName());
-
         li_clients->item(i)->setData(Qt::UserRole, c_list.at(i).getId());
     }
 }
