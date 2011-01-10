@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QKeyEvent>
 #include <QCompleter>
 #include <QHBoxLayout>
 #include <QVBoxLayout>

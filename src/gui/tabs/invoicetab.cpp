@@ -62,6 +62,7 @@ void InvoiceTab::createActions()
     // activation de l'onglet dès que la connexion à la DB est établie
     connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBStateChanged()));
 
+    // ajout d'un produit lors du double clic sur ce dernier
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
 
@@ -122,7 +123,11 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
     {
         // si le produit est déjà dans le tableau, on incrémente juste la quantité
         if(t_selected_products->item(i, 0)->data(Qt::UserRole).toInt() == p.getId())
+        {
             t_selected_products->item(i, 2)->setText(QVariant(t_selected_products->item(i, 2)->text().toInt() + 1).toString());
+
+            return;
+        }
     }
 
     t_selected_products->setRowCount(row_id + 1);
@@ -135,6 +140,14 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
 
     t_selected_products->item(row_id, 0)->setData(Qt::UserRole, p.getId());
 }
+
+//void InvoiceTab::onKeyPressed(QKeyEvent *event)
+//{
+//    if(event->key() == Qt::Key_Delete)
+//    {
+//        t_selected_products->removeRow(t_selected_products->currentRow());
+//    }
+//}
 
 void InvoiceTab::displayInvoiceData()
 {
@@ -193,6 +206,7 @@ void InvoiceTab::buildProductsBox()
     gbox_products = new QGroupBox(trUtf8("Liste des prestations"));
     t_selected_products = new QTableWidget(0, 5);
 
+    t_selected_products->setSelectionMode(QAbstractItemView::SingleSelection);
     t_selected_products->setHorizontalHeaderLabels(columns_labels);
 
     l_products->addWidget(t_available_products->getWidget());
