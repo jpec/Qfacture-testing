@@ -12,9 +12,10 @@ Invoice InvoiceManager::get(int id, int uid)
 
     sql = "SELECT "
               "fID, c_ID, amount, comment, Type, date, "
-              "c.name "
+              "c.name, tr.name as reglement "
           "FROM facture f "
           "LEFT JOIN client c ON c.cID = f.c_ID "
+          "LEFT JOIN types_reglements tr ON tr.trID = f.tr_ID "
           "WHERE f.fID = :f_id";
 
     if(uid != -1)
@@ -114,6 +115,7 @@ Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
     invoice.setDescription(query.value(3).toString());
     invoice.setRef(query.value(4).toString());
     invoice.setDate(QDate::fromString(query.value(5).toString(), Qt::ISODate));
+    invoice.setReglement(query.value(7).toString());
 
     c.setId(query.value(1).toInt());
     c.setName(query.value(6).toString());

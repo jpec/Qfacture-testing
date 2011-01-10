@@ -76,7 +76,7 @@ public:
     /**
      * Définit la description de la facture.
      *
-     * @param Ref La nouvelle description.
+     * @param description La nouvelle description.
      */
     void setDescription(const QString &description);
 
@@ -86,6 +86,20 @@ public:
      * @return QString La description.
      */
     QString getDescription() const;
+
+    /**
+     * Le mode de règlement de la facture.
+     *
+     * @param reglement Le mode de règlement
+     */
+    void setReglement(const QString &reglement);
+
+    /**
+     * Retourne le mode de règlement de la facture.
+     *
+     * @return QString Le mode de règlement.
+     */
+    QString getReglement() const;
 
     /**
      * Définit le client auquel est liée la facture
@@ -131,6 +145,11 @@ private:
      * Type de la facture
      */
     QString type;
+
+    /**
+     * Type de règlement de la facture
+     */
+    QString reglement;
 
     /**
      * Client
