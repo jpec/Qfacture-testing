@@ -37,7 +37,8 @@ SOURCES += main.cpp \
     managers/invoicemanager.cpp \
     models/invoice.cpp \
     models/modelbase.cpp \
-    models/reglementtype.cpp
+    models/reglementtype.cpp \
+    models/documenttype.cpp
 HEADERS += models/person.h \
     models/customer.h \
     models/profile.h \
@@ -68,5 +69,6 @@ HEADERS += models/person.h \
     managers/invoicemanager.h \
     models/invoice.h \
     models/modelbase.h \
-    models/reglementtype.h
+    models/reglementtype.h \
+    models/documenttype.h
 FORMS += gui/mainwindow.ui

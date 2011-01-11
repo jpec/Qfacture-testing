@@ -168,3 +168,8 @@ QHash<int, QString> QfactureCore::getReglements()
 {
     return InvoiceController::getInstance()->getReglements(getCurrentProfile().getId());
 }
+
+QHash<int, QString> QfactureCore::getDocumentsTypes()
+{
+    return InvoiceController::getInstance()->getTypes(getCurrentProfile().getId());
+}

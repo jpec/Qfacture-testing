@@ -147,6 +147,11 @@ public:
      */
     QHash<int, QString> getReglements();
 
+    /**
+     * @see InvoiceController::getDocumentsTypes()
+     */
+    QHash<int, QString> getDocumentsTypes();
+
 signals:
 
     /* Wrapper pour les signaux du contrôleur de la DB */

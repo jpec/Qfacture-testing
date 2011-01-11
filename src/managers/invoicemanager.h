@@ -25,14 +25,14 @@ public:
     Invoice get(int id, int uid=-1);
 
     /**
-     * Retourne les types de documents disponibles
-     */
-    QStringList getTypes(int uid);
-
-    /**
      * Retourne les types de reglement disponibles
      */
     QHash<int, QString> getReglements(int uid);
+
+    /**
+     * Retourne les types de documents disponibles
+     */
+    QHash<int, QString> getTypes(int uid);
 
     /**
      * Enregistre ou met à jour le détail d'une facture.

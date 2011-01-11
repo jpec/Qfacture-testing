@@ -36,6 +36,16 @@ QString Invoice::getRef() const
     return this->ref;
 }
 
+void Invoice::setType(const DocumentType &type)
+{
+    this->type = type;
+}
+
+DocumentType Invoice::getType() const
+{
+    return this->type;
+}
+
 void Invoice::setDate(const QDate &date)
 {
     this->date = date;

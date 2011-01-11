@@ -3,6 +3,7 @@
 
 #include "models/customer.h"
 #include "models/reglementtype.h"
+#include "models/documenttype.h"
 
 #include <QString>
 #include <QDate>
@@ -45,6 +46,20 @@ public:
      * @return QString La référence.
      */
     QString getRef() const;
+
+    /**
+     * Définit le type du document.
+     *
+     * @param type Le nouveau type.
+     */
+    void setType(const DocumentType &type);
+
+    /**
+     * Retourne le type.
+     *
+     * @return DocumentType Le type.
+     */
+    DocumentType getType() const;
 
     /**
      * Définit la date d'établissement de la facture.
@@ -145,7 +160,7 @@ private:
     /**
      * Type de la facture
      */
-    QString type;
+    DocumentType type;
 
     /**
      * Type de règlement de la facture

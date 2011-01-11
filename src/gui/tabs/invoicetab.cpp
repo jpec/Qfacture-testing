@@ -16,6 +16,7 @@ InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
     onInvoiceStateChanged();
 
     loadCustomersList();
+    loadDocumentTypes();
     loadReglementTypes();
 }
 
@@ -268,6 +269,27 @@ void InvoiceTab::loadReglementTypes()
 
         if(!invoice.isNew() && iterator.key() == invoice.getReglement().getId())
             le_facture_reglement->setCurrentIndex(i);
+
+        ++i;
+    }
+}
+
+void InvoiceTab::loadDocumentTypes()
+{
+    le_facture_reglement->clear();
+
+    QHash<int, QString> r_list = core->getDocumentsTypes();
+
+    QHashIterator<int, QString> iterator(r_list);
+    int i = 0;
+    while (iterator.hasNext()) {
+        iterator.next();
+
+        le_facture_type->addItem(iterator.value());
+        le_facture_type->setItemData(i, QVariant(iterator.key()), Qt::UserRole);
+
+        if(!invoice.isNew() && iterator.key() == invoice.getReglement().getId())
+            le_facture_type->setCurrentIndex(i);
 
         ++i;
     }

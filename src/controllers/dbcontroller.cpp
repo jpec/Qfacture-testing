@@ -31,14 +31,12 @@ DBController::DBController()
     tables_definitions["facture"]["c_ID"] = trUtf8("Identifiant du client");
     tables_definitions["facture"]["amount"] = trUtf8("Montant");
     tables_definitions["facture"]["comment"] = trUtf8("Commentaire");
-    tables_definitions["facture"]["type"] = trUtf8("Type");
     tables_definitions["facture"]["date"] = trUtf8("Date");
 
     /** Clauses de jointures **/
 
     // table facture
     join_clauses["facture"]["client"] = "facture.c_ID = client.cID";
-
 }
 
 DBController* DBController::getInstance()

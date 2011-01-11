@@ -45,6 +45,11 @@ private:
     QHash<int, QString> getReglements(int uid);
 
     /**
+     * Retourne les types de documents disponibles
+     */
+    QHash<int, QString> getTypes(int uid);
+
+    /**
      * Supprime une facture
      *
      * @param id L'identifiant de la facture

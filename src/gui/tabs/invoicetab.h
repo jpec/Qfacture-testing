@@ -66,6 +66,8 @@ private:
 
     void loadReglementTypes();
 
+    void loadDocumentTypes();
+
     /**
      * Construit la GUI de l'onglet
      */
