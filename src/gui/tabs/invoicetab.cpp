@@ -266,7 +266,7 @@ void InvoiceTab::loadReglementTypes()
         le_facture_reglement->addItem(iterator.value());
         le_facture_reglement->setItemData(i, QVariant(iterator.key()), Qt::UserRole);
 
-        if(!invoice.isNew() && iterator.value() == invoice.getReglement())
+        if(!invoice.isNew() && iterator.key() == invoice.getReglement().getId())
             le_facture_reglement->setCurrentIndex(i);
 
         ++i;

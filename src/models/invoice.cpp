@@ -79,12 +79,12 @@ Customer Invoice::getCustomer() const
     return customer;
 }
 
-void Invoice::setReglement(const QString &reglement)
+void Invoice::setReglement(const ReglementType &reglement)
 {
     this->reglement = reglement;
 }
 
-QString Invoice::getReglement() const
+ReglementType Invoice::getReglement() const
 {
     return this->reglement;
 }

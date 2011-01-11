@@ -2,6 +2,7 @@
 #define INVOICE_H
 
 #include "models/customer.h"
+#include "models/reglementtype.h"
 
 #include <QString>
 #include <QDate>
@@ -92,14 +93,14 @@ public:
      *
      * @param reglement Le mode de règlement
      */
-    void setReglement(const QString &reglement);
+    void setReglement(const ReglementType &reglement);
 
     /**
      * Retourne le mode de règlement de la facture.
      *
      * @return QString Le mode de règlement.
      */
-    QString getReglement() const;
+    ReglementType getReglement() const;
 
     /**
      * Définit le client auquel est liée la facture
@@ -149,7 +150,7 @@ private:
     /**
      * Type de règlement de la facture
      */
-    QString reglement;
+    ReglementType reglement;
 
     /**
      * Client
