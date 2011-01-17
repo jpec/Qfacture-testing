@@ -67,6 +67,10 @@ void InvoiceTab::createActions()
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
 
+    // édition d'un produit sélectionné
+    connect(t_selected_products, SIGNAL(cellChanged(int,int)), this,
+            SLOT(onSelectedProductEdited(int, int)));
+
     // changement du client lors du double-clic sur son nom dans la list
     connect(li_clients, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onCustomerDoubleClicked(QListWidgetItem*)));
@@ -133,22 +137,44 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
 
     t_selected_products->setRowCount(row_id + 1);
 
-    t_selected_products->setItem(row_id, 0, new QTableWidgetItem(p.getDescription()));
-    t_selected_products->setItem(row_id, 1, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
-    t_selected_products->setItem(row_id, 2, new QTableWidgetItem(QString("1")));
-    t_selected_products->setItem(row_id, 3, new QTableWidgetItem(QString("0")));
+    t_selected_products->setItem(row_id, 0, new QTableWidgetItem(p.getName()));
+    t_selected_products->setItem(row_id, 1, new QTableWidgetItem(p.getDescription()));
+    t_selected_products->setItem(row_id, 2, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
+    t_selected_products->setItem(row_id, 3, new QTableWidgetItem(QString("1")));
+    t_selected_products->setItem(row_id, 4, new QTableWidgetItem(QString("0")));
 
     // ces colonne sont traitées différement : pas d'édition possible
     QTableWidgetItem *amount_item = new QTableWidgetItem(QVariant(p.getPrice()).toString());
     amount_item->setFlags(amount_item->flags() & (~Qt::ItemIsEditable));
-    t_selected_products->setItem(row_id, 4, amount_item);
+    t_selected_products->setItem(row_id, 5, amount_item);
 
     QTableWidgetItem *delete_item = new QTableWidgetItem(QIcon::fromTheme("edit-delete"),
                                                          trUtf8("Supprimer"));
     delete_item->setFlags(delete_item->flags() & (~Qt::ItemIsEditable));
-    t_selected_products->setItem(row_id, 5, delete_item);
+    t_selected_products->setItem(row_id, 6, delete_item);
 
     t_selected_products->item(row_id, 0)->setData(Qt::UserRole, p.getId());
+}
+
+void InvoiceTab::onSelectedProductEdited(int row, int col)
+{
+    // on doit recalculer le prix
+    if(col == 2 || col == 3 || col == 4)
+    {
+        float remise, amount;
+        int qte;
+
+        if(!t_selected_products->item(row, 3) || !t_selected_products->item(row, 5))
+            return;
+
+        remise = t_selected_products->item(row, 4)->text().toFloat();
+        qte = t_selected_products->item(row, 3)->text().toInt();
+        amount = t_selected_products->item(row, 2)->text().toFloat() * qte;
+
+        amount -= amount * remise / 100;
+
+        t_selected_products->item(row, 5)->setText(QVariant(amount).toString());
+    }
 }
 
 //void InvoiceTab::onKeyPressed(QKeyEvent *event)
@@ -207,15 +233,16 @@ void InvoiceTab::buildBody()
 void InvoiceTab::buildProductsBox()
 {
     QStringList columns_labels;
-    columns_labels << trUtf8("Désignation") << trUtf8("Prix unitaire")
-                   << trUtf8("Quantité") << trUtf8("Remise (%)") << trUtf8("Total")
+    columns_labels << trUtf8("Nom") << trUtf8("Désignation")
+                   << trUtf8("Prix unitaire") << trUtf8("Quantité")
+                   << trUtf8("Remise (%)") << trUtf8("Total")
                    << trUtf8("Action");
 
     createAvailableProductsList();
 
     l_products = new QVBoxLayout();
     gbox_products = new QGroupBox(trUtf8("Liste des prestations"));
-    t_selected_products = new QTableWidget(0, 6);
+    t_selected_products = new QTableWidget(0, 7);
 
     t_selected_products->setSelectionMode(QAbstractItemView::SingleSelection);
     t_selected_products->setHorizontalHeaderLabels(columns_labels);
