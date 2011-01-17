@@ -131,9 +131,9 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
     for(int i=0; i < row_id; ++i)
     {
         // si le produit est déjà dans le tableau, on incrémente juste la quantité
-        if(t_selected_products->item(i, 0)->data(Qt::UserRole).toInt() == p.getId())
+        if(t_selected_products->item(i, COL_NAME)->data(Qt::UserRole).toInt() == p.getId())
         {
-            t_selected_products->item(i, 3)->setText(QVariant(t_selected_products->item(i, 3)->text().toInt() + 1).toString());
+            t_selected_products->item(i, COL_QTE)->setText(QVariant(t_selected_products->item(i, COL_QTE)->text().toInt() + 1).toString());
 
             return;
         }
@@ -141,23 +141,23 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
 
     t_selected_products->setRowCount(row_id + 1);
 
-    t_selected_products->setItem(row_id, 0, new QTableWidgetItem(p.getName()));
-    t_selected_products->setItem(row_id, 1, new QTableWidgetItem(p.getDescription()));
-    t_selected_products->setItem(row_id, 2, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
-    t_selected_products->setItem(row_id, 3, new QTableWidgetItem(QString("1")));
-    t_selected_products->setItem(row_id, 4, new QTableWidgetItem(QString("0")));
+    t_selected_products->setItem(row_id, COL_NAME, new QTableWidgetItem(p.getName()));
+    t_selected_products->setItem(row_id, COL_DESCRIPTION, new QTableWidgetItem(p.getDescription()));
+    t_selected_products->setItem(row_id, COL_PRICE, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
+    t_selected_products->setItem(row_id, COL_QTE, new QTableWidgetItem(QString("1")));
+    t_selected_products->setItem(row_id, COL_OFF, new QTableWidgetItem(QString("0")));
 
     // ces colonne sont traitées différement : pas d'édition possible
     QTableWidgetItem *amount_item = new QTableWidgetItem(QVariant(p.getPrice()).toString());
     amount_item->setFlags(amount_item->flags() & (~Qt::ItemIsEditable));
-    t_selected_products->setItem(row_id, 5, amount_item);
+    t_selected_products->setItem(row_id, COL_AMOUNT, amount_item);
 
     QTableWidgetItem *delete_item = new QTableWidgetItem(QIcon::fromTheme("edit-delete"),
                                                          trUtf8("Supprimer"));
     delete_item->setFlags(delete_item->flags() & (~Qt::ItemIsEditable));
-    t_selected_products->setItem(row_id, 6, delete_item);
+    t_selected_products->setItem(row_id, COL_ACTION, delete_item);
 
-    t_selected_products->item(row_id, 0)->setData(Qt::UserRole, p.getId());
+    t_selected_products->item(row_id, COL_NAME)->setData(Qt::UserRole, p.getId());
 }
 
 void InvoiceTab::onSelectedProductEdited(int row, int col)
@@ -166,40 +166,40 @@ void InvoiceTab::onSelectedProductEdited(int row, int col)
     int qte;
 
     // à l'édition de la quantité
-    if(col == 3 && t_selected_products->item(row, 3))
+    if(col == COL_QTE && t_selected_products->item(row, COL_QTE))
     {
-        qte = t_selected_products->item(row, 3)->text().toInt();
+        qte = t_selected_products->item(row, COL_QTE)->text().toInt();
 
         if(qte < 1)
-            t_selected_products->item(row, 3)->setText("1");
+            t_selected_products->item(row, COL_QTE)->setText("1");
     }
     // à l'édition de la remise
-    else if(col == 4)
+    else if(col == COL_OFF)
     {
-        remise = t_selected_products->item(row, 4)->text().toFloat();
+        remise = t_selected_products->item(row, COL_OFF)->text().toFloat();
 
         if(remise > 100)
-            t_selected_products->item(row, 4)->setText("100");
+            t_selected_products->item(row, COL_OFF)->setText("100");
 
         if(remise < 0)
-            t_selected_products->item(row, 4)->setText("0");
+            t_selected_products->item(row, COL_OFF)->setText("0");
     }
 
     // on doit recalculer le prix
-    if(col == 2 || col == 3 || col == 4)
+    if(col == 2 || col == COL_QTE || col == COL_OFF)
     {
         float amount;
 
-        if(!t_selected_products->item(row, 3) || !t_selected_products->item(row, 5))
+        if(!t_selected_products->item(row, COL_QTE) || !t_selected_products->item(row, COL_AMOUNT))
             return;
 
-        remise = t_selected_products->item(row, 4)->text().toFloat();
-        qte = t_selected_products->item(row, 3)->text().toInt();
-        amount = t_selected_products->item(row, 2)->text().toFloat() * qte;
+        remise = t_selected_products->item(row, COL_OFF)->text().toFloat();
+        qte = t_selected_products->item(row, COL_QTE)->text().toInt();
+        amount = t_selected_products->item(row, COL_PRICE)->text().toFloat() * qte;
 
         amount -= amount * remise / 100.0;
 
-        t_selected_products->item(row, 5)->setText(QVariant(amount).toString());
+        t_selected_products->item(row, COL_AMOUNT)->setText(QVariant(amount).toString());
     }
 }
 

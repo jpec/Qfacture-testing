@@ -133,6 +133,14 @@ private:
      * Facture représentée dans l'onglet
      */
     Invoice invoice;
+
+    static const int COL_NAME           = 0;
+    static const int COL_DESCRIPTION    = 1;
+    static const int COL_PRICE          = 2;
+    static const int COL_QTE            = 3;
+    static const int COL_OFF            = 4;
+    static const int COL_AMOUNT         = 5;
+    static const int COL_ACTION         = 6;
 };
 
 #endif // INVOICETAB_H
