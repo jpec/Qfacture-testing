@@ -71,6 +71,10 @@ void InvoiceTab::createActions()
     connect(t_selected_products, SIGNAL(cellChanged(int,int)), this,
             SLOT(onSelectedProductEdited(int, int)));
 
+    // suppression d'un produit sélectionné
+    connect(t_selected_products, SIGNAL(cellDoubleClicked(int,int)), this,
+            SLOT(onSelectedProductDoubleClicked(int,int)));
+
     // changement du client lors du double-clic sur son nom dans la list
     connect(li_clients, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onCustomerDoubleClicked(QListWidgetItem*)));
@@ -129,7 +133,7 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
         // si le produit est déjà dans le tableau, on incrémente juste la quantité
         if(t_selected_products->item(i, 0)->data(Qt::UserRole).toInt() == p.getId())
         {
-            t_selected_products->item(i, 2)->setText(QVariant(t_selected_products->item(i, 2)->text().toInt() + 1).toString());
+            t_selected_products->item(i, 3)->setText(QVariant(t_selected_products->item(i, 3)->text().toInt() + 1).toString());
 
             return;
         }
@@ -158,11 +162,33 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
 
 void InvoiceTab::onSelectedProductEdited(int row, int col)
 {
+    float remise;
+    int qte;
+
+    // à l'édition de la quantité
+    if(col == 3 && t_selected_products->item(row, 3))
+    {
+        qte = t_selected_products->item(row, 3)->text().toInt();
+
+        if(qte < 1)
+            t_selected_products->item(row, 3)->setText("1");
+    }
+    // à l'édition de la remise
+    else if(col == 4)
+    {
+        remise = t_selected_products->item(row, 4)->text().toFloat();
+
+        if(remise > 100)
+            t_selected_products->item(row, 4)->setText("100");
+
+        if(remise < 0)
+            t_selected_products->item(row, 4)->setText("0");
+    }
+
     // on doit recalculer le prix
     if(col == 2 || col == 3 || col == 4)
     {
-        float remise, amount;
-        int qte;
+        float amount;
 
         if(!t_selected_products->item(row, 3) || !t_selected_products->item(row, 5))
             return;
@@ -171,19 +197,17 @@ void InvoiceTab::onSelectedProductEdited(int row, int col)
         qte = t_selected_products->item(row, 3)->text().toInt();
         amount = t_selected_products->item(row, 2)->text().toFloat() * qte;
 
-        amount -= amount * remise / 100;
+        amount -= amount * remise / 100.0;
 
         t_selected_products->item(row, 5)->setText(QVariant(amount).toString());
     }
 }
 
-//void InvoiceTab::onKeyPressed(QKeyEvent *event)
-//{
-//    if(event->key() == Qt::Key_Delete)
-//    {
-//        t_selected_products->removeRow(t_selected_products->currentRow());
-//    }
-//}
+void InvoiceTab::onSelectedProductDoubleClicked(int row, int col)
+{
+    if(col == 6)
+        t_selected_products->removeRow(row);
+}
 
 void InvoiceTab::displayInvoiceData()
 {

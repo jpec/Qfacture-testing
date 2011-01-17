@@ -42,6 +42,7 @@ private slots:
     void onAvailableProductDoubleClicked(QTableWidgetItem *item);
     void onCustomerDoubleClicked(QListWidgetItem *item);
     void onSelectedProductEdited(int row, int col);
+    void onSelectedProductDoubleClicked(int row, int col);
 
     /**
      * Charge la liste des clients
