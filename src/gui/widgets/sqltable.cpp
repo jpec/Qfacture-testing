@@ -153,10 +153,10 @@ void SQLTable::feedTable()
 
 void SQLTable::setFilter(const QString& column, Filter filter)
 {
-    if(!columns.contains(column))
+    if(!columns.contains(table_name+"."+column))
         return;
 
-    filters[column] = filter;
+    filters[table_name+"."+column] = filter;
 }
 
 QTableWidget* SQLTable::getWidget() const
