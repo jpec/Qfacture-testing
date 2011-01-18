@@ -87,19 +87,15 @@ void InvoiceTab::createActions()
 
 void InvoiceTab::onDBStateChanged()
 {
-    bool connected = core->isDBConnected();
-
-    setEnabled(connected);
+    setEnabled(core->isDBConnected());
 }
 
 void InvoiceTab::onInvoiceStateChanged()
 {
-    bool saved = invoice.getId() != 0;
-
     btn_print->setEnabled(saved);
     btn_del->setEnabled(saved);
 
-    if(saved)
+    if(!invoice.isNew())
         displayInvoiceData();
 }
 
@@ -126,29 +122,45 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
         return;
     }
 
-    int row_id = t_selected_products->rowCount();
+    addProductToSelectedList(p);
+}
 
-    for(int i=0; i < row_id; ++i)
+void InvoiceTab::addProductToSelectedList(const Product &p)
+{
+    InvoiceLine line = InvoiceLine::fromProduct(p);
+
+    for(int i=0; i < invoice.getLinesCount(); ++i)
     {
         // si le produit est déjà dans le tableau, on incrémente juste la quantité
-        if(t_selected_products->item(i, COL_NAME)->data(Qt::UserRole).toInt() == p.getId())
+        if(t_selected_products->item(i, COL_NAME)->data(Qt::UserRole).toInt() == line.getBaseProductId())
         {
-            t_selected_products->item(i, COL_QTE)->setText(QVariant(t_selected_products->item(i, COL_QTE)->text().toInt() + 1).toString());
+            invoice.getLine(i).setQte(invoice.getLine(i).getQte() + 1);
+
+            t_selected_products->item(i, COL_QTE)->setText(QVariant(invoice.getLine(i).getQte()).toString());
 
             return;
         }
     }
 
+    invoice.addLine(line);
+
+    addProductToSelectedList(line);
+}
+
+void InvoiceTab::addProductToSelectedList(InvoiceLine line)
+{
+    int row_id = t_selected_products->rowCount();
+
     t_selected_products->setRowCount(row_id + 1);
 
-    t_selected_products->setItem(row_id, COL_NAME, new QTableWidgetItem(p.getName()));
-    t_selected_products->setItem(row_id, COL_DESCRIPTION, new QTableWidgetItem(p.getDescription()));
-    t_selected_products->setItem(row_id, COL_PRICE, new QTableWidgetItem(QVariant(p.getPrice()).toString()));
-    t_selected_products->setItem(row_id, COL_QTE, new QTableWidgetItem(QString("1")));
-    t_selected_products->setItem(row_id, COL_OFF, new QTableWidgetItem(QString("0")));
+    t_selected_products->setItem(row_id, COL_NAME, new QTableWidgetItem(line.getName()));
+    t_selected_products->setItem(row_id, COL_DESCRIPTION, new QTableWidgetItem(line.getDescription()));
+    t_selected_products->setItem(row_id, COL_PRICE, new QTableWidgetItem(QVariant(line.getPrice()).toString()));
+    t_selected_products->setItem(row_id, COL_QTE, new QTableWidgetItem(QVariant(line.getQte()).toString()));
+    t_selected_products->setItem(row_id, COL_OFF, new QTableWidgetItem(QVariant(line.getOffPercentage()).toString()));
 
     // ces colonne sont traitées différement : pas d'édition possible
-    QTableWidgetItem *amount_item = new QTableWidgetItem(QVariant(p.getPrice()).toString());
+    QTableWidgetItem *amount_item = new QTableWidgetItem(QVariant(line.getAmount()).toString());
     amount_item->setFlags(amount_item->flags() & (~Qt::ItemIsEditable));
     t_selected_products->setItem(row_id, COL_AMOUNT, amount_item);
 
@@ -157,56 +169,46 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
     delete_item->setFlags(delete_item->flags() & (~Qt::ItemIsEditable));
     t_selected_products->setItem(row_id, COL_ACTION, delete_item);
 
-    t_selected_products->item(row_id, COL_NAME)->setData(Qt::UserRole, p.getId());
+    t_selected_products->item(row_id, COL_NAME)->setData(Qt::UserRole,
+                                                         line.getBaseProductId());
 }
 
 void InvoiceTab::onSelectedProductEdited(int row, int col)
 {
-    float remise;
-    int qte;
+    InvoiceLine& line = invoice.getLine(row);
 
     // à l'édition de la quantité
     if(col == COL_QTE && t_selected_products->item(row, COL_QTE))
     {
-        qte = t_selected_products->item(row, COL_QTE)->text().toInt();
+        line.setQte(t_selected_products->item(row, COL_QTE)->text().toInt());
 
-        if(qte < 1)
-            t_selected_products->item(row, COL_QTE)->setText("1");
+        t_selected_products->item(row, COL_QTE)->setText(QVariant(line.getQte()).toString());
     }
     // à l'édition de la remise
     else if(col == COL_OFF)
     {
-        remise = t_selected_products->item(row, COL_OFF)->text().toFloat();
+        line.setOffPercentage(t_selected_products->item(row, COL_OFF)->text().toFloat());
 
-        if(remise > 100)
-            t_selected_products->item(row, COL_OFF)->setText("100");
-
-        if(remise < 0)
-            t_selected_products->item(row, COL_OFF)->setText("0");
+        t_selected_products->item(row, COL_OFF)->setText(QVariant(line.getOffPercentage()).toString());
     }
 
     // on doit recalculer le prix
-    if(col == 2 || col == COL_QTE || col == COL_OFF)
+    if(col == COL_PRICE || col == COL_QTE || col == COL_OFF)
     {
-        float amount;
-
         if(!t_selected_products->item(row, COL_QTE) || !t_selected_products->item(row, COL_AMOUNT))
             return;
 
-        remise = t_selected_products->item(row, COL_OFF)->text().toFloat();
-        qte = t_selected_products->item(row, COL_QTE)->text().toInt();
-        amount = t_selected_products->item(row, COL_PRICE)->text().toFloat() * qte;
-
-        amount -= amount * remise / 100.0;
-
-        t_selected_products->item(row, COL_AMOUNT)->setText(QVariant(amount).toString());
+        t_selected_products->item(row, COL_AMOUNT)->setText(QVariant(line.getAmount()).toString());
     }
 }
 
 void InvoiceTab::onSelectedProductDoubleClicked(int row, int col)
 {
-    if(col == 6)
+    if(col == COL_ACTION)
+    {
         t_selected_products->removeRow(row);
+        invoice.removeLine(row);
+    }
 }
 
 void InvoiceTab::displayInvoiceData()
@@ -217,6 +219,9 @@ void InvoiceTab::displayInvoiceData()
     le_facture_date->setDate(invoice.getDate());
     le_comment->setText(invoice.getDescription());
     le_selected_client->setText(invoice.getCustomer().getName());
+
+    for(int i=0; i < invoice.getLinesCount(); ++i)
+        addProductToSelectedList(invoice.getLine(i));
 }
 
 void InvoiceTab::buildLayout()

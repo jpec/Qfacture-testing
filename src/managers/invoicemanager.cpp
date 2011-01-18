@@ -17,7 +17,7 @@ Invoice InvoiceManager::get(int id, int uid)
           "LEFT JOIN client c ON c.cID = f.c_ID "
           "LEFT JOIN types_reglements tr ON tr.trID = f.tr_ID "
           "LEFT JOIN types_documents td ON td.tdID = f.td_ID "
-          "WHERE f.fID = :f_id";
+          "WHERE f.fID = :Invoice_id";
 
     if(uid != -1)
         sql += " AND f.u_ID = :uid";
@@ -120,6 +120,8 @@ void InvoiceManager::bindInvoice(const Invoice &invoice, QSqlQuery &query, int u
 
 Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
 {
+    QSqlQuery lines_query;
+    InvoiceLine line;
     Invoice invoice;
     Customer c;
     ReglementType r;
@@ -128,7 +130,6 @@ Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
     invoice.setId(query.value(0).toInt());
     invoice.setAmount(query.value(2).toFloat());
     invoice.setDescription(query.value(3).toString());
-    //invoice.setRef(query.value(4).toString());
     invoice.setDate(QDate::fromString(query.value(4).toString(), Qt::ISODate));
 
     r.setId(query.value(6).toInt());
@@ -142,6 +143,34 @@ Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
     c.setId(query.value(1).toInt());
     c.setName(query.value(5).toString());
     invoice.setCustomer(c);
+
+    // récupération des lignes
+    lines_query.prepare("SELECT "
+                            "lID, name, designation, quantity, price, off, base_article "
+                        "FROM factures_lignes f "
+                        "WHERE f_ID = :f_id");
+
+    lines_query.bindValue(":f_id", query.value(0));
+
+    if(!DBController::getInstance()->exec(lines_query))
+        return invoice;
+
+    while(lines_query.next())
+    {
+        line = InvoiceLine();
+
+        line.setId(lines_query.value(0).toInt());
+        line.setName(lines_query.value(1).toString());
+        line.setDescription(lines_query.value(2).toString());
+        line.setQte(lines_query.value(3).toInt());
+        line.setPrice(lines_query.value(4).toFloat());
+        line.setOffPercentage(lines_query.value(5).toFloat());
+        line.setBaseProductId(lines_query.value(6).toInt());
+
+        invoice.addLine(line);
+    }
+
+    lines_query.finish();
 
     return invoice;
 }

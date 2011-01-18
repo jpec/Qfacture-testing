@@ -70,6 +70,9 @@ private:
 
     void loadDocumentTypes();
 
+    void addProductToSelectedList(const Product &p);
+    void addProductToSelectedList(InvoiceLine line);
+
     /**
      * Construit la GUI de l'onglet
      */

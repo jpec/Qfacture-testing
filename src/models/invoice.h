@@ -2,11 +2,13 @@
 #define INVOICE_H
 
 #include "models/customer.h"
-#include "models/reglementtype.h"
+#include "models/invoiceline.h"
 #include "models/documenttype.h"
+#include "models/reglementtype.h"
 
-#include <QString>
 #include <QDate>
+#include <QList>
+#include <QString>
 
 
 /**
@@ -131,6 +133,36 @@ public:
      */
     Customer getCustomer() const;
 
+    /**
+     * Retourne le nombre de lignes de la facture
+     *
+     * @return int le nombre de lignes
+     */
+    int getLinesCount() const;
+
+    /**
+     * Ajoute une ligne
+     *
+     * @param line La ligne à ajouter
+     */
+    void addLine(InvoiceLine line);
+
+    /**
+     * Supprime une ligne
+     *
+     * @param i L'indice de la ligne
+     */
+    void removeLine(int i);
+
+    /**
+     * Retourne une ligne
+     *
+     * @param i L'indice de la ligne
+     *
+     * @return InvoiceLine La ligne concernée
+     */
+    InvoiceLine& getLine(int i);
+
 private:
     /**
      * Identifiant de la facture.
@@ -171,6 +203,11 @@ private:
      * Client
      */
     Customer customer;
+
+    /**
+     * Lignes de la facture
+     */
+    QList<InvoiceLine> lines;
 };
 
 #endif // INVOICE_H

@@ -98,3 +98,26 @@ ReglementType Invoice::getReglement() const
 {
     return this->reglement;
 }
+
+int Invoice::getLinesCount() const
+{
+    return lines.count();
+}
+
+void Invoice::addLine(InvoiceLine line)
+{
+    if(lines.contains(line))
+        return;
+
+    lines.append(line);
+}
+
+void Invoice::removeLine(int i)
+{
+    lines.removeAt(i);
+}
+
+InvoiceLine& Invoice::getLine(int i)
+{
+    return lines[i];
+}
