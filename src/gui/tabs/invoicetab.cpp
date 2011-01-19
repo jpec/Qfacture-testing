@@ -92,8 +92,8 @@ void InvoiceTab::onDBStateChanged()
 
 void InvoiceTab::onInvoiceStateChanged()
 {
-    btn_print->setEnabled(saved);
-    btn_del->setEnabled(saved);
+    btn_print->setEnabled(!invoice.isNew());
+    btn_del->setEnabled(!invoice.isNew());
 
     if(!invoice.isNew())
         displayInvoiceData();
@@ -177,8 +177,29 @@ void InvoiceTab::onSelectedProductEdited(int row, int col)
 {
     InvoiceLine& line = invoice.getLine(row);
 
+    // à l'édition du nom
+    if(col == COL_NAME)
+    {
+        line.setName(t_selected_products->item(row, COL_NAME)->text());
+
+        t_selected_products->item(row, COL_NAME)->setText(line.getName());
+    }
+    // à l'édition de la description
+    else if(col == COL_DESCRIPTION)
+    {
+        line.setDescription(t_selected_products->item(row, COL_DESCRIPTION)->text());
+
+        t_selected_products->item(row, COL_DESCRIPTION)->setText(line.getDescription());
+    }
+    // à l'édition du prix
+    else if(col == COL_PRICE)
+    {
+        line.setPrice(t_selected_products->item(row, COL_PRICE)->text().toFloat());
+
+        t_selected_products->item(row, COL_PRICE)->setText(QVariant(line.getPrice()).toString());
+    }
     // à l'édition de la quantité
-    if(col == COL_QTE && t_selected_products->item(row, COL_QTE))
+    else if(col == COL_QTE && t_selected_products->item(row, COL_QTE))
     {
         line.setQte(t_selected_products->item(row, COL_QTE)->text().toInt());
 
