@@ -130,6 +130,7 @@ void MainWindow::saveSettings()
     // infos sur la fenêtre (taille et position)
     settings.set("Window", "size", size());
     settings.set("Window", "pos", pos());
+    settings.set("Window", "maximized", isMaximized());
 }
 
 void MainWindow::restoreSettings()
@@ -139,6 +140,9 @@ void MainWindow::restoreSettings()
     // infos sur la fenêtre (taille et position)
     resize(settings.get("Window", "size", QSize(400, 400)).toSize());
     move(settings.get("Window", "pos", QPoint(200, 200)).toPoint());
+
+    if(settings.get("Window", "maximized", false).toBool())
+        showMaximized();
 }
 
 void MainWindow::alert(const QString &message)
