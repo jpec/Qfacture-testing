@@ -3,7 +3,7 @@
 
 #include "models/invoice.h"
 
-#include <QHash>
+#include <QList>
 #include <QSqlQuery>
 #include <QStringList>
 
@@ -27,12 +27,12 @@ public:
     /**
      * Retourne les types de reglement disponibles
      */
-    QHash<int, QString> getReglements(int uid);
+    QList<ReglementType> getReglements(int uid);
 
     /**
      * Retourne les types de documents disponibles
      */
-    QHash<int, QString> getTypes(int uid);
+    QList<DocumentType> getTypes(int uid);
 
     /**
      * Enregistre ou met à jour le détail d'une facture.
@@ -57,6 +57,13 @@ public:
 
 private:
     /**
+     * Enregistre les lignes d'une facture
+     *
+     * @param invoice Facture à enregistrer
+     */
+    void insertLines(Invoice &invoice);
+
+    /**
      * Créé une facture à partir des résultats d'une requête
      *
      * \note On suppose que tous les champs d'une facture sont
@@ -78,7 +85,7 @@ private:
      *
      * @return bool Succès de l'insertion
      */
-    bool insert(Invoice &Invoice, int uid);
+    bool insert(Invoice &invoice, int uid);
 
     /**
      * Réalise la mise à jour d'une facture
@@ -93,11 +100,20 @@ private:
     /**
      * Effectue un bindValue() sur la query avec les champs.
      *
-     * @param Invoice Client à binder
+     * @param Invoice Facture à binder
      * @param query Query à laquelle lier la facture
      * @param uid Identifiant du profil "possédant" la facture
      */
     void bindInvoice(const Invoice &Invoice, QSqlQuery &query, int uid=-1);
+
+    /**
+     * Effectue un bindValue() sur la query avec les champs.
+     *
+     * @param invoice ID de la facture
+     * @param line Ligne à binder
+     * @param query Query à laquelle lier la ligne
+     */
+    void bindInvoiceLine(int invoice, const InvoiceLine &line, QSqlQuery &query);
 };
 
 #endif // INVOICEMANAGER_H

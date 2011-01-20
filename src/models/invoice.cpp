@@ -56,14 +56,14 @@ QDate Invoice::getDate() const
     return date;
 }
 
-void Invoice::setAmount(float amount)
-{
-    this->amount = amount;
-}
-
 float Invoice::getAmount() const
 {
-    return this->amount;
+    float total = 0;
+
+    for(int i=0; i < lines.size(); ++i)
+        total += lines.at(i).getAmount();
+
+    return total;
 }
 
 void Invoice::setDescription(const QString &description)

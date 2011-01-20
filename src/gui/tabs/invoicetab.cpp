@@ -18,6 +18,9 @@ InvoiceTab::InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent) :
     loadCustomersList();
     loadDocumentTypes();
     loadReglementTypes();
+
+    if(!invoice.isNew())
+        displayInvoiceData();
 }
 
 InvoiceTab::~InvoiceTab()
@@ -63,9 +66,19 @@ void InvoiceTab::createActions()
     // activation de l'onglet dès que la connexion à la DB est établie
     connect(core, SIGNAL(DBDisconnected()), this, SLOT(onDBStateChanged()));
 
+    connect(btn_sauver, SIGNAL(clicked()), this, SLOT(onInvoiceSaveClicked()));
+
     // ajout d'un produit lors du double clic sur ce dernier
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
+
+    connect(this, SIGNAL(productsChanged()), this, SLOT(updateInvoiceAmount()));
+
+    connect(le_facture_type, SIGNAL(currentIndexChanged(int)), this,
+            SLOT(onDocumentTypeChanged(int)));
+
+    connect(le_facture_reglement, SIGNAL(currentIndexChanged(int)), this,
+            SLOT(onReglementTypeChanged(int)));
 
     // édition d'un produit sélectionné
     connect(t_selected_products, SIGNAL(cellChanged(int,int)), this,
@@ -94,9 +107,52 @@ void InvoiceTab::onInvoiceStateChanged()
 {
     btn_print->setEnabled(!invoice.isNew());
     btn_del->setEnabled(!invoice.isNew());
+}
 
-    if(!invoice.isNew())
-        displayInvoiceData();
+void InvoiceTab::onDocumentTypeChanged(int type)
+{
+    QList<DocumentType> list = core->getDocumentsTypes();
+
+    for(int i=0; i < list.size(); ++i)
+    {
+        if(list.at(i).getId() == le_facture_type->itemData(type).toInt())
+        {
+            invoice.setType(list.at(i));
+
+            break;
+        }
+    }
+}
+
+void InvoiceTab::onReglementTypeChanged(int type)
+{
+    QList<ReglementType> list = core->getReglements();
+
+    for(int i=0; i < list.size(); ++i)
+    {
+        if(list.at(i).getId() == le_facture_reglement->itemData(type).toInt())
+        {
+            invoice.setReglement(list.at(i));
+
+            break;
+        }
+    }
+}
+
+void InvoiceTab::onInvoiceSaveClicked()
+{
+    invoice.setDescription(le_comment->text());
+    invoice.setDate(le_facture_date->date());
+
+    if(!core->save(invoice))
+        QMessageBox::critical(this, trUtf8("Erreur !"),
+                              trUtf8("Impossible d'enregistrer la facture."));
+    else {
+        onInvoiceStateChanged();
+
+        QMessageBox::information(this, trUtf8("Facture enregistrée"),
+                                 trUtf8("La facture a été enregistrée."));
+    }
 }
 
 void InvoiceTab::onCustomerDoubleClicked(QListWidgetItem *item)
@@ -123,6 +179,12 @@ void InvoiceTab::onAvailableProductDoubleClicked(QTableWidgetItem *item)
     }
 
     addProductToSelectedList(p);
+}
+
+void InvoiceTab::updateInvoiceAmount()
+{
+    le_facture_montant->setText(QVariant(invoice.getAmount()).toString()
+                                + trUtf8(" €"));
 }
 
 void InvoiceTab::addProductToSelectedList(const Product &p)
@@ -171,6 +233,8 @@ void InvoiceTab::addProductToSelectedList(InvoiceLine line)
 
     t_selected_products->item(row_id, COL_NAME)->setData(Qt::UserRole,
                                                          line.getBaseProductId());
+
+    emit productsChanged();
 }
 
 void InvoiceTab::onSelectedProductEdited(int row, int col)
@@ -220,6 +284,8 @@ void InvoiceTab::onSelectedProductEdited(int row, int col)
             return;
 
         t_selected_products->item(row, COL_AMOUNT)->setText(QVariant(line.getAmount()).toString());
+
+        emit productsChanged();
     }
 }
 
@@ -229,14 +295,14 @@ void InvoiceTab::onSelectedProductDoubleClicked(int row, int col)
     {
         t_selected_products->removeRow(row);
         invoice.removeLine(row);
+
+        emit productsChanged();
     }
 }
 
 void InvoiceTab::displayInvoiceData()
 {
     le_facture_no->setText(QVariant(invoice.getId()).toString());
-    le_facture_montant->setText(QVariant(invoice.getAmount()).toString()
-                                + trUtf8(" €"));
     le_facture_date->setDate(invoice.getDate());
     le_comment->setText(invoice.getDescription());
     le_selected_client->setText(invoice.getCustomer().getName());
@@ -329,46 +395,53 @@ void InvoiceTab::loadCustomersList()
         li_clients->item(i)->setData(Qt::UserRole, c_list.at(i).getId());
     }
 }
-
 void InvoiceTab::loadReglementTypes()
 {
+    bool set = false;
+    QList<ReglementType> list = core->getReglements();
+
     le_facture_reglement->clear();
 
-    QHash<int, QString> r_list = core->getReglements();
+    for (int i = 0; i < list.size(); ++i) {
+        le_facture_reglement->addItem(list.at(i).getName());
+        le_facture_reglement->setItemData(i, list.at(i).getId(), Qt::UserRole);
 
-    QHashIterator<int, QString> iterator(r_list);
-    int i = 0;
-    while (iterator.hasNext()) {
-        iterator.next();
-
-        le_facture_reglement->addItem(iterator.value());
-        le_facture_reglement->setItemData(i, QVariant(iterator.key()), Qt::UserRole);
-
-        if(!invoice.isNew() && iterator.key() == invoice.getReglement().getId())
+        if(!invoice.isNew() && list.at(i).getId() == invoice.getReglement().getId())
+        {
             le_facture_reglement->setCurrentIndex(i);
+            set = true;
+        }
+    }
 
-        ++i;
+    if(!set)
+    {
+        le_facture_reglement->setCurrentIndex(-1);
+        le_facture_reglement->setCurrentIndex(0);
     }
 }
 
 void InvoiceTab::loadDocumentTypes()
 {
+    bool set = false;
+    QList<DocumentType> list = core->getDocumentsTypes();
+
     le_facture_reglement->clear();
 
-    QHash<int, QString> r_list = core->getDocumentsTypes();
+    for (int i = 0; i < list.size(); ++i) {
+        le_facture_type->addItem(list.at(i).getName());
+        le_facture_type->setItemData(i, list.at(i).getId());
 
-    QHashIterator<int, QString> iterator(r_list);
-    int i = 0;
-    while (iterator.hasNext()) {
-        iterator.next();
-
-        le_facture_type->addItem(iterator.value());
-        le_facture_type->setItemData(i, QVariant(iterator.key()), Qt::UserRole);
-
-        if(!invoice.isNew() && iterator.key() == invoice.getReglement().getId())
+        if(!invoice.isNew() && list.at(i).getId() == invoice.getReglement().getId())
+        {
             le_facture_type->setCurrentIndex(i);
+            set = true;
+        }
+    }
 
-        ++i;
+    if(!set)
+    {
+        le_facture_type->setCurrentIndex(-1);
+        le_facture_type->setCurrentIndex(0);
     }
 }
 
@@ -424,6 +497,7 @@ void InvoiceTab::buildDetailsBox()
     le_facture_no->setEnabled(false);
     le_facture_montant->setEnabled(false);
     le_facture_date->setDisplayFormat("dd/MM/yyyy");
+    le_facture_date->setDate(QDate::currentDate());
 
     form_details->addRow(trUtf8("Numéro de la facture"), le_facture_no);
     form_details->addRow(trUtf8("Date de facturation"), le_facture_date);

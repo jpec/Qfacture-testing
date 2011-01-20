@@ -159,17 +159,25 @@ bool QfactureCore::eraseCustomer(int id)
 
 /* Wrapper pour les méthodes du contrôleur des factures */
 
+bool QfactureCore::save(Invoice &i)
+{
+    if(getCurrentProfile().isNew())
+        return false;
+
+    return InvoiceController::getInstance()->save(i, getCurrentProfile().getId());
+}
+
 Invoice QfactureCore::getInvoice(int id)
 {
     return InvoiceController::getInstance()->get(id, getCurrentProfile().getId());
 }
 
-QHash<int, QString> QfactureCore::getReglements()
+QList<ReglementType> QfactureCore::getReglements()
 {
     return InvoiceController::getInstance()->getReglements(getCurrentProfile().getId());
 }
 
-QHash<int, QString> QfactureCore::getDocumentsTypes()
+QList<DocumentType> QfactureCore::getDocumentsTypes()
 {
     return InvoiceController::getInstance()->getTypes(getCurrentProfile().getId());
 }

@@ -42,12 +42,12 @@ private:
     /**
      * Retourne les types de reglement disponibles
      */
-    QHash<int, QString> getReglements(int uid);
+    QList<ReglementType> getReglements(int uid);
 
     /**
      * Retourne les types de documents disponibles
      */
-    QHash<int, QString> getTypes(int uid);
+    QList<DocumentType> getTypes(int uid);
 
     /**
      * Supprime une facture

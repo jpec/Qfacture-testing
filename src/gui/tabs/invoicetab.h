@@ -36,6 +36,9 @@ public slots:
      */
     void setEnabled(bool state=true);
 
+signals:
+    void productsChanged();
+
 private slots:
     void onDBStateChanged();
     void onInvoiceStateChanged();
@@ -43,6 +46,10 @@ private slots:
     void onCustomerDoubleClicked(QListWidgetItem *item);
     void onSelectedProductEdited(int row, int col);
     void onSelectedProductDoubleClicked(int row, int col);
+    void onInvoiceSaveClicked();
+    void onReglementTypeChanged(int type);
+    void onDocumentTypeChanged(int type);
+    void updateInvoiceAmount();
 
     /**
      * Charge la liste des clients

@@ -41,10 +41,11 @@ Invoice InvoiceManager::get(int id, int uid)
     return in;
 }
 
-QHash<int, QString> InvoiceManager::getReglements(int uid)
+QList<ReglementType> InvoiceManager::getReglements(int uid)
 {
     QSqlQuery query;
-    QHash<int, QString> list;
+    ReglementType r;
+    QList<ReglementType> list;
 
     query.prepare("SELECT trID, name FROM types_reglements WHERE u_ID = :uid");
 
@@ -54,17 +55,24 @@ QHash<int, QString> InvoiceManager::getReglements(int uid)
         return list;
 
     while(query.next())
-        list[query.value(0).toInt()] = query.value(1).toString();
+    {
+        r = ReglementType();
+        r.setId(query.value(0).toInt());
+        r.setName(query.value(1).toString());
+
+        list.append(r);
+    }
 
     query.finish();
 
     return list;
 }
 
-QHash<int, QString> InvoiceManager::getTypes(int uid)
+QList<DocumentType> InvoiceManager::getTypes(int uid)
 {
     QSqlQuery query;
-    QHash<int, QString> list;
+    DocumentType d;
+    QList<DocumentType> list;
 
     query.prepare("SELECT tdID, name FROM types_documents WHERE u_ID = :uid");
 
@@ -74,7 +82,13 @@ QHash<int, QString> InvoiceManager::getTypes(int uid)
         return list;
 
     while(query.next())
-        list[query.value(0).toInt()] = query.value(1).toString();
+    {
+        d = DocumentType();
+        d.setId(query.value(0).toInt());
+        d.setName(query.value(1).toString());
+
+        list.append(d);
+    }
 
     query.finish();
 
@@ -86,6 +100,22 @@ bool InvoiceManager::save(Invoice &invoice, int uid)
     if(uid < 1)
         return false;
 
+    // pas de ligne
+    if(invoice.getLinesCount() == 0)
+        return false;
+
+    // le client n'existe pas dans la BDD
+    if(invoice.getCustomer().isNew())
+        return false;
+
+    // pas de type de document
+    if(invoice.getType().isNew())
+        return false;
+
+    // pas de type de reglement
+    if(invoice.getReglement().isNew())
+        return false;
+
     return invoice.isNew() ? insert(invoice, uid) : update(invoice, uid);
 }
 
@@ -95,10 +125,53 @@ bool InvoiceManager::erase(int id, int uid)
     return false;
 }
 
-bool InvoiceManager::insert(Invoice &Invoice, int uid)
+bool InvoiceManager::insert(Invoice &invoice, int uid)
 {
-    // not implemented
+    QSqlQuery query;
+
+    query.prepare(
+            "INSERT INTO facture (u_ID, c_ID, tr_ID, td_ID, amount, comment, Date) "
+            "VALUES (:uid, :c_id, :tr_id, :td_id, :amount, :comment, :date)"
+    );
+
+    bindInvoice(invoice, query, uid);
+
+    if(DBController::getInstance()->exec(query))
+    {
+        invoice.setId(query.lastInsertId().toInt());
+
+        query.finish();
+
+        insertLines(invoice);
+
+        return true;
+    }
+
     return false;
+}
+
+void InvoiceManager::insertLines(Invoice &invoice)
+{
+    QSqlQuery query;
+    InvoiceLine line;
+
+    query.prepare(
+            "INSERT INTO factures_lignes (f_ID, base_article, name, designation, quantity, price, off) "
+            "VALUES (:f_id, :base_article, :name, :designation, :qte, :price, :off)"
+    );
+
+    for(int i=0; i < invoice.getLinesCount(); ++i)
+    {
+        line = invoice.getLine(i);
+
+        bindInvoiceLine(invoice.getId(), line, query);
+
+        DBController::getInstance()->exec(query);
+
+        line.setId(query.lastInsertId().toInt());
+    }
+
+    query.finish();
 }
 
 bool InvoiceManager::update(const Invoice &Invoice, int uid)
@@ -110,12 +183,26 @@ bool InvoiceManager::update(const Invoice &Invoice, int uid)
 void InvoiceManager::bindInvoice(const Invoice &invoice, QSqlQuery &query, int uid)
 {
     query.bindValue(":f_id", invoice.getId());
-//    query.bindValue(":name", invoice.getName());
-//    query.bindValue(":price", invoice.getPrice());
-//    query.bindValue(":comment", invoice.getDescription());
+    query.bindValue(":c_id", invoice.getCustomer().getId());
+    query.bindValue(":tr_id", invoice.getReglement().getId());
+    query.bindValue(":td_id", invoice.getType().getId());
+    query.bindValue(":amount", invoice.getAmount());
+    query.bindValue(":comment", invoice.getDescription());
+    query.bindValue(":date", invoice.getDate());
 
     if(uid != -1)
         query.bindValue(":uid", QVariant(uid));
+}
+
+void InvoiceManager::bindInvoiceLine(int invoice, const InvoiceLine &line, QSqlQuery &query)
+{
+    query.bindValue(":f_id", invoice);
+    query.bindValue(":base_article", line.getBaseProductId());
+    query.bindValue(":name", line.getName());
+    query.bindValue(":designation", line.getDescription());
+    query.bindValue(":qte", line.getQte());
+    query.bindValue(":price", line.getPrice());
+    query.bindValue(":off", line.getOffPercentage());
 }
 
 Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
@@ -128,7 +215,6 @@ Invoice InvoiceManager::makeInvoice(QSqlQuery &query)
     DocumentType d;
 
     invoice.setId(query.value(0).toInt());
-    invoice.setAmount(query.value(2).toFloat());
     invoice.setDescription(query.value(3).toString());
     invoice.setDate(QDate::fromString(query.value(4).toString(), Qt::ISODate));
 

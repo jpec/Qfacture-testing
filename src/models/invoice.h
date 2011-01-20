@@ -78,13 +78,6 @@ public:
     QDate getDate() const;
 
     /**
-     * Définit le montant de la facture.
-     *
-     * @param price Le montant de la facture.
-     */
-    void setAmount(float price);
-
-    /**
      * Retourne le montant de la facture.
      *
      * @return float Le montant de la facture.
@@ -173,11 +166,6 @@ private:
      * Référence de la facture.
      */
     QString ref;
-
-    /**
-     * Le montant de la facture
-     */
-    float amount;
 
     /**
      * La date d'établissement de la facture

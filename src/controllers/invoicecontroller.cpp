@@ -18,18 +18,18 @@ Invoice InvoiceController::get(int id, int uid)
     return manager.get(id, uid);
 }
 
-QHash<int, QString> InvoiceController::getReglements(int uid)
+QList<ReglementType> InvoiceController::getReglements(int uid)
 {
     if(uid < 1)
-        return QHash<int, QString>();
+        return QList<ReglementType>();
 
     return manager.getReglements(uid);
 }
 
-QHash<int, QString> InvoiceController::getTypes(int uid)
+QList<DocumentType> InvoiceController::getTypes(int uid)
 {
     if(uid < 1)
-        return QHash<int, QString>();
+        return QList<DocumentType>();
 
     return manager.getTypes(uid);
 }

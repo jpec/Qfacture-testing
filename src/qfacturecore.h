@@ -138,6 +138,11 @@ public:
     /* Wrapper pour les méthodes du contrôleur des factures */
 
     /**
+     * @see InvoiceController::save()
+     */
+    bool save(Invoice &i);
+
+    /**
      * @see InvoiceController::get()
      */
     Invoice getInvoice(int id);
@@ -145,12 +150,12 @@ public:
     /**
      * @see InvoiceController::getReglements()
      */
-    QHash<int, QString> getReglements();
+    QList<ReglementType> getReglements();
 
     /**
      * @see InvoiceController::getDocumentsTypes()
      */
-    QHash<int, QString> getDocumentsTypes();
+    QList<DocumentType> getDocumentsTypes();
 
 signals:
 
