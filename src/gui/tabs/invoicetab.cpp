@@ -68,6 +68,8 @@ void InvoiceTab::createActions()
 
     connect(btn_sauver, SIGNAL(clicked()), this, SLOT(onInvoiceSaveClicked()));
 
+    connect(btn_del, SIGNAL(clicked()), this, SLOT(onInvoiceDeleteClicked()));
+
     // ajout d'un produit lors du double clic sur ce dernier
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this, SLOT(onAvailableProductDoubleClicked(QTableWidgetItem*)));
@@ -136,6 +138,28 @@ void InvoiceTab::onReglementTypeChanged(int type)
 
             break;
         }
+    }
+}
+
+void InvoiceTab::onInvoiceDeleteClicked()
+{
+    QMessageBox msgBox;
+
+    msgBox.setText(trUtf8("Voulez-vous vraiment supprimer cette facture ?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::No)
+        return;
+
+    if(!core->erase(invoice))
+        QMessageBox::critical(this, trUtf8("Erreur !"),
+                              trUtf8("Impossible de supprimer la facture."));
+    else {
+        onInvoiceStateChanged();
+
+        QMessageBox::information(this, trUtf8("Facture supprimée"),
+                                 trUtf8("La facture a été supprimée."));
     }
 }
 

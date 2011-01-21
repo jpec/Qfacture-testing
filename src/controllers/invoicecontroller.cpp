@@ -18,6 +18,15 @@ Invoice InvoiceController::get(int id, int uid)
     return manager.get(id, uid);
 }
 
+bool InvoiceController::erase(Invoice &i, int uid)
+{
+    // la facture doit appartenir à quelqu'un
+    if(uid < 1)
+        return false;
+
+    return manager.erase(i.getId(), uid);
+}
+
 QList<ReglementType> InvoiceController::getReglements(int uid)
 {
     if(uid < 1)
@@ -43,11 +52,3 @@ bool InvoiceController::save(Invoice &i, int uid)
     return manager.save(i, uid);
 }
 
-bool InvoiceController::erase(int id, int uid)
-{
-    // la facture doit appartenir à quelqu'un
-    if(uid < 1)
-        return false;
-
-    return manager.erase(id, uid);
-}

@@ -121,7 +121,29 @@ bool InvoiceManager::save(Invoice &invoice, int uid)
 
 bool InvoiceManager::erase(int id, int uid)
 {
-    // not implemented
+    Invoice invoice = get(id, uid);
+    QSqlQuery query;
+    QString sql;
+
+    if(invoice.isNew())
+        return false;
+
+    if(!clearLines(invoice))
+        return false;
+
+    sql = "DELETE FROM facture WHERE fID = :f_id";
+
+    query.prepare(sql);
+
+    query.bindValue(":f_id", QVariant(invoice.getId()));
+
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
     return false;
 }
 

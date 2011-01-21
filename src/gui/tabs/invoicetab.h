@@ -47,6 +47,7 @@ private slots:
     void onSelectedProductEdited(int row, int col);
     void onSelectedProductDoubleClicked(int row, int col);
     void onInvoiceSaveClicked();
+    void onInvoiceDeleteClicked();
     void onReglementTypeChanged(int type);
     void onDocumentTypeChanged(int type);
     void updateInvoiceAmount();

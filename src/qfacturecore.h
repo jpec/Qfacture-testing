@@ -143,6 +143,11 @@ public:
     bool save(Invoice &i);
 
     /**
+     * @see InvoiceController::erase()
+     */
+    bool erase(Invoice &i);
+
+    /**
      * @see InvoiceController::get()
      */
     Invoice getInvoice(int id);

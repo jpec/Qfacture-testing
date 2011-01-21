@@ -52,10 +52,10 @@ private:
     /**
      * Supprime une facture
      *
-     * @param id L'identifiant de la facture
+     * @param i La facture
      * @param uid Identifiant du profil "possédant" la facture
      */
-    bool erase(int id, int uid);
+    bool erase(Invoice &i, int uid);
 
 
     InvoiceController();

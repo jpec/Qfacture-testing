@@ -167,6 +167,14 @@ bool QfactureCore::save(Invoice &i)
     return InvoiceController::getInstance()->save(i, getCurrentProfile().getId());
 }
 
+bool QfactureCore::erase(Invoice &i)
+{
+    if(getCurrentProfile().isNew())
+        return false;
+
+    return InvoiceController::getInstance()->erase(i, getCurrentProfile().getId());
+}
+
 Invoice QfactureCore::getInvoice(int id)
 {
     return InvoiceController::getInstance()->get(id, getCurrentProfile().getId());
