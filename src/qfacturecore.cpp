@@ -172,6 +172,14 @@ bool QfactureCore::erase(Invoice &i)
     if(getCurrentProfile().isNew())
         return false;
 
+    return eraseInvoice(i.getId());
+}
+
+bool QfactureCore::eraseInvoice(int i)
+{
+    if(getCurrentProfile().isNew())
+        return false;
+
     return InvoiceController::getInstance()->erase(i, getCurrentProfile().getId());
 }
 

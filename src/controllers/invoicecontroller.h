@@ -56,6 +56,7 @@ private:
      * @param uid Identifiant du profil "possédant" la facture
      */
     bool erase(Invoice &i, int uid);
+    bool erase(int i, int uid);
 
 
     InvoiceController();

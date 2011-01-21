@@ -146,6 +146,7 @@ public:
      * @see InvoiceController::erase()
      */
     bool erase(Invoice &i);
+    bool eraseInvoice(int i);
 
     /**
      * @see InvoiceController::get()

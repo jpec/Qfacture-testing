@@ -28,6 +28,9 @@ signals:
      */
     void newTabRequest(const QString& name, QWidget* content);
 
+    void invoiceDeleted();
+    void invoiceAdded();
+
 public slots:
     /**
      * (Dés)active l'onglet

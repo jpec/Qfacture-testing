@@ -144,6 +144,10 @@ void InvoicesTab::createActions()
     this->connect(invoices_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
                   this, SLOT(loadInvoice(QTableWidgetItem*)));
 
+    // on recharge la liste des facture dès qu'on en a ajouté/supprimé une
+    connect(this, SIGNAL(invoiceDeleted()), invoices_table, SLOT(feedTable()));
+    connect(this, SIGNAL(invoiceAdded()), invoices_table, SLOT(feedTable()));
+
     // mise à jour des critères de recherche
     this->connect(search, SIGNAL(textChanged(QString)), this,
                   SLOT(onSearchFiltersChanged()));
@@ -183,7 +187,15 @@ void InvoicesTab::onDelClicked()
     if(msgBox.exec() == QMessageBox::No)
         return;
 
-    QMessageBox::information(this, "Info", trUtf8("ID cliqué : %1").arg(invoices_table->getSelectedItem()->data(Qt::UserRole).toString()));
+    if(!core->eraseInvoice(invoices_table->getSelectedItem()->data(Qt::UserRole).toInt()))
+    {
+        QMessageBox::critical(this, trUtf8("Erreur"), trUtf8("Impossible de supprimer la facture"));
+        return;
+    }
+
+    QMessageBox::information(this, trUtf8("Facture supprimée"), trUtf8("Facture supprimée"));
+
+    emit invoiceDeleted();
 }
 
 void InvoicesTab::loadSelectedInvoice()
