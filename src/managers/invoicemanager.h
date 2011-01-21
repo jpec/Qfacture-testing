@@ -64,6 +64,13 @@ private:
     void insertLines(Invoice &invoice);
 
     /**
+     * Supprime les lignes d'une facture
+     *
+     * @param invoice Facture à vider
+     */
+    bool clearLines(const Invoice &invoice);
+
+    /**
      * Créé une facture à partir des résultats d'une requête
      *
      * \note On suppose que tous les champs d'une facture sont
@@ -95,7 +102,7 @@ private:
      *
      * @return bool Succès de la mise à jour
      */
-    bool update(const Invoice &Invoice, int uid);
+    bool update(Invoice &Invoice, int uid);
 
     /**
      * Effectue un bindValue() sur la query avec les champs.

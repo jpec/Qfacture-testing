@@ -174,9 +174,47 @@ void InvoiceManager::insertLines(Invoice &invoice)
     query.finish();
 }
 
-bool InvoiceManager::update(const Invoice &Invoice, int uid)
+bool InvoiceManager::update(Invoice &Invoice, int uid)
 {
-    // not implemented
+    QSqlQuery query;
+
+    query.prepare(
+            "UPDATE facture "
+            "SET c_ID = :c_id, tr_ID = :tr_id, td_ID = :td_id, "
+                "amount = :amount, comment = :comment, Date =  :date "
+            "WHERE u_ID = :uid AND fID = :f_id"
+    );
+
+    bindInvoice(Invoice, query, uid);
+
+    if(!DBController::getInstance()->exec(query))
+        return false;
+
+    query.finish();
+
+    if(!clearLines(Invoice))
+        return false;
+
+    insertLines(Invoice);
+
+    return true;
+}
+
+bool InvoiceManager::clearLines(const Invoice &invoice)
+{
+    QSqlQuery query;
+
+    query.prepare("DELETE FROM factures_lignes WHERE f_ID = :f_id");
+
+    query.bindValue(":f_id", QVariant(invoice.getId()));
+
+    if(DBController::getInstance()->exec(query))
+    {
+        query.finish();
+
+        return true;
+    }
+
     return false;
 }
 
