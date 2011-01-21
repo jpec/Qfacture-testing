@@ -3,6 +3,7 @@
 
 #include "qfacturecore.h"
 #include "gui/widgets/sqltable.h"
+#include "gui/tabs/invoicetab.h"
 
 #include <QWidget>
 #include <QGroupBox>
@@ -26,7 +27,7 @@ signals:
      * Signal émis lorsque le widget courant souhaite ouvrir un nouvel onglet
      * dans l'appli
      */
-    void newTabRequest(const QString& name, QWidget* content);
+    void newTabRequest(const QString& name, InvoiceTab* content);
 
     void invoiceDeleted();
     void invoiceAdded();

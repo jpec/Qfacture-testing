@@ -28,6 +28,8 @@ public:
     explicit InvoiceTab(Invoice invoice, QfactureCore *core, QWidget *parent = 0);
     ~InvoiceTab();
 
+    Invoice getInvoice() const;
+
 public slots:
     /**
      * (Dés)active l'onglet
@@ -38,6 +40,9 @@ public slots:
 
 signals:
     void productsChanged();
+
+    void invoiceDeleted();
+    void invoiceSaved();
 
 private slots:
     void onDBStateChanged();

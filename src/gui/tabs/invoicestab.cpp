@@ -144,7 +144,7 @@ void InvoicesTab::createActions()
     this->connect(invoices_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
                   this, SLOT(loadInvoice(QTableWidgetItem*)));
 
-    // on recharge la liste des facture dès qu'on en a ajouté/supprimé une
+    // on recharge la liste des facture dès qu'on en a ajouté/supprimé/modifié une
     connect(this, SIGNAL(invoiceDeleted()), invoices_table, SLOT(feedTable()));
     connect(this, SIGNAL(invoiceAdded()), invoices_table, SLOT(feedTable()));
 

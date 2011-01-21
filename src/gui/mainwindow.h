@@ -61,7 +61,14 @@ private slots:
      * Signal émis lorsque un widget fils souhaite ouvrir un nouvel onglet
      * dans l'appli
      */
-    void onNewTabRequest(const QString& name, QWidget* content);
+    void onNewTabRequest(const QString& name, InvoiceTab* content);
+
+    /**
+     * Appelée lorsqu'on reçoit une demande de fermeture d'un onglet
+     *
+     * @param index Index de l'onglet
+     */
+    void onTabCloseRequested(int index);
 
 private:
     /**

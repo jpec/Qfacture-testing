@@ -60,12 +60,17 @@ void MainWindow::createActions()
 
     // écoute les demandes de création de nouveaux onglets émises par l'onglet
     // de gestion des factures
-    this->connect(invoices_tab, SIGNAL(newTabRequest(QString,QWidget*)), this,
-                  SLOT(onNewTabRequest(QString,QWidget*)));
+    this->connect(invoices_tab, SIGNAL(newTabRequest(QString, InvoiceTab*)), this,
+                  SLOT(onNewTabRequest(QString, InvoiceTab*)));
+
+    this->connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this,
+                  SLOT(onTabCloseRequested(int)));
 }
 
 void MainWindow::setupTabs()
 {
+    //ui->tabWidget->setTabsClosable(true);
+
     // paramètres
     params_tab = new ParamsTab(core, this);
     ui->tabWidget->addTab(params_tab, trUtf8("Paramètres"));
@@ -165,9 +170,17 @@ void MainWindow::about()
                        );
 }
 
-void MainWindow::onNewTabRequest(const QString& name, QWidget* content)
+void MainWindow::onNewTabRequest(const QString& name, InvoiceTab* content)
 {
     int index = ui->tabWidget->addTab(content, name);
 
     ui->tabWidget->setCurrentIndex(index);
+
+    connect(content, SIGNAL(invoiceSaved()), invoices_tab, SIGNAL(invoiceAdded()));
+    connect(content, SIGNAL(invoiceDeleted()), invoices_tab, SIGNAL(invoiceDeleted()));
+}
+
+void MainWindow::onTabCloseRequested(int index)
+{
+    ui->tabWidget->removeTab(index);
 }

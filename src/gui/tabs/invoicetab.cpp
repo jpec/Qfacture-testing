@@ -58,6 +58,11 @@ InvoiceTab::~InvoiceTab()
     delete gbox_details;
 }
 
+Invoice InvoiceTab::getInvoice() const
+{
+    return invoice;
+}
+
 void InvoiceTab::createActions()
 {
     // activation de l'onglet dès que la connexion à la DB est établie
@@ -156,7 +161,7 @@ void InvoiceTab::onInvoiceDeleteClicked()
         QMessageBox::critical(this, trUtf8("Erreur !"),
                               trUtf8("Impossible de supprimer la facture."));
     else {
-        onInvoiceStateChanged();
+        emit invoiceDeleted();
 
         QMessageBox::information(this, trUtf8("Facture supprimée"),
                                  trUtf8("La facture a été supprimée."));
@@ -176,6 +181,8 @@ void InvoiceTab::onInvoiceSaveClicked()
 
         QMessageBox::information(this, trUtf8("Facture enregistrée"),
                                  trUtf8("La facture a été enregistrée."));
+
+        emit invoiceSaved();
     }
 }
 
