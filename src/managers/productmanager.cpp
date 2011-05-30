@@ -11,7 +11,7 @@ Product ProductManager::get(int id, int uid)
     Product p;
 
     sql = "SELECT aID, name, price, comment "
-          "FROM article WHERE aID = :product_id";
+          "FROM article WHERE aID = :product_id ";
 
     if(uid != -1)
         sql += " AND u_ID = :uid";
@@ -51,7 +51,7 @@ bool ProductManager::erase(int id, int uid)
     if(id <= 0)
         return false;
 
-    sql = "DELETE FROM article WHERE aID = :a_id";
+    sql = "DELETE FROM article WHERE aID = :a_id ";
 
     if(uid != -1)
          sql += "AND u_ID = :uid";
