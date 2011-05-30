@@ -1,0 +1,13 @@
+Qfacture - Le logiciel libre de facturation pour les auto-entrepreneurs!
+--
+License:   GPL
+Author:    Julien Pecqueur (jpec)
+Co-author: Kevin Gomez (kphoen)
+Home:      http://blog.julienpecqueur.com/index.php?static1/qfacture
+Git:	   git://github.com/jpec/Qfacture.git (readonly)
+--
+THIS IS TESTING BRANCH OF QFACTURE, MAY BE INSTABLE SO DON'T USE IT EXCEPT FOR
+TESTING AND/OR DEBUGGING.
+DATABASE SCHEMA IS CURRENTLY OUTDATED, PLEASE ASK FOR CURRENT VERSION TO TRY
+QFACTURE !
+HAVE FUN !
