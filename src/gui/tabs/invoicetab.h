@@ -29,6 +29,7 @@ public:
     ~InvoiceTab();
 
     Invoice getInvoice() const;
+    void setIndex(int index);
 
 public slots:
     /**
@@ -43,6 +44,7 @@ signals:
 
     void invoiceDeleted();
     void invoiceSaved();
+    void tabCloseRequested(int);
 
 private slots:
     void onDBStateChanged();
@@ -149,6 +151,11 @@ private:
      * Facture représentée dans l'onglet
      */
     Invoice invoice;
+
+    /**
+     * Index de l'onglet
+     */
+    int tab_index;
 
     static const int COL_NAME           = 0;
     static const int COL_DESCRIPTION    = 1;

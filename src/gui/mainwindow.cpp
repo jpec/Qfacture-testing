@@ -175,9 +175,11 @@ void MainWindow::onNewTabRequest(const QString& name, InvoiceTab* content)
     int index = ui->tabWidget->addTab(content, name);
 
     ui->tabWidget->setCurrentIndex(index);
+    content->setIndex(index);
 
     connect(content, SIGNAL(invoiceSaved()), invoices_tab, SIGNAL(invoiceAdded()));
     connect(content, SIGNAL(invoiceDeleted()), invoices_tab, SIGNAL(invoiceDeleted()));
+    connect(content, SIGNAL(tabCloseRequested(int)), this, SLOT(onTabCloseRequested(int)));
 }
 
 void MainWindow::onTabCloseRequested(int index)

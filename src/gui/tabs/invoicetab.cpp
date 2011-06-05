@@ -1,5 +1,6 @@
 #include "invoicetab.h"
 #include "controllers/dbcontroller.h"
+#include "gui/mainwindow.h"
 
 #include <QMessageBox>
 
@@ -61,6 +62,11 @@ InvoiceTab::~InvoiceTab()
 Invoice InvoiceTab::getInvoice() const
 {
     return invoice;
+}
+
+void InvoiceTab::setIndex(int index)
+{
+    this->tab_index = index;
 }
 
 void InvoiceTab::createActions()
@@ -162,7 +168,8 @@ void InvoiceTab::onInvoiceDeleteClicked()
                               trUtf8("Impossible de supprimer la facture."));
     else {
         emit invoiceDeleted();
-
+        // suppression de l'onglet
+        emit tabCloseRequested(this->tab_index);
         QMessageBox::information(this, trUtf8("Facture supprimée"),
                                  trUtf8("La facture a été supprimée."));
     }
