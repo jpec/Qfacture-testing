@@ -10,6 +10,7 @@
 #include "gui/tabs/customerstab.h"
 #include "gui/tabs/invoicestab.h"
 //#include "gui/tabs/invoicetab.h"
+#include "gui/tabs/templatetab.h"
 
 
 namespace Ui {
@@ -131,6 +132,11 @@ private:
      * Widget de l'onglet facture
      */
     //InvoiceTab *invoice_tab;
+
+    /**
+     * Widget de l'onglet template
+     */
+    TemplateTab *template_tab;
 
     /**
      * Pointeur vers le coeur logique de l'application.

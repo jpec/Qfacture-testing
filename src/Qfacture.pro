@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     models/modelbase.cpp \
     models/reglementtype.cpp \
     models/documenttype.cpp \
-    models/invoiceline.cpp
+    models/invoiceline.cpp \
+    gui/tabs/templatetab.cpp
 HEADERS += models/person.h \
     models/customer.h \
     models/profile.h \
@@ -72,5 +73,6 @@ HEADERS += models/person.h \
     models/modelbase.h \
     models/reglementtype.h \
     models/documenttype.h \
-    models/invoiceline.h
+    models/invoiceline.h \
+    gui/tabs/templatetab.h
 FORMS += gui/mainwindow.ui

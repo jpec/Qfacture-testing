@@ -32,6 +32,7 @@ MainWindow::~MainWindow()
     delete products_tab;
     delete invoices_tab;
     //delete invoice_tab;
+    delete template_tab;
 
     delete ui;
 }
@@ -89,6 +90,11 @@ void MainWindow::setupTabs()
     invoices_tab = new InvoicesTab(core, this);
     invoices_tab->setEnabled(false);
     ui->tabWidget->addTab(invoices_tab, trUtf8("Factures"));
+
+    // template
+    template_tab = new TemplateTab(core, this);
+    template_tab->setEnabled(false);
+    ui->tabWidget->addTab(template_tab, trUtf8("Template"));
 }
 
 void MainWindow::onQuit()
@@ -117,6 +123,7 @@ void MainWindow::onDBConnected()
     customers_tab->setEnabled();
     products_tab->setEnabled();
     invoices_tab->setEnabled();
+    template_tab->setEnabled();
 }
 
 void MainWindow::onDBDisconnected()
@@ -126,6 +133,7 @@ void MainWindow::onDBDisconnected()
     customers_tab->setEnabled(false);
     products_tab->setEnabled(false);
     invoices_tab->setEnabled(false);
+    template_tab->setEnabled(false);
 }
 
 void MainWindow::saveSettings()
