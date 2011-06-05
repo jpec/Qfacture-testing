@@ -38,6 +38,7 @@ InvoiceTab::~InvoiceTab()
     delete btn_sauver;
     delete btn_print;
     delete btn_del;
+    delete btn_close;
     delete t_available_products;
     delete t_selected_products;
 
@@ -80,6 +81,8 @@ void InvoiceTab::createActions()
     connect(btn_sauver, SIGNAL(clicked()), this, SLOT(onInvoiceSaveClicked()));
 
     connect(btn_del, SIGNAL(clicked()), this, SLOT(onInvoiceDeleteClicked()));
+
+    connect(btn_close, SIGNAL(clicked()), this, SLOT(onInvoiceCloseClicked()));
 
     // ajout d'un produit lors du double clic sur ce dernier
     connect(t_available_products, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
@@ -173,6 +176,20 @@ void InvoiceTab::onInvoiceDeleteClicked()
         QMessageBox::information(this, trUtf8("Facture supprimée"),
                                  trUtf8("La facture a été supprimée."));
     }
+}
+
+void InvoiceTab::onInvoiceCloseClicked()
+{
+    QMessageBox msgBox;
+
+    msgBox.setText(trUtf8("Voulez-vous vraiment fermer cette facture ?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if(msgBox.exec() == QMessageBox::No)
+        return;
+
+    emit tabCloseRequested(this->tab_index);
 }
 
 void InvoiceTab::onInvoiceSaveClicked()
@@ -550,10 +567,12 @@ void InvoiceTab::buildDetailsBox()
     btn_sauver = new QPushButton(trUtf8("Sauver"));
     btn_print = new QPushButton(trUtf8("Imprimer"));
     btn_del = new QPushButton(trUtf8("Supprimer"));
+    btn_close = new QPushButton(trUtf8("Fermer"));
 
     l_details_button->addWidget(btn_sauver);
     l_details_button->addWidget(btn_print);
     l_details_button->addWidget(btn_del);
+    l_details_button->addWidget(btn_close);
 
     l_header_right->addWidget(gbox_details);
     l_header_right->addLayout(l_details_button);
@@ -570,4 +589,5 @@ void InvoiceTab::setEnabled(bool state)
     btn_sauver->setEnabled(state);
     btn_print->setEnabled(state);
     btn_del->setEnabled(state);
+    btn_close->setEnabled(state);
 }

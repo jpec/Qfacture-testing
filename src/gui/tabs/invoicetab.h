@@ -55,6 +55,7 @@ private slots:
     void onSelectedProductDoubleClicked(int row, int col);
     void onInvoiceSaveClicked();
     void onInvoiceDeleteClicked();
+    void onInvoiceCloseClicked();
     void onReglementTypeChanged(int type);
     void onDocumentTypeChanged(int type);
     void updateInvoiceAmount();
@@ -136,6 +137,7 @@ private:
     QPushButton *btn_sauver;
     QPushButton *btn_print;
     QPushButton *btn_del;
+    QPushButton *btn_close;
 
     QVBoxLayout *l_products;
     QGroupBox *gbox_products;
