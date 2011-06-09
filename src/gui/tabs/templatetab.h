@@ -3,9 +3,14 @@
 
 #include "qfacturecore.h"
 
+#include <QTextEdit>
 #include <QWidget>
 #include <QGroupBox>
+#include <QComboBox>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+
 
 class TemplateTab : public QWidget
 {
@@ -21,9 +26,15 @@ public slots:
      *
      * @param state État d'activation de l'onglet
      */
-    void setEnabled(bool state=true);
+    void setEnabled(bool state=true);   
 
 private slots:
+
+    void onNewClicked();
+
+    void onOpenClicked();
+
+    void onDelClicked();
 
 private:
     /**
@@ -37,6 +48,10 @@ private:
      */
     void createActions();
 
+    void buildActionButtons();
+
+    void buildTemplateEdition();
+
     /**
      * Pointeur vers le contrôleur principal
      */
@@ -46,6 +61,44 @@ private:
      * Layout principal du widget
      */
     QVBoxLayout *layout;
+
+    /**
+     * Layout contenant le template
+     */
+    QVBoxLayout *template_layout;
+
+    /**
+     * Layout contenant les boutons nouveau, sauvegarder et supprimer
+     */
+    QHBoxLayout *actions_layout;
+
+    /**
+     * Groupbox servant de conteneur pour la liste des actions
+     */
+    QGroupBox *gbox_actions;
+
+    /**
+     * Groupbox servant de conteneur pour le template
+     */
+    QGroupBox *gbox_template;
+
+    /**
+     * Bouton "Nouvelle facture"
+     */
+    QPushButton *btn_new;
+
+    /**
+     * Bouton "Ouvrir facture"
+     */
+    QPushButton *btn_open;
+
+    /**
+     * Bouton "Supprimer facture"
+     */
+    QPushButton *btn_del;
+
+    QTextEdit *ed_template;
+    QComboBox *cb_template;
 
 };
 
