@@ -165,17 +165,21 @@ void MainWindow::alert(const QString &message)
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, trUtf8("Qfacture v%1")
-                       .arg(core->version()),
-                       trUtf8("Le logiciel libre de facturation pour les "
-                              "Auto-Entrepreneurs!\n"
-                              "--\n"
-                              "Copyright : Julien PECQUEUR\n"
-                              "Licence : GPL\n"
-                              "Auteur : Julien PECQUEUR <jpec@julienpecqueur.com>\n"
-                              "Co-auteur : Kévin Gomez <contact@kevingomez.fr>\n"
-                              "\n")
-                       );
+    QString msg = trUtf8(
+                "<h1><center>Qfacture %1</center></h1>\n"
+                "<p>Le logiciel libre de facturation pour les Auto-Entrepreneurs !</p>"
+                "<hr>"
+                "<dl>"
+                "<dt>Copyright 2011</dt><dd><strong>Julien PECQUEUR</stong></dd>"
+                "<dt>Licence</dt><dd><strong>GNU GPL</strong></dd>"
+                "<dt>Auteur</dt><dd><strong>Julien PECQUEUR</strong> &lt;<a href=\"mailto:jpec@julienpecqueur.com\">jpec@julienpecqueur.com</a>&gt;</dd>"
+                "<dt>Co-auteur</dt><dd><strong>Kévin GOMEZ</strong> &lt;<a href=\"mailto:contact@kevingomez.fr\">contact@kevingomez.fr</a>&gt;</dd>"
+                "</dl>"
+                "<hr>"
+                "<center>.:: Version en cours de développement ::.</center>"
+                ).arg(core->version());
+
+    QMessageBox::about(this, trUtf8("Qfacture v%1").arg(core->version()), msg);
 }
 
 void MainWindow::onNewTabRequest(const QString& name, InvoiceTab* content)
